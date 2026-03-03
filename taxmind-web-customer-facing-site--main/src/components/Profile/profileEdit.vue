@@ -73,7 +73,7 @@
                             <v-flex xs12 lg6 md6 pl-lg-2 pl-sm-0 pl-md-2 pt-lg-2 pt-md-2>
                               <PhoneNumberInput v-model="phonenumber" label="Phone Number"
                                 :error="!!validationErrors.phonenumber" :error-message="validationErrors.phonenumber"
-                                disabled />
+                                />
                             </v-flex>
                             <v-flex xs12 lg6 md6 pt-lg-2 pt-md-2>
                               <span class="textFieldstyle">Date of Birth</span>
@@ -345,7 +345,7 @@
 
                                         font-weight: 700px;
                                       ">
-                                      Submit
+                                      Update
                                     </span>
                                   </v-btn>
                                 </v-flex> <v-flex v-if="showSpouseVerificationButton" xs6 :class="{
@@ -909,8 +909,8 @@ export default {
 
         // Optionally reload profile data to ensure UI is in sync
         setTimeout(() => {
-          this.getData();
-        }, 1000);
+          this.$router.push("/profile");
+        }, 1200);
       } else {
         // Prefer response.message or response.error or nested data fields
         const apiMsg =

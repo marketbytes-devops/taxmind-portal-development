@@ -5,9 +5,9 @@
 // const RAW_BASE = 'https:api.taxmind.ie';
 
 // dev base url
-const RAW_BASE = process.env.VUE_APP_API_BASE_URL;
+const RAW_BASE = process.env.VUE_APP_API_BASE_URL || "";
 
-const RAW_SOCKET = process.env.VUE_APP_SOCKET_URL;
+const RAW_SOCKET = process.env.VUE_APP_SOCKET_URL || "";
 // Normalize: remove trailing slash
 export const API_BASE_URL = RAW_BASE.replace(/\/$/, "");
 export const SOCKET_URL = RAW_SOCKET.replace(/\/$/, "");

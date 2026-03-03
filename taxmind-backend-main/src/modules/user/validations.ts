@@ -705,6 +705,7 @@ export const updateProfileSchema = z.object({
         .min(1, 'Address cannot be empty')
         .refine((val) => val.trim().length > 0, { message: 'Address cannot be empty' }),
       eircode: eircodeValidator,
+      phone: phoneValidator,
       maritalStatus: maritalStatusSchema,
       spouse: updateSpouseSchema.optional(),
     })

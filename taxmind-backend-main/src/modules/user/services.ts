@@ -2411,6 +2411,7 @@ export const updateProfile = serviceHandler(updateProfileSchema, async (req, res
     ppsNo,
     address,
     eircode,
+    phone,
     maritalStatus: currentMaritalStatus,
     spouse,
   } = req.body;
@@ -2420,6 +2421,7 @@ export const updateProfile = serviceHandler(updateProfileSchema, async (req, res
   // Generate trigram hashes for user data
   const ppsNumberTrigramHashes = hashTrigrams(ppsNo);
   const nameTrigramHashes = hashTrigrams(name.toLowerCase());
+  const phoneTrigramHashes = hashTrigrams(phone);
 
   // Check if user PPS number conflicts with another user using exact matching
   const ppsConflict = await db.query.users.findFirst({
@@ -2437,6 +2439,24 @@ export const updateProfile = serviceHandler(updateProfileSchema, async (req, res
   });
   if (ppsConflict) {
     throw new ApiError('There is already an account with the provided PPS Number.', 400);
+  }
+
+  // Check if user phone conflicts with another user using exact matching
+  const phoneConflict = await db.query.users.findFirst({
+    where: and(
+      sql`${models.users.phoneTrigramHashes} @> ARRAY[${sql.join(
+        phoneTrigramHashes.map((h) => sql`${h}`),
+        sql`, `
+      )}]::text[] AND ${models.users.phoneTrigramHashes} <@ ARRAY[${sql.join(
+        phoneTrigramHashes.map((h) => sql`${h}`),
+        sql`, `
+      )}]::text[]`,
+      not(eq(models.users.id, user.id)),
+      isNull(models.users.deletedAt)
+    ),
+  });
+  if (phoneConflict) {
+    throw new ApiError('There is already an account with the provided phone number.', 400);
   }
 
   let existingSpouse = null;
@@ -2487,6 +2507,8 @@ export const updateProfile = serviceHandler(updateProfileSchema, async (req, res
         ppsNumber: ppsNo,
         address,
         eircode,
+        phone,
+        phoneTrigramHashes,
         maritalStatus: currentMaritalStatus,
         parentId:
           (currentMaritalStatus != user.maritalStatus &&
