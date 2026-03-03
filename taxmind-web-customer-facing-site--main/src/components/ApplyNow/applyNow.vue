@@ -304,7 +304,7 @@
                             </v-flex>
                           </v-layout>
                         </v-flex>
-                        <v-flex xs12 v-if="maritalstatus === 'married'">
+                        <v-flex xs12 v-if="maritalstatus === 'married' || maritalstatus === 'civil_partnership'">
                           <v-layout wrap justify-center pt-5>
                             <v-flex xs12>
                               <v-divider></v-divider>
@@ -818,7 +818,7 @@ export default {
       val && setTimeout(() => (this.activePicker = "DATE"));
     },
     maritalstatus(val) {
-      if (val === "married") {
+      if (val === "married" || val === "civil_partnership") {
         this.showSpouseDetailsDialog = true;
       } else if (val === "single") {
         this.clearSpouseDetails();
@@ -1000,70 +1000,73 @@ export default {
         this.$snackbar.showError("Please Provide Marital Status");
         return;
       }
-      if (this.maritalstatus === "married" && !this.spouseDetails.fullName) {
+      if (
+        (this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") &&
+        !this.spouseDetails.fullName
+      ) {
         this.validationErrors.spouseFullName =
           "Please provide spouse full name";
         return;
       }
       if (
-        this.maritalstatus === "married" &&
+        (this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") &&
         !this.validateName(this.spouseDetails.fullName)
       ) {
         this.validationErrors.spouseFullName =
           "Spouse name should contain only letters and spaces";
         return;
       }
-      if (this.maritalstatus === "married" && !this.spouseDetails.email) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && !this.spouseDetails.email) {
         this.validationErrors.spouseEmail = "Please provide spouse email";
         return;
       }
       // Validate spouse email format
-      if (this.maritalstatus === "married" && this.spouseDetails.email) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && this.spouseDetails.email) {
         if (!emailRegex.test(this.spouseDetails.email)) {
           this.validationErrors.spouseEmail =
             "Please provide a valid spouse email address";
           return;
         }
       }
-      if (this.maritalstatus === "married" && !this.spouseDetails.phone) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && !this.spouseDetails.phone) {
         this.validationErrors.spousePhone =
           "Please provide spouse phone number";
         return;
       }
       // Validate using spouse phone data from component
-      if (this.maritalstatus === "married" && this.spousePhoneData && !this.spousePhoneData.isValid) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && this.spousePhoneData && !this.spousePhoneData.isValid) {
         this.validationErrors.spousePhone = "Please provide a valid spouse phone number";
         return;
       }
       if (
-        this.maritalstatus === "married" &&
+        (this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") &&
         !this.validatePhoneNumber(this.spouseDetails.phone)
       ) {
         this.validationErrors.spousePhone =
           "Please provide a valid spouse phone number";
         return;
       }
-      if (this.maritalstatus === "married" && !this.spouseDetails.dob) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && !this.spouseDetails.dob) {
         this.$snackbar.showError("Please Provide Date Of Birth Of The Spouse");
         return;
       }
-      if (this.maritalstatus === "married" && !this.spouseDetails.profession) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && !this.spouseDetails.profession) {
         this.$snackbar.showError("Please Provide Profession Of The Spouse");
         return;
       }
-      if (this.maritalstatus === "married" && !this.spouseDetails.ppsNumber) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && !this.spouseDetails.ppsNumber) {
         this.$snackbar.showError("Please Provide PPS Number Of The Spouse");
         return;
       }
-      if (this.maritalstatus === "married" && !this.spouseDetails.eircode) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && !this.spouseDetails.eircode) {
         this.$snackbar.showError("Please Provide Ericode Of The Spouse");
         return;
       }
-      if (this.maritalstatus === "married" && !this.spouseDetails.address) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && !this.spouseDetails.address) {
         this.$snackbar.showError("Please Provide Address Of The Spouse");
         return;
       }
-      if (this.maritalstatus === "married" && !this.spouseDetails.password) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && !this.spouseDetails.password) {
         this.$snackbar.showError("Please Provide Password Of The Spouse");
         return;
       }
@@ -1083,8 +1086,8 @@ export default {
         maritalStatus: this.maritalstatus, // Already in correct format from v-select value
       };
 
-      // Add spouse details if married (nested object instead of stringified JSON)
-      if (this.maritalstatus === "married") {
+      // Add spouse details if married or civil partnership (nested object instead of stringified JSON)
+      if (this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") {
         payload.spouse = {
           name: this.spouseDetails.fullName,
           email: this.spouseDetails.email,

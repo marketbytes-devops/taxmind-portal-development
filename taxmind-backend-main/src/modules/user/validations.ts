@@ -327,13 +327,13 @@ export const signUpSchema = z.object({
       maritalStatus: maritalStatusSchema,
       spouse: spouseSchema.optional(),
     })
-    .refine((val) => (val.maritalStatus === 'married' ? !!val.spouse : true), {
-      message: 'Spouse details required for married users',
+    .refine((val) => (val.maritalStatus === 'married' || val.maritalStatus === 'civil_partnership' ? !!val.spouse : true), {
+      message: 'Spouse details required for married or civil partnership users',
       path: ['spouse'],
     })
     .refine(
       (val) => {
-        if (val.maritalStatus === 'married' && val.spouse) {
+        if ((val.maritalStatus === 'married' || val.maritalStatus === 'civil_partnership') && val.spouse) {
           return val.email !== val.spouse.email;
         }
         return true;
@@ -345,7 +345,7 @@ export const signUpSchema = z.object({
     )
     .refine(
       (val) => {
-        if (val.maritalStatus === 'married' && val.spouse) {
+        if ((val.maritalStatus === 'married' || val.maritalStatus === 'civil_partnership') && val.spouse) {
           return val.ppsNo !== val.spouse.ppsNo;
         }
         return true;
@@ -357,7 +357,7 @@ export const signUpSchema = z.object({
     )
     .refine(
       (val) => {
-        if (val.maritalStatus === 'married' && val.spouse) {
+        if ((val.maritalStatus === 'married' || val.maritalStatus === 'civil_partnership') && val.spouse) {
           // Both phone numbers will be transformed to have '+' prefix by the phoneValidator
           // We can directly compare the normalized phone numbers
           return val.phone !== val.spouse.phone;
@@ -708,13 +708,13 @@ export const updateProfileSchema = z.object({
       maritalStatus: maritalStatusSchema,
       spouse: updateSpouseSchema.optional(),
     })
-    .refine((val) => (val.maritalStatus === 'married' ? !!val.spouse : true), {
-      message: 'Spouse details required for married users',
+    .refine((val) => (val.maritalStatus === 'married' || val.maritalStatus === 'civil_partnership' ? !!val.spouse : true), {
+      message: 'Spouse details required for married or civil partnership users',
       path: ['spouse'],
     })
     .refine(
       (val) => {
-        if (val.maritalStatus === 'married' && val.spouse) {
+        if ((val.maritalStatus === 'married' || val.maritalStatus === 'civil_partnership') && val.spouse) {
           return val.ppsNo !== val.spouse.ppsNo;
         }
         return true;

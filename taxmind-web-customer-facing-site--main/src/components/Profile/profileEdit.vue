@@ -152,7 +152,7 @@
                             </v-flex> -->
                           </v-layout>
                         </v-flex>
-                        <v-flex xs12 v-if="maritalstatus === 'married'">
+                        <v-flex xs12 v-if="maritalstatus === 'married' || maritalstatus === 'civil_partnership'">
                           <v-layout wrap justify-center pt-5>
                             <v-flex xs12>
                               <v-divider></v-divider>
@@ -518,11 +518,11 @@ export default {
     },
     showSpouseVerificationButton() {
       // Show verification button if:
-      // 1. User is married
+      // 1. User is married or in a civil partnership
       // 2. Spouse data exists
       // 3. Spouse email or phone is not verified
       if (
-        this.maritalstatus === "married" &&
+        (this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") &&
         this.spouseData &&
         this.spouseDetails.email &&
         this.spouseDetails.phone
@@ -547,7 +547,7 @@ export default {
     },
     maritalstatus(val, oldVal) {
       // Only show dialog if marital status actually changed (not on initial load)
-      if (oldVal !== null && oldVal !== undefined && val === "married") {
+      if (oldVal !== null && oldVal !== undefined && (val === "married" || val === "civil_partnership")) {
         this.showSpouseDetailsDialog = true;
       } else if (val === "single") {
         this.clearSpouseDetails();
@@ -792,12 +792,19 @@ export default {
         this.showSnackBar = true;
         return;
       }
-      if (this.maritalstatus === "married" && !this.spouseDetails.address) {
+      if (
+        (this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") &&
+        !this.spouseDetails.address
+      ) {
         this.msg = "Please Provide Address Of The Spouse";
         this.showSnackBar = true;
         return;
       }
-      if (this.maritalstatus === "married" && !this.isSpouseExists && !this.spouseDetails.password) {
+      if (
+        (this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") &&
+        !this.isSpouseExists &&
+        !this.spouseDetails.password
+      ) {
         this.msg = "Please Provide Password Of The Spouse";
         this.showSnackBar = true;
         return;
@@ -818,8 +825,8 @@ export default {
         maritalStatus: this.maritalstatus, // Already in correct format from v-select value
       };
 
-      // Add spouse details if married (nested object instead of stringified JSON)
-      if (this.maritalstatus === "married") {
+      // Add spouse details if married or civil partnership (nested object instead of stringified JSON)
+      if (this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") {
         payload.spouse = {
           name: this.spouseDetails.fullName,
           email: this.spouseDetails.email,
