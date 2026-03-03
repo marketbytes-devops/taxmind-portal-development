@@ -1,0 +1,165 @@
+@font-face {
+    font-family: poppinsthin;
+    src: url("./../fonts/poppinsthin.woff");
+}
+
+@font-face {
+    font-family: poppinslight;
+    src: url("./../fonts/poppinslight.woff");
+}
+
+@font-face {
+    font-family: poppinsregular;
+    src: url("./../fonts/poppinsregular.woff");
+}
+
+@font-face {
+    font-family: poppinsmedium;
+    src: url("./../fonts/poppinsmedium.woff");
+}
+
+@font-face {
+    font-family: poppinssemibold;
+    src: url("./../fonts/poppinssemibold.woff");
+}
+
+@font-face {
+    font-family: poppinsbold;
+    src: url("./../fonts/poppinsbold.woff");
+}
+
+@font-face {
+    font-family: opensanslight;
+    src: url("./../fonts/opensanslight.woff");
+}
+
+@font-face {
+    font-family: opensansregular;
+    src: url("./../fonts/opensansregular.woff");
+}
+
+@font-face {
+    font-family: opensanssemibold;
+    src: url("./../fonts/opensanssemibold.woff");
+}
+
+@font-face {
+    font-family: opensansbold;
+    src: url("./../fonts/opensansbold.woff");
+}
+
+@font-face {
+    font-family: RobotoBlack;
+    src: url("./../fonts/Roboto-Black.ttf");
+}
+
+@font-face {
+    font-family: RobotoBlackItalic;
+    src: url("./../fonts/Roboto-BlackItalic.ttf");
+}
+
+@font-face {
+    font-family: RobotoBold;
+    src: url("./../fonts/Roboto-Bold.ttf");
+}
+
+@font-face {
+    font-family: RobotoBoldItalic;
+    src: url("./../fonts/Roboto-BoldItalic.ttf");
+}
+
+@font-face {
+    font-family: RobotoItalic;
+    src: url("./../fonts/Roboto-Italic.ttf");
+}
+
+@font-face {
+    font-family: RobotoLight;
+    src: url("./../fonts/Roboto-Light.ttf");
+}
+
+@font-face {
+    font-family: RobotoLightItalic;
+    src: url("./../fonts/Roboto-LightItalic.ttf");
+}
+
+@font-face {
+    font-family: RobotoMedium;
+    src: url("./../fonts/Roboto-Medium.ttf");
+}
+
+@font-face {
+    font-family: RobotoMediumItalic;
+    src: url("./../fonts/Roboto-MediumItalic.ttf");
+}
+
+@font-face {
+    font-family: RobotoRegular;
+    src: url("./../fonts/Roboto-Regular.ttf");
+}
+
+@font-face {
+    font-family: RobotoThin;
+    src: url("./../fonts/Roboto-Thin.ttf");
+}
+
+@font-face {
+    font-family: RobotoThinItalic;
+    src: url("./../fonts/Roboto-ThinItalic.ttf");
+}
+@font-face {
+    font-family: OutfitBlack;
+    src: url("./../fonts/OutfitBlack.ttf");
+}
+@font-face {
+    font-family: OutfitBold;
+    src: url("./../fonts/OutfitBold.ttf");
+}
+@font-face {
+    font-family: OutfitExtraBold;
+    src: url("./../fonts/OutfitExtraBold.ttf");
+}
+@font-face {
+    font-family: OutfitExtraLight;
+    src: url("./../fonts/OutfitExtraLight.ttf");
+}
+@font-face {
+    font-family: OutfitLight;
+    src: url("./../fonts/OutfitLight1.ttf");
+}
+@font-face {
+    font-family: OutfitMedium;
+    src: url("./../fonts/OutfitMedium.ttf");
+}
+@font-face {
+    font-family: OutfitRegular;
+    src: url("./../fonts/OutfitRegular.ttf");
+}
+@font-face {
+    font-family: OutfitSemiBold;
+    src: url("./../fonts/OutfitSemiBold.ttf");
+}
+
+@font-face {
+    font-family: YesevaOne;
+    src: url("./../fonts/YesevaOne-Regular.ttf");
+}
+
+@font-face {
+    font-family: DMSans;
+    src: url("./../fonts/DMSans-Regular.ttf");
+}
+
+@font-face {
+    font-family: FajallaOne;
+    src: url("./../fonts/FjallaOne-Regular.ttf");
+}
+
+/* @font-face {  font-family: poppinsthin; 
+    font-weight: 300;  font-style: normal; 
+    font-display: swap; 
+      unicode-range: U+000-5FF; 
+  src: local( poppinsthin),     
+  url('./../fonts/poppinsthin-webfont.woff') format('woff'),  
+             url('./../fonts/poppinsthin-webfont.woff2') format('woff2');}
+  */

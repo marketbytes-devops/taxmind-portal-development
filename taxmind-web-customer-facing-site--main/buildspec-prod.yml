@@ -1,0 +1,99 @@
+version: 0.2
+
+env:
+  secrets-manager:
+    VUE_APP_API_BASE_URL: "taxmind/prod/web:VUE_APP_API_BASE_URL::"
+    VUE_APP_SOCKET_URL: "taxmind/prod/web:VUE_APP_SOCKET_URL::"
+    VUE_APP_SOCKET_PATH: "taxmind/prod/web:VUE_APP_SOCKET_PATH::"
+    VUE_APP_MEDIA_URL: "taxmind/prod/web:VUE_APP_MEDIA_URL::"
+    VUE_APP_FILE_URL: "taxmind/prod/web:VUE_APP_FILE_URL::"
+    VUE_APP_API_TIMEOUT: "taxmind/prod/web:VUE_APP_API_TIMEOUT::"
+    VUE_APP_API_RETRY_ATTEMPTS: "taxmind/prod/web:VUE_APP_API_RETRY_ATTEMPTS::"
+    VUE_APP_API_RETRY_DELAY: "taxmind/prod/web:VUE_APP_API_RETRY_DELAY::"
+    VUE_APP_USE_NEW_CAROUSEL_API: "taxmind/prod/web:VUE_APP_USE_NEW_CAROUSEL_API::"
+    VUE_APP_USE_NEW_ADVANTAGES_API: "taxmind/prod/web:VUE_APP_USE_NEW_ADVANTAGES_API::"
+    VUE_APP_ENABLE_API_LOGGING: "taxmind/prod/web:VUE_APP_ENABLE_API_LOGGING::"
+    VUE_APP_GOOGLE_ANALYTICS_ID: "taxmind/prod/web:VUE_APP_GOOGLE_ANALYTICS_ID::"
+    VUE_APP_FIREBASE_API_KEY: "taxmind/prod/web:VUE_APP_FIREBASE_API_KEY::"
+    VUE_APP_FIREBASE_AUTH_DOMAIN: "taxmind/prod/web:VUE_APP_FIREBASE_AUTH_DOMAIN::"
+    VUE_APP_FIREBASE_PROJECT_ID: "taxmind/prod/web:VUE_APP_FIREBASE_PROJECT_ID::"
+    VUE_APP_FIREBASE_STORAGE_BUCKET: "taxmind/prod/web:VUE_APP_FIREBASE_STORAGE_BUCKET::"
+    VUE_APP_FIREBASE_MESSAGING_SENDER_ID: "taxmind/prod/web:VUE_APP_FIREBASE_MESSAGING_SENDER_ID::"
+    VUE_APP_FIREBASE_APP_ID: "taxmind/prod/web:VUE_APP_FIREBASE_APP_ID::"
+    VUE_APP_FIREBASE_MEASUREMENT_ID: "taxmind/prod/web:VUE_APP_FIREBASE_MEASUREMENT_ID::"
+    VUE_APP_FIREBASE_VAPID_KEY: "taxmind/prod/web:VUE_APP_FIREBASE_VAPID_KEY::"
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin $ECR_REGISTRY_URL
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - echo "Environment variables for web:"
+      - echo "VUE_APP_API_BASE_URL=$VUE_APP_API_BASE_URL"
+      - echo "VUE_APP_SOCKET_URL=$VUE_APP_SOCKET_URL"
+      - echo "VUE_APP_SOCKET_PATH=$VUE_APP_SOCKET_PATH"
+      - echo "VUE_APP_MEDIA_URL=$VUE_APP_MEDIA_URL"
+      - echo "VUE_APP_FILE_URL=$VUE_APP_FILE_URL"
+      - echo "VUE_APP_API_TIMEOUT=$VUE_APP_API_TIMEOUT"
+      - echo "VUE_APP_API_RETRY_ATTEMPTS=$VUE_APP_API_RETRY_ATTEMPTS"
+      - echo "VUE_APP_API_RETRY_DELAY=$VUE_APP_API_RETRY_DELAY"
+      - echo "VUE_APP_USE_NEW_CAROUSEL_API=$VUE_APP_USE_NEW_CAROUSEL_API"
+      - echo "VUE_APP_USE_NEW_ADVANTAGES_API=$VUE_APP_USE_NEW_ADVANTAGES_API"
+      - echo "VUE_APP_ENABLE_API_LOGGING=$VUE_APP_ENABLE_API_LOGGING"
+      - echo "VUE_APP_GOOGLE_ANALYTICS_ID=$VUE_APP_GOOGLE_ANALYTICS_ID"
+      - echo "VUE_APP_FIREBASE_API_KEY=$VUE_APP_FIREBASE_API_KEY"
+      - echo "VUE_APP_FIREBASE_AUTH_DOMAIN=$VUE_APP_FIREBASE_AUTH_DOMAIN"
+      - echo "VUE_APP_FIREBASE_PROJECT_ID=$VUE_APP_FIREBASE_PROJECT_ID"
+      - echo "VUE_APP_FIREBASE_STORAGE_BUCKET=$VUE_APP_FIREBASE_STORAGE_BUCKET"
+      - echo "VUE_APP_FIREBASE_MESSAGING_SENDER_ID=$VUE_APP_FIREBASE_MESSAGING_SENDER_ID"
+      - echo "VUE_APP_FIREBASE_APP_ID=$VUE_APP_FIREBASE_APP_ID"
+      - echo "VUE_APP_FIREBASE_MEASUREMENT_ID=$VUE_APP_FIREBASE_MEASUREMENT_ID"
+      - echo "VUE_APP_FIREBASE_VAPID_KEY=$VUE_APP_FIREBASE_VAPID_KEY"
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - |
+        docker build \
+          --build-arg VUE_APP_API_BASE_URL="$VUE_APP_API_BASE_URL" \
+          --build-arg VUE_APP_SOCKET_URL="$VUE_APP_SOCKET_URL" \
+          --build-arg VUE_APP_SOCKET_PATH="$VUE_APP_SOCKET_PATH" \
+          --build-arg VUE_APP_MEDIA_URL="$VUE_APP_MEDIA_URL" \
+          --build-arg VUE_APP_FILE_URL="$VUE_APP_FILE_URL" \
+          --build-arg VUE_APP_API_TIMEOUT="$VUE_APP_API_TIMEOUT" \
+          --build-arg VUE_APP_API_RETRY_ATTEMPTS="$VUE_APP_API_RETRY_ATTEMPTS" \
+          --build-arg VUE_APP_API_RETRY_DELAY="$VUE_APP_API_RETRY_DELAY" \
+          --build-arg VUE_APP_USE_NEW_CAROUSEL_API="$VUE_APP_USE_NEW_CAROUSEL_API" \
+          --build-arg VUE_APP_USE_NEW_ADVANTAGES_API="$VUE_APP_USE_NEW_ADVANTAGES_API" \
+          --build-arg VUE_APP_ENABLE_API_LOGGING="$VUE_APP_ENABLE_API_LOGGING" \
+          --build-arg VUE_APP_GOOGLE_ANALYTICS_ID="$VUE_APP_GOOGLE_ANALYTICS_ID" \
+          --build-arg VUE_APP_FIREBASE_API_KEY="$VUE_APP_FIREBASE_API_KEY" \
+          --build-arg VUE_APP_FIREBASE_AUTH_DOMAIN="$VUE_APP_FIREBASE_AUTH_DOMAIN" \
+          --build-arg VUE_APP_FIREBASE_PROJECT_ID="$VUE_APP_FIREBASE_PROJECT_ID" \
+          --build-arg VUE_APP_FIREBASE_STORAGE_BUCKET="$VUE_APP_FIREBASE_STORAGE_BUCKET" \
+          --build-arg VUE_APP_FIREBASE_MESSAGING_SENDER_ID="$VUE_APP_FIREBASE_MESSAGING_SENDER_ID" \
+          --build-arg VUE_APP_FIREBASE_APP_ID="$VUE_APP_FIREBASE_APP_ID" \
+          --build-arg VUE_APP_FIREBASE_MEASUREMENT_ID="$VUE_APP_FIREBASE_MEASUREMENT_ID" \
+          --build-arg VUE_APP_FIREBASE_VAPID_KEY="$VUE_APP_FIREBASE_VAPID_KEY" \
+          -t $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:$IMAGE_TAG \
+          -f ./Dockerfile .
+      - docker tag $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:$IMAGE_TAG $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:latest
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - docker push $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:latest
+      - printf '[{"name":"taxmind-prod-web","imageUri":"%s"}]' $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:latest > imagedefinitions.json
+      - echo "imagedefinitions.json content:"
+      - cat imagedefinitions.json
+
+artifacts:
+  files: 
+    - imagedefinitions.json
+  discard-paths: yes
+  base-directory: .

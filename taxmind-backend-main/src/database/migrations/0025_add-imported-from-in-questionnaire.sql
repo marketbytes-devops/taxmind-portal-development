@@ -1,0 +1,1 @@
+ALTER TABLE "questionnaires" ADD COLUMN "imported_from" integer;

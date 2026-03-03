@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>TaxMind Chat Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        fieldset {
+            margin-bottom: 16px;
+        }
+
+        #messages {
+            border: 1px solid #ccc;
+            padding: 8px;
+            height: 300px;
+            overflow-y: auto;
+            background: #fafafa;
+        }
+
+        .msg {
+            margin: 4px 0;
+            padding: 4px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .out {
+            background: #d1ecf1;
+        }
+
+        .in {
+            background: #e2e3e5;
+        }
+
+        code {
+            background: #eee;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+    <!-- Socket.IO client (adjust version if needed) -->
+    <!-- <script src="https://cdn.socket.io/4.8.1/socket.io.esm.min.js" crossorigin="anonymous"></script> -->
+    <script type="importmap">
+  {
+    "imports": {
+      "socket.io-client": "https://cdn.socket.io/4.8.1/socket.io.esm.min.js"
+    }
+  }
+</script>
+</head>
+
+<body>
+    <h2>Chat Socket Test</h2>
+
+    <fieldset>
+        <legend>Connection</legend>
+        <label>API Base: <input id="apiBase" value="https://dev-api.taxmind.ie/api"></label><br />
+        <label>Socket URL: <input id="socketUrl" value="wss://dev-api.taxmind.ie"></label><br />
+        <label>JWT Token: <input id="jwt" size="80" placeholder="Paste JWT here" /></label><br />
+        <button id="connectBtn">Connect</button>
+        <span id="status" style="margin-left:10px;color:green;"></span>
+    </fieldset>
+
+    <fieldset>
+        <legend>Message</legend>
+        <label>Mode:
+            <select id="chatType">
+                <option value="support">support</option>
+                <option value="application">application</option>
+            </select>
+        </label>
+        <label style="margin-left:10px;">Target User ID (admin only): <input id="targetUserId" size="38"
+                placeholder="Required if admin sending direct/app msg" /></label>
+        <label style="margin-left:10px;">Application ID: <input id="applicationId" size="36"
+                placeholder="For application_based" /></label>
+        <br /><br />
+        <label>Message Type:
+            <select id="messageType">
+                <option value="text">text</option>
+                <option value="image">image</option>
+                <option value="file">file</option>
+                <option value="document">document</option>
+                <option value="audio">audio</option>
+                <option value="video">video</option>
+            </select>
+        </label>
+        <br /><br />
+        <textarea id="content" rows="3" cols="80" placeholder="Text message (required if type=text)"></textarea><br />
+        <input type="file" id="attachment" />
+        <button id="sendBtn">Send</button>
+    </fieldset>
+
+    <fieldset>
+        <legend>Messages</legend>
+        <div id="messages"></div>
+    </fieldset>
+
+    <script type="module">
+        import { io } from "socket.io-client";
+
+        // Defer connection until user clicks Connect (prevents 404s on wrong origin)
+        let socket = null;
+
+
+        let currentUserRole = null; // 'user' or 'admin' if you want to differentiate (you can decode JWT if it includes type)
+        const messagesDiv = document.getElementById('messages');
+
+        function logMessage(m, outbound = false) {
+            const div = document.createElement('div');
+            div.className = 'msg ' + (outbound ? 'out' : 'in');
+            const filePart = m.file ? ` [file key=${m.file.key}]` : '';
+            div.textContent = `[${m.senderType}] ${m.chatType} ${m.messageType}: ${m.content || '(no text)'}${filePart}`;
+            messagesDiv.appendChild(div);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function connect() {
+            const token = document.getElementById('jwt').value.trim();
+            const url = document.getElementById('socketUrl').value.trim();
+            if (!token) return alert('JWT required');
+            if (socket && socket.connected) {
+                socket.disconnect();
+            }
+            socket = io(url, {
+                auth: { token },
+                transports: ['websocket']
+            });
+
+            socket.on('connect', () => {
+                document.getElementById('status').textContent = 'Connected (' + socket.id + ')';
+            });
+
+            socket.on('chat:message', (msg) => {
+                logMessage(msg, false);
+            });
+
+            socket.on('disconnect', () => {
+                document.getElementById('status').textContent = 'Disconnected';
+            });
+        }
+
+        async function uploadChatAttachment(apiBase, token, file) {
+            // 1. Request presigned URL
+            const reqBody = {
+                type: 'chat_attachment',
+                filename: file.name,
+                entityId: null
+            };
+            const res1 = await fetch(apiBase + '/v1/files/request-upload', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify(reqBody)
+            });
+            if (!res1.ok) throw new Error('Failed presign');
+            const data1 = await res1.json();
+            const { key, presignedUrl } = data1.data;
+
+            // 2. Upload to S3
+            const putRes = await fetch(presignedUrl, {
+                method: 'PUT',
+                headers: { 'Content-Type': file.type || 'application/octet-stream' },
+                body: file
+            });
+            if (!putRes.ok) throw new Error('S3 upload failed');
+
+            // 3. Confirm upload
+            const res2 = await fetch(apiBase + '/v1/files/confirm-upload', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({ keys: [key] })
+            });
+            if (!res2.ok) throw new Error('Confirm failed');
+            const data2 = await res2.json();
+            const fileResult = data2.data.results.find(r => r.key === key && r.status === 'active');
+            if (!fileResult) throw new Error('File not active after confirm');
+            return fileResult.fileId;
+        }
+
+        async function sendMessage() {
+            if (!socket || !socket.connected) return alert('Not connected');
+            const apiBase = document.getElementById('apiBase').value.trim();
+            const token = document.getElementById('jwt').value.trim();
+            const chatType = document.getElementById('chatType').value;
+            const messageType = document.getElementById('messageType').value;
+            const content = document.getElementById('content').value.trim();
+            const applicationId = document.getElementById('applicationId').value.trim() || undefined;
+            const targetUserId = document.getElementById('targetUserId').value.trim() || undefined;
+            const fileInput = document.getElementById('attachment');
+            let fileId;
+
+            if (messageType === 'text' && !content) {
+                return alert('Content required for text message');
+            }
+            if (chatType === 'application_based' && !applicationId) {
+                return alert('applicationId required');
+            }
+
+            if (messageType !== 'text') {
+                const file = fileInput.files[0];
+                if (!file) return alert('Select a file for non-text message');
+                try {
+                    fileId = await uploadChatAttachment(apiBase, token, file);
+                } catch (err) {
+                    console.error(err);
+                    return alert('Attachment upload failed: ' + err.message);
+                }
+            }
+
+            socket.emit('chat:send', {
+                chatType,
+                content: messageType === 'text' ? content : '',
+                messageType,
+                applicationId,
+                fileId,
+                userId: targetUserId // only used if admin sending or initiating direct
+            }, (ack) => {
+                if (!ack) return;
+                if (ack.success) {
+                    logMessage(ack.message, true);
+                } else {
+                    alert('Send failed: ' + ack.error);
+                }
+            });
+        }
+
+        document.getElementById('connectBtn').addEventListener('click', connect);
+        document.getElementById('sendBtn').addEventListener('click', sendMessage);
+    </script>
+</body>
+
+</html>

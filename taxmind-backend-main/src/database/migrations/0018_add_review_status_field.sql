@@ -1,0 +1,2 @@
+CREATE TYPE "public"."application_review_statuses" AS ENUM('pending', 'approved', 'rejected');--> statement-breakpoint
+ALTER TABLE "application_reviews" ADD COLUMN "status" "application_review_statuses" DEFAULT 'pending' NOT NULL;

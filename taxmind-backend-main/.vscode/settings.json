@@ -1,0 +1,15 @@
+{
+  "files.associations": {
+    "*.env*": "dotenv"
+  },
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+    "typescript": true,
+    "dotenv": false
+  },
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "prettier.configPath": ".prettierrc"
+}

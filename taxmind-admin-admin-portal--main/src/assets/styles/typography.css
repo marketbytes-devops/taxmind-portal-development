@@ -1,0 +1,56 @@
+/* Common typography styles */
+
+.Head1 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+
+.Head2 {
+  font-size: 16px;
+  font-weight: 600;
+}
+.Head3 {
+  font-size: 18px;
+  font-weight: 500;
+}
+.Head4 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.subHead1 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.text1 {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.text2 {
+  font-size: 12px;
+  font-weight: 500;
+}
+.text3 {
+  font-size: 18px;
+  font-weight: 400;
+}
+.text4 {
+  font-size: 15px;
+  font-weight: 600;
+}
+.text5 {
+  font-size: 16px;
+  font-weight: 400;
+}
+.text6 {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.buttonText {
+  font-size: 14px;
+  font-weight: 400;
+}

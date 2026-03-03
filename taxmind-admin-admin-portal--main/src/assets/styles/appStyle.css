@@ -1,0 +1,318 @@
+body {
+  margin: 0px !important;
+  padding: 0px !important;
+  background-color: #f1f7ff !important;
+}
+
+.headingChurch {
+  font-family: YesevaOne;
+  font-size: 24px;
+  font-weight: 400;
+  text-transform: capitalize;
+}
+.editbox {
+  font-family: opensanssemibold;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+.card-header {
+  font-family: opensanssemibold;
+  font-size: 20px;
+}
+.btnstyle {
+  font-family: opensansregular;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.churchcardhead {
+  font-family: opensansbold;
+  font-size: 15px;
+  text-transform: uppercase;
+}
+
+.passwordhead {
+  font-family: opensanssemibold;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+.passwordbtn {
+  font-family: opensanssemibold;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+.churchdes {
+  font-family: opensanssemibold;
+  font-size: 17px;
+  text-align: justify;
+  color: black;
+  text-transform: uppercase;
+}
+
+.holymasshdes {
+  font-family: opensansbold;
+  font-size: 17px;
+  text-align: justify;
+  color: black;
+  text-transform: uppercase;
+}
+.addChurch {
+  font-family: opensansregular;
+  font-size: 14px;
+  text-align: justify;
+  color: black !important;
+}
+.forgotpass1 {
+  font-family: opensansregular;
+  font-size: 14px;
+  text-align: center;
+  color: black !important;
+}
+
+.graph {
+  font-family: opensansregular;
+  font-size: 17px;
+  text-align: justify;
+  color: black !important;
+}
+.forgotpass {
+  font-family: opensansregular;
+  font-size: 20px;
+  text-align: center;
+  color: black !important;
+}
+
+.text-des {
+  font-family: opensansregular;
+  font-size: 12px;
+  text-align: justify;
+  color: black !important;
+}
+
+.live-des {
+  font-family: opensansregular;
+  font-size: 14px;
+  text-align: justify;
+  color: black !important;
+}
+
+.texts-des {
+  font-family: opensanssemibold;
+  font-size: 18px;
+  font-weight: 400;
+  color: black !important;
+}
+
+.dashbhead {
+  font-family: opensanssemibold;
+  font-size: 20px;
+}
+
+.custom-card {
+  padding: 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+.card-header {
+  background-color: #f5f5f5;
+  padding: 0px;
+
+  border-bottom: 1px solid #e0e0e0;
+  font-family: opensansregular;
+}
+
+.centered-text {
+  text-align: center;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+  background-color: white;
+  opacity: 0.8;
+  border-radius: 4px;
+}
+.v-data-table-header {
+  color: white;
+}
+
+.v-data-table .v-data-table-header tr th {
+  text-align: left !important; /* Ensure text alignment */
+
+  color: black !important;
+  font-family: opensansbold;
+  font-size: 14px !important;
+  text-transform: uppercase;
+  padding: 12px !important;
+}
+
+.v-data-table tr td {
+  font-size: 12px !important;
+  color: black;
+  font-family: opensansregular;
+}
+
+.v-data-table .v-data-table__wrapper {
+  overflow-x: auto; /* Enable horizontal scrolling if content overflows */
+}
+
+.v-data-table .v-data-table-header th {
+  min-width: 50px; /* Minimum width for columns */
+  max-width: 300px; /* Maximum width to prevent overflow */
+  text-align: left !important; /* Align text to the left */
+}
+
+.v-data-table th {
+  white-space: nowrap; /* Prevent wrapping */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Add ellipsis for overflowing text */
+}
+
+#virtual-scroll-table {
+  max-width: 100%;
+  overflow: auto;
+}
+
+.label {
+  font-family: opensansregular;
+  font-size: 15px;
+  color: black;
+}
+
+.label1 {
+  font-family: opensansregular;
+  font-size: 14px;
+  color: black;
+}
+
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+
+a {
+  text-decoration: none !important;
+  cursor: pointer !important;
+  color: #000000 !important;
+}
+
+/* width */
+
+::-webkit-scrollbar {
+  width: 7px !important;
+  height: 8px !important;
+}
+
+/* Track */
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 2px grey !important;
+  background: #043a82 !important;
+  border-radius: 5px !important;
+}
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+  /* background: #919191 !important; */
+  background: rgb(235, 236, 238) !important;
+  border-radius: 5px !important;
+}
+
+/* Chrome, Safari, Edge, Opera */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* .v-list-item {
+    min-height: 25px !important;
+    padding: 0px !important;
+  }
+  .v-list-item__content {
+    padding: 0px !important;
+  } */
+
+.v-list {
+  padding: 0px !important;
+}
+
+.v-btn--outlined {
+  background-color: transparent !important;
+}
+
+.transparentBtn {
+  background-color: transparent !important;
+}
+
+.analyticsSelector {
+  background-color: #f5f7fc;
+}
+
+@media only screen and (min-device-width: 767px) {
+  .fixedSidebar {
+    /* position: fixed; */
+    position: -webkit-sticky;
+    /* Safari */
+    position: sticky;
+    top: 50;
+  }
+}
+
+@media only screen and (min-device-width: 360px) and (max-device-width: 640px) {
+  .fixedSidebar {
+    display: none !important;
+  }
+}
+/* width */
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+/* Track */
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+  background: #242320;
+}
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1b1b18;
+}
+
+.v-btn {
+  text-transform: none !important;
+}
+
+.text-field {
+  font-size: 14px !important;
+  font-family: opensansregular !important;
+  color: black !important;
+}
+/* NEW */
+.carousalhead {
+  font-family: DMSans;
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.carousaladdedit {
+  font-family: DMSans;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.carousalbtnstyle {
+  font-family: DMSans;
+  font-weight: 600;
+  text-transform: uppercase;
+}

@@ -1,0 +1,94 @@
+name: Deploy Dev
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy to Dev EC2
+    runs-on: ubuntu-latest
+
+    env:
+      NODE_ENV: development
+      # expecting a secret named DEV_HOST, DEV_USER, DEV_SSH_KEY, and DEV_PATH
+      REMOTE_PATH: ${{ secrets.DEV_PATH }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.18.0'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Write Firebase service account
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DEV }}
+        run: |
+          if [ -n "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            mkdir -p src/config
+            echo "$FIREBASE_SERVICE_ACCOUNT" > src/config/taxmind-c5d6c-firebase-adminsdk-fbsvc-b896771a70.json
+            echo "Firebase service account file written.";
+          else
+            echo "FIREBASE_SERVICE_ACCOUNT not set; relying on runtime env fallback.";
+          fi
+
+      - name: Build
+        run: npm run build
+
+      - name: Prepare artifact list
+        id: files
+        run: |
+          echo 'FILES=dist docs package.json package-lock.json ecosystem.config.js' >> $GITHUB_OUTPUT
+
+      - name: Add development env file
+        env:
+          ENV_DEVELOPMENT: ${{ secrets.ENV_DEVELOPMENT }}
+        run: |
+          if [ -n "$ENV_DEVELOPMENT" ]; then
+            echo "$ENV_DEVELOPMENT" > .env.development
+            echo "Created .env.development from secret."
+          else
+            echo "ENV_DEVELOPMENT secret not set; skipping creation.";
+          fi
+
+      - name: Upload artifact (optional debug)
+        if: ${{ false }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-dist
+          path: |
+            dist
+            docs
+            package.json
+            package-lock.json
+            ecosystem.config.js
+            .env.development
+
+      - name: Transfer files to server
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avzr --delete --include='dist/***' --include='docs/***' --include='package.json' --include='package-lock.json' --include='ecosystem.config.js' --include='.env.development' --exclude='*'
+          path: ./
+          remote_path: ${{ secrets.DEV_PATH }}/
+          remote_host: ${{ secrets.DEV_HOST }}
+          remote_user: ${{ secrets.DEV_USER }}
+          remote_key: ${{ secrets.DEV_SSH_KEY }}
+
+      - name: SSH to server, Install production deps & restart (PM2)
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.DEV_HOST }}
+          key: ${{ secrets.DEV_SSH_KEY }}
+          username: ${{ secrets.DEV_USER }}
+          port: 22
+          command_timeout: 30m
+          script: |
+            pwd; ./start.sh

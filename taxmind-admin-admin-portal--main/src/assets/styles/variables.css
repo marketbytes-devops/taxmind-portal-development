@@ -1,0 +1,51 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
+
+html,
+body,
+.v-application,
+.v-application * {
+  font-family: "DM Sans", sans-serif !important;
+}
+
+html,
+body,
+.v-application {
+  background-color: #f1f7ff !important;
+}
+.selected-card {
+  background-color: var(--v-backgroundOne-base) !important;
+}
+
+.card-outline {
+  border: 1px solid var(--v-cardBorder-base) !important;
+  background-color: var(--v-backgroundTwo-base) !important;
+  border-radius: 10px !important;
+}
+
+.card-tile {
+  background-color: var(--v-backgroundOne-base) !important;
+  border-radius: 10px !important;
+}
+.grey-btn {
+  border-width: 0px;         /* No visible border by default */
+  border-style: solid;
+  border-color: #5F5F5F;     /* Border color set */
+  color: #5F5F5F;            /* Text & icon color */
+}
+
+.figma-request-btn {
+  width: 100px !important;
+  height: 40px !important;
+  background: #1a73e9 !important;
+  border-radius: 4px !important;
+  border: none !important;
+  font-family: "DM Sans", sans-serif !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  line-height: 18px !important;
+  color: #ffffff !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  box-shadow: none !important;
+}

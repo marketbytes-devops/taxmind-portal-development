@@ -1,0 +1,37 @@
+version: 0.2
+env:
+  secrets-manager:
+    FIREBASE_SERVICE_ACCOUNT: taxmind/firebase-service-account-prod
+
+phases:
+  pre_build:
+    commands:
+      - echo "Logging in to Amazon ECR..."
+      - aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin $ECR_REGISTRY_URL
+      
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+
+  build:
+    commands:
+      - echo "Build started on $(date)"
+      - echo "Building the Docker image..."
+      # Pass secret as build-arg
+      - docker build --build-arg FIREBASE_SERVICE_ACCOUNT="$FIREBASE_SERVICE_ACCOUNT" -t $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:$IMAGE_TAG -f ./Dockerfile .
+      - docker tag $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:$IMAGE_TAG $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:latest
+
+  post_build:
+    commands:
+      - echo "Build completed on $(date)"
+      - echo "Pushing the Docker images..."
+      - docker push $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - docker push $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:latest
+      - echo "Writing imagedefinitions.json..."
+      - printf '[{"name":"taxmind-prod-api","imageUri":"%s"}]' $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:latest > imagedefinitions.json
+      - echo "imagedefinitions.json contents:"
+      - cat imagedefinitions.json
+
+artifacts:
+  files:
+    - imagedefinitions.json
+  discard-paths: yes

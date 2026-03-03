@@ -1,0 +1,1 @@
+ALTER TABLE "questionnaire_responses" ADD COLUMN "completed_categories" text[] DEFAULT '{}' NOT NULL;

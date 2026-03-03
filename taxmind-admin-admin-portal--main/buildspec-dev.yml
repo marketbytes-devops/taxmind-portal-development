@@ -1,0 +1,82 @@
+version: 0.2
+
+env:
+  secrets-manager:
+    VUE_APP_API_BASE_URL: "taxmind/dev/admin:VUE_APP_API_BASE_URL::"
+    VUE_APP_TOKEN_HEADER: "taxmind/dev/admin:VUE_APP_TOKEN_HEADER::"
+    VUE_APP_SOCKET_URL: "taxmind/dev/admin:VUE_APP_SOCKET_URL::"
+    VUE_APP_WHATSAPP_PHONE_NUMBER_ID: "taxmind/dev/admin:VUE_APP_WHATSAPP_PHONE_NUMBER_ID::"
+    VUE_APP_WHATSAPP_ACCESS_TOKEN: "taxmind/dev/admin:VUE_APP_WHATSAPP_ACCESS_TOKEN::"
+    ECR_REGISTRY_URL: "taxmind/dev/admin:ECR_REGISTRY_URL::"
+    IMAGE_REPO_NAME: "taxmind/dev/admin:IMAGE_REPO_NAME::"
+    VUE_APP_FIREBASE_API_KEY: "taxmind/dev/admin:VUE_APP_FIREBASE_API_KEY::"
+    VUE_APP_FIREBASE_AUTH_DOMAIN: "taxmind/dev/admin:VUE_APP_FIREBASE_AUTH_DOMAIN::"
+    VUE_APP_FIREBASE_PROJECT_ID: "taxmind/dev/admin:VUE_APP_FIREBASE_PROJECT_ID::"
+    VUE_APP_FIREBASE_STORAGE_BUCKET: "taxmind/dev/admin:VUE_APP_FIREBASE_STORAGE_BUCKET::"
+    VUE_APP_FIREBASE_MESSAGING_SENDER_ID: "taxmind/dev/admin:VUE_APP_FIREBASE_MESSAGING_SENDER_ID::"
+    VUE_APP_FIREBASE_APP_ID: "taxmind/dev/admin:VUE_APP_FIREBASE_APP_ID::"
+    VUE_APP_FIREBASE_MEASUREMENT_ID: "taxmind/dev/admin:VUE_APP_FIREBASE_MEASUREMENT_ID::"
+    VUE_APP_FIREBASE_VAPID_KEY: "taxmind/dev/admin:VUE_APP_FIREBASE_VAPID_KEY::"
+    
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin $ECR_REGISTRY_URL
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - echo "Environment variables:"
+      - echo "VUE_APP_API_BASE_URL=$VUE_APP_API_BASE_URL"
+      - echo "VUE_APP_SOCKET_URL=$VUE_APP_SOCKET_URL"
+      - echo "VUE_APP_TOKEN_HEADER=$VUE_APP_TOKEN_HEADER"
+      - echo "VUE_APP_WHATSAPP_PHONE_NUMBER_ID=$VUE_APP_WHATSAPP_PHONE_NUMBER_ID"
+      - echo "IMAGE_REPO_NAME=$IMAGE_REPO_NAME"
+      - echo "VUE_APP_WHATSAPP_ACCESS_TOKEN=$(echo $VUE_APP_WHATSAPP_ACCESS_TOKEN | cut -c1-10)..."  # FIXED: Use cut instead of string slicing
+      - echo "VUE_APP_FIREBASE_API_KEY=$VUE_APP_FIREBASE_API_KEY"
+      - echo "VUE_APP_FIREBASE_AUTH_DOMAIN=$VUE_APP_FIREBASE_AUTH_DOMAIN"
+      - echo "VUE_APP_FIREBASE_PROJECT_ID=$VUE_APP_FIREBASE_PROJECT_ID"
+      - echo "VUE_APP_FIREBASE_STORAGE_BUCKET=$VUE_APP_FIREBASE_STORAGE_BUCKET"
+      - echo "VUE_APP_FIREBASE_MESSAGING_SENDER_ID=$VUE_APP_FIREBASE_MESSAGING_SENDER_ID"
+      - echo "VUE_APP_FIREBASE_APP_ID=$VUE_APP_FIREBASE_APP_ID"
+      - echo "VUE_APP_FIREBASE_MEASUREMENT_ID=$VUE_APP_FIREBASE_MEASUREMENT_ID"
+      - echo "VUE_APP_FIREBASE_VAPID_KEY=$VUE_APP_FIREBASE_VAPID_KEY"
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - |
+        docker build \
+          --build-arg VUE_APP_API_BASE_URL="$VUE_APP_API_BASE_URL" \
+          --build-arg VUE_APP_TOKEN_HEADER="$VUE_APP_TOKEN_HEADER" \
+          --build-arg VUE_APP_SOCKET_URL="$VUE_APP_SOCKET_URL" \
+          --build-arg VUE_APP_WHATSAPP_PHONE_NUMBER_ID="$VUE_APP_WHATSAPP_PHONE_NUMBER_ID" \
+          --build-arg VUE_APP_WHATSAPP_ACCESS_TOKEN="$VUE_APP_WHATSAPP_ACCESS_TOKEN" \
+          --build-arg IMAGE_REPO_NAME="$IMAGE_REPO_NAME" \
+          --build-arg VUE_APP_FIREBASE_API_KEY="$VUE_APP_FIREBASE_API_KEY" \
+          --build-arg VUE_APP_FIREBASE_AUTH_DOMAIN="$VUE_APP_FIREBASE_AUTH_DOMAIN" \
+          --build-arg VUE_APP_FIREBASE_PROJECT_ID="$VUE_APP_FIREBASE_PROJECT_ID" \
+          --build-arg VUE_APP_FIREBASE_STORAGE_BUCKET="$VUE_APP_FIREBASE_STORAGE_BUCKET" \
+          --build-arg VUE_APP_FIREBASE_MESSAGING_SENDER_ID="$VUE_APP_FIREBASE_MESSAGING_SENDER_ID" \
+          --build-arg VUE_APP_FIREBASE_APP_ID="$VUE_APP_FIREBASE_APP_ID" \
+          --build-arg VUE_APP_FIREBASE_MEASUREMENT_ID="$VUE_APP_FIREBASE_MEASUREMENT_ID" \
+          --build-arg VUE_APP_FIREBASE_VAPID_KEY="$VUE_APP_FIREBASE_VAPID_KEY" \
+          -t $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:$IMAGE_TAG \
+          -f ./Dockerfile .
+      - docker tag $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:$IMAGE_TAG $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:latest
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - docker push $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:latest
+      - printf '[{"name":"taxmind-dev-admin","imageUri":"%s"}]' $ECR_REGISTRY_URL/$IMAGE_REPO_NAME:$IMAGE_TAG > imagedefinitions.json
+      - echo "imagedefinitions.json content:"
+      - cat imagedefinitions.json
+
+artifacts:
+  files: 
+    - imagedefinitions.json
+  discard-paths: yes
+  base-directory: .

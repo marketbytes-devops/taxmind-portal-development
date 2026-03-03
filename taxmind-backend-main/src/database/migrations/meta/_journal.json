@@ -1,0 +1,300 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1754902564757,
+      "tag": "0000_init",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1755595823383,
+      "tag": "0001_update_user_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1755776610899,
+      "tag": "0002_greedy_morbius",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1755838372798,
+      "tag": "0003_skinny_lucky_pierre",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1756710753853,
+      "tag": "0004_update_application_model",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1756727629472,
+      "tag": "0005_add_hashedkey_field_in_files_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1756785775892,
+      "tag": "0006_update_files_model",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1756791081366,
+      "tag": "0007_update_questions_model",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1756805966323,
+      "tag": "0008_update_application_status_enum",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1756963845436,
+      "tag": "0009_update_applications_model",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1756964603828,
+      "tag": "0010_add_tax_return_document",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1756994973847,
+      "tag": "0011_update_offline_payment_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1756995232982,
+      "tag": "0012_update_offline_payment_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1757743939611,
+      "tag": "0013_add_application_id_reference_in_chat_model",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1757771492375,
+      "tag": "0014_update_admin_reference_in_admin_read_chats_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1757772507977,
+      "tag": "0015_add_new_chat_types",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1757772618759,
+      "tag": "0016_remove_old_chat_types",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1757866215923,
+      "tag": "0017_update_payments_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1758625027280,
+      "tag": "0018_add_review_status_field",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1758775199480,
+      "tag": "0019_datatype_change_in_site_config",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1759134111755,
+      "tag": "0020_create_agent_activation_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1759150794562,
+      "tag": "0021_remove_agent_activation_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1759152943420,
+      "tag": "0022_added_agent_activation_with_encryption",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1759210180038,
+      "tag": "0023_update_application_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1759210676925,
+      "tag": "0024_update_application_table2",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1760328459259,
+      "tag": "0025_add-imported-from-in-questionnaire",
+      "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1760339053163,
+      "tag": "0026_add_whatsapp_chat_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1760594942480,
+      "tag": "0027_removed_application_id_unique_constraint_from_payments",
+      "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1760596477141,
+      "tag": "0028_added_unique_constraint_of_application_id_in_payments",
+      "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1760604583101,
+      "tag": "0029_added_hashed_name_in_users",
+      "breakpoints": true
+    },
+    {
+      "idx": 30,
+      "version": "7",
+      "when": 1760608424194,
+      "tag": "0030_add_on_delete_cascade_on_user_reference",
+      "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "7",
+      "when": 1761108769819,
+      "tag": "0031_add_hashed_application_no_field",
+      "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "7",
+      "when": 1761544982940,
+      "tag": "0032_add_last_reminder_sent_at_field",
+      "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "7",
+      "when": 1762756652793,
+      "tag": "0033_add_ondelete_cascade_support",
+      "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "7",
+      "when": 1762761934974,
+      "tag": "0034_add_deleted_at_field",
+      "breakpoints": true
+    },
+    {
+      "idx": 35,
+      "version": "7",
+      "when": 1762931156433,
+      "tag": "0035_add_trigram_hash_for_partial_search_support",
+      "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "7",
+      "when": 1762944845573,
+      "tag": "0036_add_application_no_trigram_hash_field",
+      "breakpoints": true
+    },
+    {
+      "idx": 37,
+      "version": "7",
+      "when": 1763012084357,
+      "tag": "0037_add_completed_categories_table",
+      "breakpoints": true
+    },
+    {
+      "idx": 38,
+      "version": "7",
+      "when": 1765868710196,
+      "tag": "0038_add_is_agent_activation_request_sent_column_in_user",
+      "breakpoints": true
+    },
+    {
+      "idx": 39,
+      "version": "7",
+      "when": 1765884095838,
+      "tag": "0039_add_flat_fee_in_application",
+      "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "7",
+      "when": 1768546376256,
+      "tag": "0040_add_admin_notifications",
+      "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "7",
+      "when": 1769151122907,
+      "tag": "0041_add_reminder_count_in_application_users",
+      "breakpoints": true
+    }
+  ]
+}

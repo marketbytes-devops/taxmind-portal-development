@@ -1,0 +1,164 @@
+<template>
+  <div>
+    <ServerError v-if="ServerError" />
+    <vue-element-loading :active="appLoading" spinner="bar-fade-scale" color="#1A73E9" size="60" is-full-screen />
+
+    <v-container>
+      <v-row justify="center">
+        <v-col cols="12" md="10">
+          <h1 class="page-title">Profile Edit</h1>
+
+          <v-form ref="form">
+            <v-row>
+              <v-col cols="12" md="4">
+                <v-text-field v-model="profileData.fullName" label="Full name" :error-messages="validationErrors.fullName" />
+              </v-col>
+
+              <v-col cols="12" md="4">
+                <v-text-field v-model="profileData.email" label="Email" disabled :error-messages="validationErrors.email" />
+              </v-col>
+
+              <v-col cols="12" md="4">
+                <v-text-field v-model="profileData.phone" label="Phone" disabled />
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="12" md="4">
+                <v-text-field v-model="profileData.ppsNumber" label="PPS Number" :error-messages="validationErrors.ppsNumber" />
+              </v-col>
+              <v-col cols="12" md="4">
+                <v-text-field v-model="profileData.eircode" label="Eircode" :error-messages="validationErrors.eircode" />
+              </v-col>
+              <v-col cols="12" md="4">
+                <v-select v-model="profileData.maritalStatus" :items="maritalstatuslist" label="Marital status" />
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="12" class="text-right">
+                <v-btn color="primary" @click="verifyeditInput">Save Changes</v-btn>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
+</template>
+
+<script>
+import { ApiMigrationMixin } from "@/utils/apiMigration";
+
+export default {
+  name: "ProfileEdit",
+  mixins: [ApiMigrationMixin],
+  data() {
+    return {
+      ServerError: false,
+      appLoading: false,
+      maritalstatuslist: ["Married", "Single"],
+      profileData: {
+        fullName: "",
+        email: "",
+        phone: "",
+        ppsNumber: "",
+        eircode: "",
+        maritalStatus: "Single",
+      },
+      originalMaritalStatus: null,
+      spouseData: null,
+      showSpouseFields: false,
+      showReasonField: false,
+      reason: "",
+      validationErrors: {},
+    };
+  },
+  mounted() {
+    this.getData();
+  },
+  methods: {
+    validatePPS(val) {
+      if (!val) return false;
+      const cleaned = String(val).replace(/\s/g, "").toUpperCase();
+      const ppsPattern = /^(\d{7})([A-Z]{1,2})$/;
+      const match = cleaned.match(ppsPattern);
+      if (!match) return false;
+      const letters = match[2];
+      if (letters.length === 1) return /^[A-Z]$/.test(letters);
+      return /^[A-Z]$/.test(letters[0]) && /^[A-IW]$/.test(letters[1]);
+    },
+    validateEircode(val) {
+      if (!val) return false;
+      const cleaned = String(val).replace(/\s/g, "").toUpperCase();
+      return /^[A-Z0-9]{7}$/.test(cleaned);
+    },
+    async verifyeditInput() {
+      this.validationErrors = {};
+      if (!this.profileData.fullName) this.validationErrors.fullName = "Please provide full name";
+      if (!this.profileData.email) this.validationErrors.email = "Please provide email";
+      if (!this.profileData.ppsNumber) this.validationErrors.ppsNumber = "Please provide PPS";
+      else if (!this.validatePPS(this.profileData.ppsNumber)) this.validationErrors.ppsNumber = "Invalid PPS";
+      if (!this.profileData.eircode) this.validationErrors.eircode = "Please provide eircode";
+      else if (!this.validateEircode(this.profileData.eircode)) this.validationErrors.eircode = "Invalid Eircode";
+
+      if (Object.keys(this.validationErrors).length) return;
+      await this.saveChanges();
+    },
+    async saveChanges() {
+      this.appLoading = true;
+      try {
+        const body = {
+          name: this.profileData.fullName,
+          ppsNo: this.profileData.ppsNumber,
+          eircode: this.profileData.eircode,
+          maritalStatus: (this.profileData.maritalStatus || "").toLowerCase(),
+        };
+        const res = await this.updateData("/users/profile", body);
+        this.appLoading = false;
+        if (res && (res.success || res.status === 200)) this.$snackbar.showApiSuccess(res);
+        else this.$snackbar.showApiError(res);
+        await this.getData();
+      } catch (err) {
+        this.appLoading = false;
+        this.$snackbar.showApiError(err);
+      }
+    },
+    async getData() {
+      try {
+        const res = await this.fetchData("/users/profile");
+        if (res && res.data && res.data.user) {
+          const u = res.data.user;
+          this.profileData.fullName = u.name || "";
+          this.profileData.email = u.email || "";
+          this.profileData.phone = u.phone || "";
+          this.profileData.ppsNumber = u.ppsNumber || "";
+          this.profileData.eircode = u.eircode || "";
+          this.profileData.maritalStatus = u.maritalStatus === "single" ? "Single" : "Married";
+          this.originalMaritalStatus = this.profileData.maritalStatus;
+          if (u.spouseDetails) {
+            this.spouseData = u.spouseDetails;
+          }
+        }
+      } catch (err) {
+        this.ServerError = true;
+        this.$snackbar.showApiError(err);
+      }
+    },
+  },
+};
+</script>
+
+<style scoped>
+.page-title {
+  font-family: FjallaOne, sans-serif;
+  font-weight: 400;
+  font-size: 30px;
+}
+.profsubdata {
+  color: rgba(30, 111, 235, 1);
+  font-family: DMSans, sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+}
+</style>

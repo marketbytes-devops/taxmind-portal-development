@@ -1,0 +1,113 @@
+
+/* new */
+@font-face {
+    font-family: opensanslight;
+    src: url("./../fonts/opensanslight.woff");
+}
+
+@font-face {
+    font-family: DMSans;
+    src: url("./../fonts/DMSans-Regular.ttf");
+}
+
+@font-face {
+    font-family: opensansregular;
+    src: url("./../fonts/opensansregular.woff");
+}
+
+@font-face {
+    font-family: opensanssemibold;
+    src: url("./../fonts/opensanssemibold.woff");
+}
+
+@font-face {
+    font-family: opensansbold;
+    src: url("./../fonts/opensansbold.woff");
+}
+
+@font-face {
+    font-family: YesevaOne;
+    src: url("./../fonts/YesevaOne-Regular.ttf");
+}
+
+/* old */
+@font-face {
+    font-family: interblack;
+    src: url("./../fonts/Inter Desktop/Inter-Black.otf");
+}
+@font-face {
+    font-family: interblackitalic;
+    src: url("./../fonts/Inter Desktop/Inter-BlackItalic.otf");
+}
+@font-face {
+    font-family: interbold;
+    src: url("./../fonts/Inter Desktop/Inter-Bold.otf");
+}
+@font-face {
+    font-family: interbolditalic;
+    src: url("./../fonts/Inter Desktop/Inter-BoldItalic.otf");
+}
+@font-face {
+    font-family: interextrabold;
+    src: url("./../fonts/Inter Desktop/Inter-ExtraBold.otf");
+}
+@font-face {
+    font-family: interextrabolditalic;
+    src: url("./../fonts/Inter Desktop/Inter-ExtraBoldItalic.otf");
+}
+@font-face {
+    font-family: interextralight;
+    src: url("./../fonts/Inter Desktop/Inter-ExtraLight.otf");
+}
+@font-face {
+    font-family: interextralightitalic;
+    src: url("./../fonts/Inter Desktop/Inter-ExtraLightItalic.otf");
+}
+@font-face {
+    font-family: interitalic;
+    src: url("./../fonts/Inter Desktop/Inter-Italic.otf");
+}
+@font-face {
+    font-family: interlight;
+    src: url("./../fonts/Inter Desktop/Inter-Light.otf");
+}
+@font-face {
+    font-family: interlightitalic;
+    src: url("./../fonts/Inter Desktop/Inter-LightItalic.otf");
+}
+@font-face {
+    font-family: intermedium;
+    src: url("./../fonts/Inter Desktop/Inter-Medium.otf");
+}
+@font-face {
+    font-family: intermediumitalic;
+    src: url("./../fonts/Inter Desktop/Inter-MediumItalic.otf");
+}
+@font-face {
+    font-family: interregular;
+    src: url("./../fonts/Inter Desktop/Inter-Regular.otf");
+}
+@font-face {
+    font-family: intersemibold;
+    src: url("./../fonts/Inter Desktop/Inter-SemiBold.otf");
+}
+@font-face {
+    font-family: intersemibolditalic;
+    src: url("./../fonts/Inter Desktop/Inter-SemiBoldItalic.otf");
+}
+@font-face {
+    font-family: interthin;
+    src: url("./../fonts/Inter Desktop/Inter-Thin.otf");
+}
+@font-face {
+    font-family: interthinitalic;
+    src: url("./../fonts/Inter Desktop/Inter-ThinItalic.otf");
+}
+@font-face {
+    font-family: interextralightitalic;
+    src: url("./../fonts/Inter Desktop/Inter-ExtraLightItalic.otf");
+}
+@font-face {
+    font-family: interV;
+    src: url("./../fonts/Inter Desktop/Inter-V.ttf");
+}

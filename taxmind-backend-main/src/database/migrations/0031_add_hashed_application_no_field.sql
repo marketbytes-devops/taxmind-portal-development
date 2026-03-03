@@ -1,0 +1,1 @@
+ALTER TABLE "applications" ADD COLUMN "hashed_application_no" text;

@@ -1,0 +1,14 @@
+node_modules
+npm-debug.log
+.git
+Dockerfile
+.dockerignore
+.gitignore
+.husky
+.prettierignore
+.prettierrc
+dist
+logs
+notes.txt
+README.md
+test.js

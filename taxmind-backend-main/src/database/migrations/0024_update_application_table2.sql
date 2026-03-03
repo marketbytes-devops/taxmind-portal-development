@@ -1,0 +1,1 @@
+ALTER TABLE "applications" ADD COLUMN "payment_status" "payment_statuses" DEFAULT 'pending' NOT NULL;

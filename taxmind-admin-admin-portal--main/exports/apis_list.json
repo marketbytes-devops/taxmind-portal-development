@@ -1,0 +1,919 @@
+﻿[
+    {
+        "folder":  "Admin",
+        "name":  "SignIn",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Admin",
+        "name":  "Lookup",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Admin",
+        "name":  "Profile",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Admin",
+        "name":  "List Admin Users",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Admin",
+        "name":  "Signout",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Admin",
+        "name":  "Refresh Token",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Admin",
+        "name":  "Change Password",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Admin",
+        "name":  "Send Email Verification Code",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Admin",
+        "name":  "Verify Email OTP",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Admin",
+        "name":  "Reset Password",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Admin",
+        "name":  "Update Profile",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Admin",
+        "name":  "Register New User",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Admin",
+        "name":  "Dashboard",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Admin",
+        "name":  "Reports",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "RBAC",
+        "name":  "List Roles",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "RBAC",
+        "name":  "Get Role Details",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "RBAC",
+        "name":  "Create Role",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "RBAC",
+        "name":  "List Modules",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "RBAC",
+        "name":  "Update Role",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "RBAC",
+        "name":  "Delete Role",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "RBAC",
+        "name":  "Get Role Permissions",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Blog",
+        "name":  "List Blogs",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Blog",
+        "name":  "Create New Blog Post",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Blog",
+        "name":  "Update Blog Post",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Blog",
+        "name":  "Delete Blog Post",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Blog",
+        "name":  "Publish Blog Post",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Blog",
+        "name":  "Get Blog Detail",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/1. FAQs Management",
+        "name":  "List All FAQs",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/1. FAQs Management",
+        "name":  "Get Single FAQ",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/1. FAQs Management",
+        "name":  "Create FAQ",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/1. FAQs Management",
+        "name":  "Update FAQ",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/1. FAQs Management",
+        "name":  "Delete FAQ",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/2. Social Media Management",
+        "name":  "List Social Media Links",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/2. Social Media Management",
+        "name":  "Create Social Media Link",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/2. Social Media Management",
+        "name":  "Update Social Media Link",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/2. Social Media Management",
+        "name":  "Delete Social Media Link",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/3. Tax Credits Management",
+        "name":  "List Tax Credits",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/3. Tax Credits Management",
+        "name":  "Get Single Tax Credit",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/3. Tax Credits Management",
+        "name":  "Create Tax Credit",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/3. Tax Credits Management",
+        "name":  "Update Tax Credit",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/3. Tax Credits Management",
+        "name":  "Delete Tax Credit",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/4. Carousel Images Management",
+        "name":  "List Carousel Images",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/4. Carousel Images Management",
+        "name":  "Create Carousel Image",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/4. Carousel Images Management",
+        "name":  "Delete Carousel Image",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/5. Document Templates Management",
+        "name":  "List Document Templates",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/5. Document Templates Management",
+        "name":  "Create Document Template",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/5. Document Templates Management",
+        "name":  "Update Document Template",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/5. Document Templates Management",
+        "name":  "Delete Document Template",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/6. Policies Management",
+        "name":  "List Policies",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/6. Policies Management",
+        "name":  "Create Policy",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/6. Policies Management",
+        "name":  "Update Policy",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/6. Policies Management",
+        "name":  "Delete Policy",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/7. Query Categories Management",
+        "name":  "List Query Categories",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/7. Query Categories Management",
+        "name":  "Create Query Category",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/7. Query Categories Management",
+        "name":  "Update Query Category",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/7. Query Categories Management",
+        "name":  "Delete Query Category",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/8. Document Categories Management",
+        "name":  "List Document Categories",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/8. Document Categories Management",
+        "name":  "Create Document Category",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/8. Document Categories Management",
+        "name":  "Update Document Category",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/8. Document Categories Management",
+        "name":  "Delete Document Category",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/9. User Queries Management (Admin Only)",
+        "name":  "List User Queries",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/9. User Queries Management (Admin Only)",
+        "name":  "Get Single User Query",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/10. Site Configuration",
+        "name":  "Get Site Configuration",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Site Content/10. Site Configuration",
+        "name":  "Update Site Configuration",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "User",
+        "name":  "Auth - Sign Up",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "User",
+        "name":  "Auth - Sign In",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "User",
+        "name":  "Verification - Send Email OTP",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "User",
+        "name":  "Verification - Confirm Email OTP",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "User",
+        "name":  "Verification - Send Phone OTP",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "User",
+        "name":  "Verification - Confirm Phone OTP (Login issues tokens)",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "User",
+        "name":  "Auth - Sign Out",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "User",
+        "name":  "Auth - Refresh Access Token",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "User",
+        "name":  "Password - Change (Auth)",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "User",
+        "name":  "Password - Reset (Forgot)",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "User",
+        "name":  "Profile - Get (Auth)",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "User",
+        "name":  "Admin - Get User Details (Auth: ADMIN)",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "User",
+        "name":  "Spouse - Unbind (Auth)",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "User",
+        "name":  "List Users",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "User",
+        "name":  "Update Agent Activation Status",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "User",
+        "name":  "Delete Account",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "Admin â€¢ List Questionnaires",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "Admin â€¢ Create Questionnaire (taxYear only)",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "Admin â€¢ Get Questionnaire",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "Admin â€¢ Get Questionnaire Response",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "Admin â€¢ Publish Questionnaire",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "Admin â€¢ Delete Questionnaire (draft only)",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "Admin â€¢ List Categories",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "Admin â€¢ Create Category (auto description)",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "Admin â€¢ Update Category",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "Admin â€¢ Delete Category",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "Admin â€¢ List Questions in Category",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "Admin â€¢ Create Question",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "Admin â€¢ Update Question",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "Admin â€¢ Delete Question",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "User â€¢ Create Questionnaire Response",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "User â€¢ Update Questionnaire Response",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "User â€¢ Submit Questionnaire Response",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "User â€¢ Save Answer",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Questionnaire",
+        "name":  "Admin â€¢ List Questionnaire Responses",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Start Application",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "List Applications",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Get Application Step - Questionnaire",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Get Application Step - Documents",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Get Application Step - Agent Activation",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Get Application Step - Review",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Get Application Step - Processing",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Get Application Step - Refund",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Create Application Note (admin)",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "List Application Notes (admin)",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Request Application Documents",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Accept Application Document",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Withdraw Application Document Request",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Reject Application Document",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Mark Document Uploads Completed",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Mark Application Review Completed",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Calculate Final Amount",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Submit Application Amount",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Request Offline Payment",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Approve Offline Payment Request",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Application",
+        "name":  "Reject offline Payment request",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "File",
+        "name":  "Request Upload URL - Blog Image",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "File",
+        "name":  "Request Upload URL - Tax Return Document",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "File",
+        "name":  "Request Upload URL - Application Documents",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "File",
+        "name":  "Request Upload URL - Document Template (file-first)",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "File",
+        "name":  "Request Upload URL - Application Document Direct",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "File",
+        "name":  "Confirm Upload(s)",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "File",
+        "name":  "Get File Metadata by ID",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "File",
+        "name":  "List Files (admin)",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "File",
+        "name":  "Delete File (admin)",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "File",
+        "name":  "Cleanup Orphaned Files (admin)",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    },
+    {
+        "folder":  "Notification",
+        "name":  "Send Test Notification",
+        "method":  "",
+        "endpoint":  null,
+        "description":  null
+    }
+]

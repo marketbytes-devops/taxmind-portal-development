@@ -1,0 +1,14 @@
+node_modules/**
+dist/**
+
+# Environment files - ignore all common dotenv patterns
+.env
+.env.*
+.env.local
+
+# Firebase service worker (auto-generated from template)
+public/firebase-messaging-sw.js
+
+# Ignore all markdown files except README.md
+*.md
+!README.md

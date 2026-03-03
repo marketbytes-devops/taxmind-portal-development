@@ -1,0 +1,13 @@
+node_modules/**
+dist/**
+
+# Environment files
+.env
+.env.*
+.env.example
+
+# Documentation files - ignore all markdown files
+*.md
+
+# Copilot Instructions
+.github/copilot-instructions.md

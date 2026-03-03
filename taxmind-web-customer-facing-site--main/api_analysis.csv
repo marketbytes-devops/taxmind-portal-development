@@ -1,0 +1,77 @@
+API Name,Method,Page/Component Used,Component File
+/v1/user/auth/authenticate,GET,Router Guard,router.js
+/v1/user/auth/verify-refresh-token,GET,Router Guard,router.js
+/v1/user/logout,GET,Store,store.js
+/v1/user/profile/get,GET,App Component,App.vue
+/v1/guest/webpage/get-home,GET,App Footer,Common/AppFooter.vue
+/v1/guest/webpage/get-home,GET,App Header Top,Common/AppHeader0.vue
+/v1/guest/webpage/list-tax-credit,GET,App Header,Common/AppHeader.vue
+/v1/user/profile/get,GET,App Header,Common/AppHeader.vue
+/v1/guest/webpage/get-aboutus,GET,About Us,About/AboutUs.vue
+/v1/user/auth/register,POST,Apply Now Registration,ApplyNow/applyNow.vue
+/v1/user/auth/create-password,POST,Create Password,ApplyNow/createPassword.vue
+/v1/user/forgot-password/send-otp,POST,Forgot Password,ApplyNow/forgotPassword.vue
+/v1/user/forgot-password/verify-otp,POST,Forgot Password,ApplyNow/forgotPassword.vue
+/v1/user/forgot-password/reset-password,POST,Forgot Password,ApplyNow/forgotPassword.vue
+/v1/user/auth/login-verify-password,POST,Login Page,ApplyNow/loginPage.vue
+/v1/user/auth/login-verify-otp,POST,Login Page,ApplyNow/loginPage.vue
+/v1/user/auth/verify-register-otp,POST,OTP Verification,ApplyNow/otpPage.vue
+/v1/user/auth/resend-register-otp,POST,OTP Verification,ApplyNow/otpPage.vue
+/v1/user/application/get-questionnaire,GET,Application Page,Application/ApplicationPage.vue
+/v1/user/application/add-update,POST,Application Page,Application/ApplicationPage.vue
+/v1/user/application/apply,POST,Application Page,Application/ApplicationPage.vue
+/v1/user/application/upload-document,POST,Application Page,Application/ApplicationPage.vue
+/v1/user/profile/get,GET,Application Page,Application/ApplicationPage.vue
+/v1/user/application/list,GET,Application Page,Application/ApplicationPage.vue
+/v1/user/document-category/list,GET,Application Page,Application/ApplicationPage.vue
+/v1/user/application/delete-document,POST,Application Page,Application/ApplicationPage.vue
+/v1/user/application/apply,POST,Application History,Application/ApplicationHistory.vue
+/v1/user/application-review/add-update,POST,Application History,Application/ApplicationHistory.vue
+/v1/user/application/list,GET,Application History,Application/ApplicationHistory.vue
+/v1/user/application/apply,POST,Application Templates,Application/ApplicationTemplates.vue
+/v1/user/document-template/list,GET,Application Templates,Application/ApplicationTemplates.vue
+/v1/guest/blog/list,GET,Blog Page,Blogs/blogPage.vue
+/v1/guest/blog/list,GET,Blog Component,Blogs/blog.vue
+/v1/guest/blog/detail,GET,Blog View,Blogs/blogView.vue
+/v1/guest/query/send,POST,Contact Us,contactUs/contactUs.vue
+/v1/guest/query/list-category,GET,Contact Us,contactUs/contactUs.vue
+/v1/guest/webpage/get-home,GET,Contact Us,contactUs/contactUs.vue
+/v1/guest/webpage/get-policy,GET,Cookies Policy,CookiesPolicy/cookiesPolicy.vue
+/v1/guest/webpage/list-faq,GET,FAQs,FAQs/faqs.vue
+/v1/guest/webpage/get-policy,GET,Fee Structure,FeeStructure/feeStructure.vue
+/v1/guest/webpage/get-home,GET,Landing Page Carousel,LandingPage/carousal.vue
+/v1/guest/webpage/list-faq,GET,Landing Page FAQ,LandingPage/faqSection.vue
+/website/content,GET,Landing Page Home,LandingPage/homePage.vue
+/v1/guest/webpage/get-home,GET,Landing Page Mail Us,LandingPage/mailUs.vue
+/v1/guest/application-review/random-list,GET,Landing Page Reviews,LandingPage/reviewUsers.vue
+/v1/guest/webpage/list-tax-credit,GET,Landing Page Tax Credits,LandingPage/taxCredits.vue
+/v1/guest/webpage/get-policy,GET,Privacy Policy,PrivacyPolicy/privacyPolicy.vue
+/v1/user/profile/change-password,POST,Profile Change Password,Profile/changePassword.vue
+/v1/user/application/apply,POST,Profile Change Password,Profile/changePassword.vue
+/v1/user/application/apply,POST,Profile Claim History,Profile/claimHistory.vue
+/v1/user/application-review/add-update,POST,Profile Claim History,Profile/claimHistory.vue
+/v1/user/application/list,GET,Profile Claim History,Profile/claimHistory.vue
+/v1/user/chat/list,GET,Profile Customer Support,Profile/CustomerSupport.vue
+/v1/user/chat/send,POST,Profile Customer Support,Profile/CustomerSupport.vue
+/v1/user/profile/get,GET,Profile Customer Support,Profile/CustomerSupport.vue
+/v1/user/application/apply,POST,Profile Document Templates,Profile/DocumentTemplates.vue
+/v1/user/document-template/list,GET,Profile Document Templates,Profile/DocumentTemplates.vue
+/v1/user/document-template/list,GET,Profile Privacy Policy,Profile/privacyPolicy.vue
+/v1/user/profile/get,GET,Profile Details,Profile/profileDetails.vue
+/v1/user/profile/edit,POST,Profile Edit,Profile/profileEdit.vue
+/v1/user/profile/get,GET,Profile Edit,Profile/profileEdit.vue
+/v1/user/application/get-questionnaire,GET,Profile Page,Profile/profilePage.vue
+/v1/user/application/add-update,POST,Profile Page,Profile/profilePage.vue
+/v1/user/application/apply,POST,Profile Page,Profile/profilePage.vue
+/v1/user/application/upload-document,POST,Profile Page,Profile/profilePage.vue
+/v1/user/profile/get,GET,Profile Page,Profile/profilePage.vue
+/v1/user/application/list,GET,Profile Page,Profile/profilePage.vue
+/v1/user/document-category/list,GET,Profile Page,Profile/profilePage.vue
+/v1/user/application/apply,POST,Profile Backup Page,Profile/backupProfilePage.vue
+/v1/user/application/upload-document,POST,Profile Backup Page,Profile/backupProfilePage.vue
+/v1/user/profile/get,GET,Profile Backup Page,Profile/backupProfilePage.vue
+/v1/user/application/list,GET,Profile Backup Page,Profile/backupProfilePage.vue
+/v1/user/document-category/list,GET,Profile Backup Page,Profile/backupProfilePage.vue
+/v1/guest/webpage/get-policy,GET,Terms and Conditions,T&C/termsandConditions.vue
+/v1/guest/webpage/tax-credit/{slug},GET,Tax Detailed Page,TaxDetailed/detailedPage.vue
+/api/upload,POST,Apply Now (File Upload),ApplyNow/applyNow.vue

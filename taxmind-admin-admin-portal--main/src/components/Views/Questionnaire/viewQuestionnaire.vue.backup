@@ -1,0 +1,426 @@
+<template><template><template>
+
+  <CreateQuestionaire 
+
+    :mode="'view'"  <CreateQuestionaire   <div style="background-color: #f1f7ff">
+
+  />
+
+</template>    :mode="'view'"    <!-- Error handling -->
+
+
+
+<script>  />    <ServerError v-if="ServerError" />
+
+import CreateQuestionaire from "./createQuestionaire.vue";
+
+</template>
+
+export default {
+
+  name: "ViewQuestionnaire",    <!-- Loading overlay -->
+
+  components: {
+
+    CreateQuestionaire,<script>    <vue-element-loading
+
+  },
+
+};import CreateQuestionaire from "./createQuestionaire.vue";      :active="appLoading"
+
+</script>
+
+      spinner="bar-fade-scale"
+
+<style scoped>
+
+/* View questionnaire specific styles */export default {      color="primary"
+
+.view-questionnaire-container {
+
+  background-color: #f1f7ff;  name: "ViewQuestionnaire",      size="60"
+
+  min-height: 100vh;
+
+}  components: {      is-full-screen
+
+</style>
+    CreateQuestionaire,    />
+
+  },
+
+};    <!-- Snackbar notifications -->
+
+</script>    <v-snackbar v-model="showSnackBar" color="primary" right :timeout="timeout">
+
+      <v-layout wrap justify-center>
+
+<style scoped>        <v-flex text-left class="align-self-center">
+
+/* View questionnaire specific styles */          <span style="color: white">{{ msg }}</span>
+
+.view-questionnaire-container {        </v-flex>
+
+  background-color: #f1f7ff;        <v-flex text-right>
+
+  min-height: 100vh;          <v-btn small :ripple="false" text @click="showSnackBar = false">
+
+}            <v-icon color="white">mdi-close</v-icon>
+
+</style>          </v-btn>
+        </v-flex>
+      </v-layout>
+    </v-snackbar>
+
+    <!-- Main Content -->
+    <v-layout wrap justify-center>
+      <v-flex pt-5 xs11 sm11 md11 lg11 xl9>
+        <!-- View Questionnaire Header Component -->
+        <CreateQuestionnaireHeader
+          :LABELS="LABELS"
+          :mode="'view'"
+          @back="handleBack"
+        />
+        <v-card elevation="0" class="pa-4">
+          <CategoryExpansionPanel
+            :categories="categories"
+            :LABELS="LABELS"
+            :questionnaire-id="questionnaireId"
+            :mode="'view'"
+            @questionAnswered="handleQuestionAnswered"
+          />
+        </v-card>
+      </v-flex>
+    </v-layout>
+
+
+  </div>
+</template>
+
+<script>
+import CreateQuestionaire from "./createQuestionaire.vue";
+
+export default {
+  name: "ViewQuestionnaire",
+  components: {
+    CreateQuestionaire,
+  },
+  data() {
+    return {
+      responses: {}, // Store user responses for read-only view
+      categorie: [
+        {
+          id: "e41b5616-2301-4d37-9f83-b5170b3ef173",
+          name: "Personal Details",
+          description: "Documents and questions related to Personal Details.",
+          sortOrder: 1,
+          questions: [
+            {
+              id: "d09a54af-7600-4f03-83cc-6de01ffa30aa",
+              categoryId: "e41b5616-2301-4d37-9f83-b5170b3ef173",
+              questionText: "What is your marital status?",
+              questionType: "radio",
+              isRequired: true,
+              sortOrder: 1,
+              options: [
+                {
+                  label: "Single",
+                  order: 0,
+                  value: "single",
+                },
+                {
+                  label: "Married",
+                  order: 1,
+                  value: "married",
+                },
+                {
+                  label: "Separated",
+                  order: 2,
+                  value: "separated",
+                },
+              ],
+              isDocumentRequired: false,
+              documentRequiredForValue: null,
+              parentQuestionId: null,
+              showIfParentOptionValue: null,
+              children: [],
+            },
+          ],
+        },
+        {
+          id: "87a757ed-9439-44e4-a1cd-c2783f65438d",
+          name: "Income",
+          description: "Documents and questions related to Income.",
+          sortOrder: 2,
+          icon: null,
+          questions: [
+            {
+              id: "0f260d7c-3f94-4da1-aa25-fcadfe22594b",
+              categoryId: "87a757ed-9439-44e4-a1cd-c2783f65438d",
+              questionText: "What was your gross employment income?",
+              questionType: "text",
+              isRequired: true,
+              sortOrder: 1,
+              options: [
+                {
+                  label: "Yes",
+                  order: 0,
+                  value: "yes",
+                },
+                {
+                  label: "No",
+                  order: 1,
+                  value: "no",
+                },
+              ],
+              isDocumentRequired: false,
+              documentRequiredForValue: null,
+              parentQuestionId: null,
+              showIfParentOptionValue: null,
+              children: [],
+            },
+            {
+              id: "07e263ad-7930-45f9-aebe-28c707c05e83",
+              categoryId: "87a757ed-9439-44e4-a1cd-c2783f65438d",
+              questionText: "Did you have rental income?",
+              questionType: "radio",
+              isRequired: true,
+              sortOrder: 2,
+              options: [
+                {
+                  label: "Yes",
+                  order: 0,
+                  value: "yes",
+                },
+                {
+                  label: "No",
+                  order: 1,
+                  value: "no",
+                },
+              ],
+              isDocumentRequired: false,
+              documentRequiredForValue: null,
+              parentQuestionId: null,
+              showIfParentOptionValue: null,
+              children: [
+                {
+                  id: "2500143e-0373-4660-9c86-5338d07211d9",
+                  categoryId: "87a757ed-9439-44e4-a1cd-c2783f65438d",
+                  questionText: "Enter total rental income for the year",
+                  questionType: "text",
+                  isRequired: true,
+                  sortOrder: 3,
+                  options: null,
+                  isDocumentRequired: false,
+                  documentRequiredForValue: null,
+                  parentQuestionId: "07e263ad-7930-45f9-aebe-28c707c05e83",
+                  showIfParentOptionValue: "yes",
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: "01b5a7ed-1b9d-490e-8e76-dc3a8884df82",
+          name: "Deductions",
+          description: "Documents and questions related to Deductions.",
+          sortOrder: 3,
+          icon: null,
+          questions: [
+            {
+              id: "5f332ddf-bc9a-4381-9328-d89e100d80df",
+              categoryId: "01b5a7ed-1b9d-490e-8e76-dc3a8884df82",
+              questionText: "Did you have qualifying medical expenses?",
+              questionType: "radio",
+              isRequired: true,
+              sortOrder: 1,
+              options: [
+                {
+                  label: "Yes",
+                  order: 0,
+                  value: "yes",
+                },
+                {
+                  label: "No",
+                  order: 1,
+                  value: "no",
+                },
+              ],
+              isDocumentRequired: false,
+              documentRequiredForValue: null,
+              parentQuestionId: null,
+              showIfParentOptionValue: null,
+              children: [
+                {
+                  id: "5ca6037a-dbed-4089-820a-0e756f7495a8",
+                  categoryId: "01b5a7ed-1b9d-490e-8e76-dc3a8884df82",
+                  questionText: "Total medical expenses amount",
+                  questionType: "text",
+                  isRequired: true,
+                  sortOrder: 2,
+                  options: null,
+                  isDocumentRequired: false,
+                  documentRequiredForValue: null,
+                  parentQuestionId: "5f332ddf-bc9a-4381-9328-d89e100d80df",
+                  showIfParentOptionValue: "yes",
+                  children: [],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+  },
+  mounted() {
+    this.initializePage();
+  },
+  watch: {
+    // Watch for route changes to reload categories
+    $route(to, from) {
+      // If the route parameters have changed, reinitialize the page
+      if (to.params.id !== from.params.id || to.path !== from.path) {
+        console.log("🔄 Route changed, reinitializing page");
+        this.initializePage();
+      }
+    },
+  },
+  methods: {
+    initializePage() {
+      // Get questionnaire ID from route params
+      const { id } = this.$route.params;
+
+      console.log("🎯 View Questionnaire Page Initialized");
+      console.log("📊 Route Parameters:", { id });
+
+      if (id) {
+        this.questionnaireId = id;
+        console.log("📋 Questionnaire ID set:", this.questionnaireId);
+        
+        // Load questionnaire details and categories
+        this.loadQuestionnaireDetails();
+        this.loadCategories();
+      } else {
+        console.error("❌ No questionnaire ID provided in route");
+        this.msg = "No questionnaire ID provided";
+        this.showSnackBar = true;
+      }
+    },
+
+    async loadQuestionnaireDetails() {
+      console.log("🔄 Loading questionnaire details...");
+      try {
+        // TODO: Implement questionnaire details API call
+        // const { success, data, message } = await questionnaireApi.getQuestionnaire(this.questionnaireId);
+        
+        // Mock data for now - update labels for view mode
+        this.LABELS = {
+          ...this.LABELS,
+          CREATE_QUESTIONNAIRE_TITLE: `View Questionnaire`,
+          IMPORTED_FROM: `Questionnaire Details`,
+        };
+
+        console.log("✅ Questionnaire details loaded");
+      } catch (error) {
+        console.error("❌ Error loading questionnaire details:", error);
+        this.msg = "Error loading questionnaire details";
+        this.showSnackBar = true;
+      }
+    },
+
+    handleBack() {
+      console.log("🔙 Back button clicked");
+      this.$router.push({ name: "questionnaire" });
+    },
+
+    handleQuestionAnswered(questionId, answer) {
+      console.log("� Question answered:", { questionId, answer });
+      this.responses[questionId] = answer;
+      
+      // TODO: Auto-save responses or implement save logic
+      console.log("💾 Current responses:", this.responses);
+    },
+
+    async loadCategories() {
+      console.log("🔄 Loading categories from API...");
+      this.appLoading = true;
+
+      try {
+        let result;
+
+        if (this.questionnaireId) {
+          console.log(
+            "� Loading categories for questionnaire:",
+            this.questionnaireId
+          );
+          result = await questionnaireApi.listCategories(this.questionnaireId);
+        } else {
+          console.log("🌍 Loading all global categories");
+          result = await questionnaireApi.listAllCategories();
+        }
+
+        const { success, data, message } = result;
+
+        if (success) {
+          this.categories = data || [];
+          console.log(
+            "✅ Categories loaded successfully:",
+            this.categories.length,
+            "categories"
+          );
+          if (this.questionnaireId) {
+            console.log(
+              "ℹ️ Categories for questionnaire",
+              this.questionnaireId
+            );
+          } else {
+            console.log("ℹ️ Global categories loaded");
+          }
+        } else {
+          console.error("❌ Failed to load categories:", message);
+          this.msg = message || "Failed to load categories";
+          this.showSnackBar = true;
+        }
+      } catch (error) {
+        console.error("❌ Error loading categories:", error);
+        this.msg = "Error loading categories";
+        this.showSnackBar = true;
+      } finally {
+        this.appLoading = false;
+      }
+    },
+
+
+  },
+};
+</script>
+
+<style scoped>
+/* Import common questionnaire styles */
+@import "../../../common/styles/questionnaire.css";
+
+/* Page specific styles */
+.content-area {
+  min-height: 400px;
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.Head1 {
+  font-family: "DM Sans", sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #000000;
+  line-height: 24px;
+}
+
+.text1 {
+  font-family: "DM Sans", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #5f5f5f;
+  line-height: 20px;
+}
+</style>

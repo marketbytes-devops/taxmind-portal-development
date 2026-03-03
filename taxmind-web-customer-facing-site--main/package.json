@@ -1,0 +1,75 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "preserve": "node scripts/generate-sw.js",
+    "serve": "vue-cli-service serve",
+    "prebuild": "node scripts/generate-sw.js",
+    "build": "vue-cli-service build --mode production",
+    "lint": "vue-cli-service lint",
+    "analyze-migration": "node scripts/analyze-migration.js",
+    "migrate-component": "node scripts/migrate-component.js"
+  },
+  "dependencies": {
+    "aos": "^2.3.4",
+    "axios": "^1.5.1",
+    "core-js": "^3.6.5",
+    "cropperjs": "^1.6.2",
+    "docusign-esign": "^8.0.1",
+    "firebase": "^11.1.0",
+    "signature_pad": "^5.0.4",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "vue": "^2.6.11",
+    "vue-advanced-cropper": "^1.11.7",
+    "vue-analytics": "^5.22.1",
+    "vue-cropperjs": "^4.2.0",
+    "vue-element-loading": "^2.0.2",
+    "vue-gtag": "^1.16.1",
+    "vue-inner-image-zoom": "^1.1.1",
+    "vue-meta": "^2.4.0",
+    "vue-owl-carousel": "^2.0.3",
+    "vue-phone-number-input": "^1.12.13",
+    "vue-router": "^3.6.5",
+    "vue-signature-pad": "^2.0.5",
+    "vue-socket.io": "^3.0.10",
+    "vuetify": "^2.6.0",
+    "vuex": "^3.6.2"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.11",
+    "@vue/cli-plugin-eslint": "~4.5.11",
+    "@vue/cli-service": "~4.5.11",
+    "babel-eslint": "^10.1.0",
+    "compression-webpack-plugin": "^6.1.1",
+    "css-loader": "^4.3.0",
+    "dotenv": "^17.2.3",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "sass": "~1.32.0",
+    "sass-loader": "^10.0.0",
+    "vue-cli-plugin-vuetify": "~2.5.8",
+    "vue-template-compiler": "^2.6.11",
+    "vuetify-loader": "^1.7.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

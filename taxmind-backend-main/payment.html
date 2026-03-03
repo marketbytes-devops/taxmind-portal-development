@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revolut Payment Test</title>
+</head>
+
+<body>
+    <h1>Pay with Revolut</h1>
+    <form id="payment-form">
+        <!-- <label>Email: <input type="email" id="email" required></label><br><br> -->
+        <!-- <label>Amount (EUR): <input type="number" id="amount" value="10" required></label><br><br> -->
+        <label>Application ID: <input type="text" id="application-id" required></label><br><br>
+
+        <button type="submit">Pay</button>
+    </form>
+
+    <script>
+        document.getElementById("payment-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const applicationId = document.getElementById("application-id").value;
+
+            const res = await fetch("http://localhost:5001/api/v1/applications/payments/checkout", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ applicationId }),
+            });
+
+            const data = await res.json();
+            if (data.checkout_url) {
+                window.location.href = data.checkout_url; // redirect to Revolut
+            } else {
+                alert("Failed to create order");
+            }
+        });
+    </script>
+</body>
+
+</html>

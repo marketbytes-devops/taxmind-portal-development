@@ -1,0 +1,6028 @@
+{
+  "info": {
+    "name": "TAXMIND",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "SignIn",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"qa-admin@development.taxmind.ie\",\n  \"password\": \"TaxMind@QA2025!\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/admins/auth/signin",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["admins", "auth", "signin"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Lookup",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/admins/lookup",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["admins", "lookup"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/admins/profile",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["admins", "profile"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "List Admin Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/admins",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["admins"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "100"
+                },
+                {
+                  "key": "keyword",
+                  "value": "jhon "
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Signout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-origin",
+                "value": "app",
+                "type": "text"
+              },
+              {
+                "key": "x-app-version",
+                "value": "0.0.1",
+                "type": "text"
+              },
+              {
+                "key": "x-device-info",
+                "value": "iphone 16",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/admins/auth/signout",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["admins", "auth", "signout"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-origin",
+                "value": "web",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{REFRESH_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"superadmin@local.taxmind.ie\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/admins/auth/token/refresh",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["admins", "auth", "token", "refresh"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-origin",
+                "value": "app",
+                "type": "text"
+              },
+              {
+                "key": "x-app-version",
+                "value": "0.0.1",
+                "type": "text"
+              },
+              {
+                "key": "x-device-info",
+                "value": "iphone 16",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"currentPassword\": \"TaxMind@Local2025!\",\n    \"newPassword\": \"TaxMind@Local2025!!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/admins/auth/password/change",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["admins", "auth", "password", "change"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Send Email Verification Code",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-origin",
+                "value": "web",
+                "type": "text"
+              },
+              {
+                "key": "x-app-version",
+                "value": "0.0.1",
+                "type": "text"
+              },
+              {
+                "key": "x-device-info",
+                "value": "iphone 16",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"nithen.pv@ileafsolutions.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/admins/auth/email/verify",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["admins", "auth", "email", "verify"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Verify Email OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-origin",
+                "value": "web",
+                "type": "text"
+              },
+              {
+                "key": "x-app-version",
+                "value": "0.0.1",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nithen.pv@ileafsolutions.com\",\n  \"otp\": 907206\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/admins/auth/email/verify/confirm",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["admins", "auth", "email", "verify", "confirm"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-origin",
+                "value": "app",
+                "type": "text"
+              },
+              {
+                "key": "x-app-version",
+                "value": "0.0.1",
+                "type": "text"
+              },
+              {
+                "key": "x-device-info",
+                "value": "iphone 16",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"nithen.pv@ileafsolutions.com\",\n    \"otp\": 927454,\n    \"newPassword\": \"gZHForXbbx6b@\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/admins/auth/password/reset",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["admins", "auth", "password", "reset"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Update Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jhon Doe\",\n  \"roleId\": \"b14089fc-e67e-4e14-8c59-5434dd643338\",\n  \"status\":true\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/admins/23b21281-ed16-41eb-b15b-6c616e8968e1/profile",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "admins",
+                "23b21281-ed16-41eb-b15b-6c616e8968e1",
+                "profile"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Register New User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\":\"Nithen PV\",\n  \"email\":\"nithen.pv@ileafsolutions.com\",\n  \"roleId\":\"992f8c7d-8e40-4f12-b3b9-59a48cf62c5e\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/admins",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["admins"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Dashboard",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/admins/dashboard",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["admins", "dashboard"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Reports",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/admins/reports",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["admins", "reports"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "keyword",
+                  "value": "nithen"
+                },
+                {
+                  "key": "startDate",
+                  "value": "2024-10-20"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2024-11-21"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "RBAC",
+      "item": [
+        {
+          "name": "List Roles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/rbac/roles",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["rbac", "roles"],
+              "query": [
+                {
+                  "key": "keyword",
+                  "value": "admin"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Role Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/rbac/roles/960fd7a2-048e-4a19-aff8-4bfe10d96760",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["rbac", "roles", "960fd7a2-048e-4a19-aff8-4bfe10d96760"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Create Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"roleName\": \"staff\",\n    \"modulePermissionIds\": [\n        \"bb8e9a4b-7a71-4e68-b2b8-f62544943641\"\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/rbac/roles",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["rbac", "roles"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "List Modules",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/rbac/modules",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["rbac", "modules"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Update Role",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"roleName\": \"staff\",\n    \"modulePermissionIds\": [\n        \"bb8e9a4b-7a71-4e68-b2b8-f62544943641\"\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/rbac/roles/01f9a77b-120b-4588-9af5-ed22d16f3e0a",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["rbac", "roles", "01f9a77b-120b-4588-9af5-ed22d16f3e0a"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Delete Role",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/rbac/roles/01f9a77b-120b-4588-9af5-ed22d16f3e0a",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["rbac", "roles", "01f9a77b-120b-4588-9af5-ed22d16f3e0a"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Get Role Permissions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/rbac/roles/960fd7a2-048e-4a19-aff8-4bfe10d96760/permissions",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "rbac",
+                "roles",
+                "960fd7a2-048e-4a19-aff8-4bfe10d96760",
+                "permissions"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "List All Roles W/O Pagination",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/rbac/list-all-roles",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["rbac", "list-all-roles"],
+              "query": [
+                {
+                  "key": "keyword",
+                  "value": "admin"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Blog",
+      "item": [
+        {
+          "name": "List Blogs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/blogs",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["blogs"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create New Blog Post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"How to File Your Irish Taxes Online in 2025\",\n  \"excerpt\": \"A comprehensive step-by-step guide to filing your Irish taxes online for the 2025 tax year with helpful tips and common pitfalls to avoid.\",\n  \"content\": \"Filing your taxes online in Ireland has become more streamlined than ever before. The Revenue Online Service (ROS) provides a user-friendly platform that makes the entire process straightforward. In this comprehensive guide, we'll walk you through each step of the process, from gathering your essential documents to successfully submitting your return.\\n\\n## Getting Started\\n\\nBefore you begin the online filing process, ensure you have all necessary documents ready. This includes your P60, P45s, medical receipts, and any other relevant tax documents...\",\n  \"imageAlt\": \"Person using laptop to file Irish taxes online with Revenue website visible on screen\",\n  \"status\": true,\n  \"isFeatured\": true,\n  \"featuredOrder\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/blogs",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["blogs"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Update Blog Post",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"How to File Your Irish Taxes Online in 2025\",\n  \"excerpt\": \"A comprehensive step-by-step guide to filing your Irish taxes online for the 2025 tax year with helpful tips and common pitfalls to avoid.\",\n  \"content\": \"Filing your taxes online in Ireland has become more streamlined than ever before. The Revenue Online Service (ROS) provides a user-friendly platform that makes the entire process straightforward. In this comprehensive guide, we'll walk you through each step of the process, from gathering your essential documents to successfully submitting your return.\\n\\n## Getting Started\\n\\nBefore you begin the online filing process, ensure you have all necessary documents ready. This includes your P60, P45s, medical receipts, and any other relevant tax documents...\",\n  \"image\": \"https://api.taxmind.ie/file/get?key=website/blog/1738486201761gw6iV05xE.jpg\",\n  \"imageAlt\": \"Person using laptop to file Irish taxes online with Revenue website visible on screen\",\n  \"status\": true,\n  \"isFeatured\": true,\n  \"featuredOrder\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/blogs/e24416a3-bf8c-475f-b432-d03de32cc671",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["blogs", "e24416a3-bf8c-475f-b432-d03de32cc671"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Delete Blog Post",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/blogs/2bcf87de-12c1-4dfa-9107-091816bf9410",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["blogs", "2bcf87de-12c1-4dfa-9107-091816bf9410"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Publish Blog Post",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/blogs/809aba81-3670-4172-82c3-bd249f85e307/publish",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "blogs",
+                "809aba81-3670-4172-82c3-bd249f85e307",
+                "publish"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Get Blog Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/blogs/how-to-file-your-irish-taxes-online-in-2025-3",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "blogs",
+                "how-to-file-your-irish-taxes-online-in-2025-3"
+              ],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "FAQs Management",
+      "item": [
+        {
+          "name": "List All FAQs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/faqs",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "faqs"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Get Single FAQ",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/faqs/8e6d49a5-09c2-466c-8fbc-7cf9171061dc",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "site-contents",
+                "faqs",
+                "8e6d49a5-09c2-466c-8fbc-7cf9171061dc"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Create FAQ",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"How do I file my tax return online?\",\n  \"answer\": \"You can file your tax return online using the Revenue Online Service (ROS). Simply register an account, gather your documents, and follow the step-by-step process.\",\n  \"status\": false,\n  \"displayOrder\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/faqs",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "faqs"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Update FAQ",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"How do I file my tax return online in 2025?\",\n  \"answer\": \"Updated answer for 2025 tax filing process...\",\n  \"status\": true,\n  \"displayOrder\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/faqs/8e6d49a5-09c2-466c-8fbc-7cf9171061dc",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "site-contents",
+                "faqs",
+                "8e6d49a5-09c2-466c-8fbc-7cf9171061dc"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Delete FAQ",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/faqs/ce3a05bf-8a8e-4d0f-bc36-13dc96acd1d9",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "site-contents",
+                "faqs",
+                "ce3a05bf-8a8e-4d0f-bc36-13dc96acd1d9"
+              ],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Social Media Management",
+      "item": [
+        {
+          "name": "List Social Media Links",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/social-media",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "social-media"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Create Social Media Link",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"platform\": \"instagram\",\n  \"url\": \"https://www.facebook.com/profile.php?id=61572630567344\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/social-media",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "social-media"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Update Social Media Link",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"platform\": \"Facebook\",\n  \"url\": \"https://www.facebook.com/profile.php?id=61572630567344\",\n  \"icon\": \"https://api.taxmind.ie/wp?key=website/socialmedia/17371767565248HukHXfhG.png\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/social-media/9dbd02ea-8cd4-4a0a-a126-dc3d1a36323b",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "site-contents",
+                "social-media",
+                "9dbd02ea-8cd4-4a0a-a126-dc3d1a36323b"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Delete Social Media Link",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/social-media/53a0d56e-bfc0-4e62-829d-07392db97ac9",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "site-contents",
+                "social-media",
+                "53a0d56e-bfc0-4e62-829d-07392db97ac9"
+              ],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tax Credits Management",
+      "item": [
+        {
+          "name": "List Tax Credits",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/tax-credits",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "tax-credits"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Single Tax Credit",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/tax-credits/2b81de41-8c4d-497a-877f-cd1da84fef79",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "site-contents",
+                "tax-credits",
+                "2b81de41-8c4d-497a-877f-cd1da84fef79"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Create Tax Credit",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Working Family Payment\",\n    \"description\": \"A weekly payment for employees and the self-employed with children.\",\n    \"details\": \"Must be working at least 19 hours per week and have dependent children. Apply online through MyWelfare.ie or visit your local Intreo office. P60, payslips, birth certificates of children, bank details.\",\n    \"icon\":\"https://api.taxmind.ie/wp?key=website/taxCredit/1736923625686mJZds32Dr.png\",\n    \"status\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/tax-credits",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "tax-credits"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Update Tax Credit",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Dependent Relative Tax Credit\",\n    \"description\": \"Receive \u20ac245 per dependent annually for supporting a dependent relative\",\n    \"details\": \"The Dependent Relative Tax Credit is a tax credit available in Ireland to individuals who maintain a dependent relative. This credit is designed to provide financial relief to those who support a dependent family memberWho Qualifies as a Dependent Relative?A dependent relative includes:A relative, or a relative of your spouse or civil partner, who is incapacitated by old age or illness.A widowed parent, or a parent who is a surviving civil partner, regardless of their income level.A child of the claimant, or of the claimant\u2019s spouse or civil partner, who is permanently incapacitated due to physical or mental disability.Amount of the Tax CreditThe Dependent Relative Tax Credit for 2024 is \u20ac245 and 2025 \u20ac305This amount is non-refundable, meaning it can only be used to reduce your tax liability and cannot be claimed as a cash refund.Claim it by apply now \",\n    \"icon\":\"https://api.taxmind.ie/wp?key=website/taxCredit/1736923625686mJZds32Dr.png\",\n    \"status\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/tax-credits/e450ffa9-5414-4327-9e6c-a94c531ea8a3",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "site-contents",
+                "tax-credits",
+                "e450ffa9-5414-4327-9e6c-a94c531ea8a3"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Delete Tax Credit",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/tax-credits/2b81de41-8c4d-497a-877f-cd1da84fef79",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "site-contents",
+                "tax-credits",
+                "2b81de41-8c4d-497a-877f-cd1da84fef79"
+              ],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Carousel Images Management",
+      "item": [
+        {
+          "name": "List Carousel Images",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/carousel-images",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "carousel-images"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Delete Carousel Image",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/carousel-images/ef3a2901-e373-4b04-bb49-ff0eeb87f290",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "site-contents",
+                "carousel-images",
+                "ef3a2901-e373-4b04-bb49-ff0eeb87f290"
+              ],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Document Templates Management",
+      "item": [
+        {
+          "name": "List Document Templates",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/document-templates",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "document-templates"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Document Template",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/document-templates/:id",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "document-templates", ":id"],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Policies Management",
+      "item": [
+        {
+          "name": "List Policies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/policies",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "policies"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Policy",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"type\": \"privacy_policy\",\n    \"content\": \"<h1>Privacy Policy</h1><p>This privacy policy explains how we collect and use your personal information...</p>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/policies",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "policies"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Update Policy",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"type\": \"fee_structure\",\n    \"content\": \"<h1>Fee structure 2025</h1><p>Service Charge Standard Fee: 7% of the total tax refund amount. VAT: Charged at the applicable rate (currently 23% in Ireland, subject to change). Payment Terms Customers will receive their tax refund directly into their bank account. An invoice for our service fee (including VAT) will be issued immediately after the refund is processed. Payment must be made within 7 days of receiving the invoice. Additional Notes Late payments may be subject to penalties or interest charges as outlined in our terms and conditions. \\n Customers will receive a detailed breakdown of the service fee and VAT in the invoice for transparency</p>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/policies/4c639c63-6808-47b6-a244-a8097323ca69",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "site-contents",
+                "policies",
+                "4c639c63-6808-47b6-a244-a8097323ca69"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Delete Policy",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/policies/:id",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "policies", ":id"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Get Active Policy",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/policies/active",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "policies", "active"],
+              "query": [
+                {
+                  "key": "type",
+                  "value": "privacy_policy"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Query Categories Management",
+      "item": [
+        {
+          "name": "List Query Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/query-categories",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "query-categories"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Create Query Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Tuition Fees\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/query-categories",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "query-categories"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Update Query Category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Tax Filing Questions 2025\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/query-categories/a939c02b-a987-417a-b48d-7e0046c22018",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "site-contents",
+                "query-categories",
+                "a939c02b-a987-417a-b48d-7e0046c22018"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Delete Query Category",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/query-categories/999bcf09-6554-4945-a3d6-ad6d5cbebae7",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "site-contents",
+                "query-categories",
+                "999bcf09-6554-4945-a3d6-ad6d5cbebae7"
+              ],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Document Categories Management",
+      "item": [
+        {
+          "name": "List Document Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/document-categories",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "document-categories"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Create Document Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"test\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/document-categories",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "document-categories"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Update Document Category",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Tax Aggregation-Notary Attested/ Payslips/ Income proof\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/document-categories/8493faa0-191a-4162-a590-dcef3c276ab0",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "site-contents",
+                "document-categories",
+                "8493faa0-191a-4162-a590-dcef3c276ab0"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Delete Document Category",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/document-categories/1fd0e9fb-9c77-4d70-8cd5-3fbbaa3e1b5e",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "site-contents",
+                "document-categories",
+                "1fd0e9fb-9c77-4d70-8cd5-3fbbaa3e1b5e"
+              ],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "User Queries Management (Admin Only)",
+      "item": [
+        {
+          "name": "List User Queries",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/queries",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "queries"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Single User Query",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/queries/:id",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "queries", ":id"],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Site Configuration",
+      "item": [
+        {
+          "name": "Get Site Configuration",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/config",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "config"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Update Site Configuration",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"commissionPercentage\": 15.6,\n  \"vaPercentage\": 1.05,\n  \"updatedAt\": \"2025-08-18T10:20:41.163Z\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/site-contents/config",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["site-contents", "config"],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Site Content",
+      "item": []
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Auth - Sign Up",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Davis' OR '1'='1\",\n    \"email\": \"manu.s+14@ileafsolutions.net\",\n    \"password\": \"Manu@123\",\n    \"phone\": \"+918796451251\",\n    \"dob\": \"1998-06-13\",\n    \"profession\": \"Doctor\",\n    \"ppsNo\": \"1237561Z\",\n    \"address\": \"5656 Main St\",\n    \"eircode\": \"D01AB24\",\n    \"maritalStatus\": \"single\"\n  \n    // For married users include spouse block:\n  \n    //\"spouse\": {\n   // \"name\": \"Helna Joseph\",\n   // \"email\": \"manu.s+12@ileafsolutions.net\",\n   // \"phone\": \"+919961784920\",\n    //\"dob\": \"2030-06-23\",\n    //\"profession\": \"Nurse\",\n    //\"ppsNo\": \"1239999T\",\n    //\"address\": \"fgfdghfdhgfd\",\n    //\"eircode\": \"D01AB23\",\n  \n   // }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/auth/signup",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "auth", "signup"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Auth - Sign In",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\":\"manu.s+9@ileafsolutions.net\",\n    \"password\":\"Manu@123#\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/auth/signin",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "auth", "signin"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Verification - Send Email OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"manu.s+14@ileafsolutions.net\"\n}\n\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/auth/email/verify",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "auth", "email", "verify"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Verification - Confirm Email OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"manu.s+14@ileafsolutions.net\",\n    \"otp\": 123456\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/auth/email/verify/confirm",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "auth", "email", "verify", "confirm"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Verification - Send Phone OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+353800000000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/auth/phone/verify",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "auth", "phone", "verify"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Verification - Confirm Phone OTP (Login issues tokens)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"phone\": \"+353871234567\",\n    \"otp\": 123456\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/auth/phone/verify/confirm",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "auth", "phone", "verify", "confirm"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Auth - Sign Out",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/auth/signout",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "auth", "signout"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Auth - Refresh Access Token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"user@local.taxmind.ie\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/auth/token/refresh",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "auth", "token", "refresh"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Password - Change (Auth)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"currentPassword\": \"TaxMind@Local2025!\",\n    \"newPassword\": \"NewP@ssw0rd!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/auth/password/change",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "auth", "password", "change"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Password - Reset (Forgot)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"user@local.taxmind.ie\",\n    \"otp\": 123456,\n    \"newPassword\": \"NewP@ssw0rd!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/auth/password/reset",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "auth", "password", "reset"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Profile - Get (Auth)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/profile",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "profile"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Get User Details (Auth: ADMIN)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/ecdde70b-7350-4965-9d12-1e7914f389b0",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "ecdde70b-7350-4965-9d12-1e7914f389b0"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Spouse - Unbind (Auth)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Divorce requested by user\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/auth/spouse/unbind",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "auth", "spouse", "unbind"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "List Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "startDate",
+                  "value": "2025-07-20"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2025-08-19"
+                },
+                {
+                  "key": "keyword",
+                  "value": "jane"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "updatedAt"
+                },
+                {
+                  "key": "orderBy",
+                  "value": "desc"
+                },
+                {
+                  "key": "status",
+                  "value": "unverified"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Account",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://echo.hoppscotch.io",
+              "protocol": "https",
+              "host": "",
+              "path": [],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Contact Us - User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Alice\",\n  \"email\": \"alice@example.com\",\n  \"message\": \"I need help with my tax filing.\",\n  \"categoryId\": \"a939c02b-a987-417a-b48d-7e0046c22018\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/queries",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "queries"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "List Queries",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/queries",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "queries"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "1"
+                },
+                {
+                  "key": "categoryId",
+                  "value": "a939c02b-a987-417a-b48d-7e0046c22018"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Agent Activation Status",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"noticeNo\": \"5842777942T\",\n    \"customerName\": \"PRIBIN THOMAS\",\n    \"regnTraderNo\": \"1234567B\",\n    \"mandatoryEFiler\": \"No\",\n    \"taxTypeDutyRep\": \"N/A\",\n    \"documentType\": \"Approved Agent Link\",\n    \"periodBegin\": \"N/A\",\n    \"issuedDate\": \"25/07/2025\",\n    \"archivedBy\": \"N/A\"\n  },\n  {\n    \"noticeNo\": \"5842777943T\",\n    \"customerName\": \"JOHN DOE\",\n    \"regnTraderNo\": \"9140216RA\",\n    \"mandatoryEFiler\": \"No\",\n    \"taxTypeDutyRep\": \"N/A\",\n    \"documentType\": \"Tax Registration\",\n    \"periodBegin\": \"N/A\",\n    \"issuedDate\": \"26/07/2025\",\n    \"archivedBy\": \"N/A\"\n  }\n]\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/agent-activations/upload",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "agent-activations", "upload"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "List Agent Activations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/agent-activations",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "agent-activations"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Off-boarded Users List",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/off-boarded",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "off-boarded"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "startDate",
+                  "value": "2025-07-20"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2025-08-19"
+                },
+                {
+                  "key": "keyword",
+                  "value": "user1@local.taxmind.ie"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "updatedAt"
+                },
+                {
+                  "key": "orderBy",
+                  "value": "desc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Off-boarded User - Admin",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/d9161f2f-593f-49d2-a34b-9ab7561ed4b6/offboard",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "users",
+                "d9161f2f-593f-49d2-a34b-9ab7561ed4b6",
+                "offboard"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Update Profile (Auth)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{USER_ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\":\"John Doeng\",\n  \"dob\":\"16/10/2000\",\n  \"profession\":\"SE\",\n  \"ppsNo\":\"1234567A\",\n  \"address\":\"123 Main Street\",\n  \"eircode\":\"D01AB24\",\n  \"maritalStatus\":\"married\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/users/profile",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["users", "profile"],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Questionnaire",
+      "item": [
+        {
+          "name": "Admin \u2022 List Questionnaires",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["questionnaires"],
+              "query": [
+                {
+                  "key": "taxYear",
+                  "value": "2025"
+                },
+                {
+                  "key": "status",
+                  "value": "published"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin \u2022 Create Questionnaire (taxYear only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"taxYear\": 2024\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["questionnaires"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Admin \u2022 Get Questionnaire",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/645c3942-a237-4c8a-925b-b46921b2a4fb",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "questionnaires",
+                "645c3942-a237-4c8a-925b-b46921b2a4fb"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Admin - User \u2022 Get Questionnaire Response",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/responses/8d983c39-05ad-4540-9620-2355916e4ff9",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "questionnaires",
+                "responses",
+                "8d983c39-05ad-4540-9620-2355916e4ff9"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Admin \u2022 Publish Questionnaire",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/aee9e630-158e-41f4-99cd-be8f27d776c7/publish",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "questionnaires",
+                "aee9e630-158e-41f4-99cd-be8f27d776c7",
+                "publish"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Admin \u2022 Delete Questionnaire (draft only)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/dca5c4c2-c3b6-446a-b193-54756aab5909",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "questionnaires",
+                "dca5c4c2-c3b6-446a-b193-54756aab5909"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Admin \u2022 List Categories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/2eb76ce8-8497-4b96-ad88-e1eeff1614d1/categories",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "questionnaires",
+                "2eb76ce8-8497-4b96-ad88-e1eeff1614d1",
+                "categories"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Admin \u2022 Create Category (auto description)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"questionnaireId\": \"2eb76ce8-8497-4b96-ad88-e1eeff1614d1\",\n  \"name\": \"Medical Expenses\",\n  \"sortOrder\": 1\n  // description optional; will be auto-generated if omitted\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/categories",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["questionnaires", "categories"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Admin \u2022 Update Category",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Medical expenses credit\",\n  \"sortOrder\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/categories/28c59f58-7a10-4d1f-ac02-e34a328ed316",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "questionnaires",
+                "categories",
+                "28c59f58-7a10-4d1f-ac02-e34a328ed316"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Admin \u2022 Delete Category",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/categories/9f6fc125-9346-4459-9ea5-6d177f5d81d5",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "questionnaires",
+                "categories",
+                "9f6fc125-9346-4459-9ea5-6d177f5d81d5"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Admin \u2022 List Questions in Category",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/categories/87a757ed-9439-44e4-a1cd-c2783f65438d/questions",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "questionnaires",
+                "categories",
+                "87a757ed-9439-44e4-a1cd-c2783f65438d",
+                "questions"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Admin \u2022 Create Question",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": \"a8fd3654-cf8b-4132-9af7-fab0520ad5de\",\n  \"questionText\": \"Enter the PPS Number of the dependent child\",\n  \"questionType\": \"text\",\n  \"isRequired\": true,\n  \"sortOrder\": 2,\n  \"helpText\": \"Format should be 7 digits + 1 letter\",\n  //\"options\": [\n   // {\n     // \"value\": \"yes\",\n     // \"label\": \"Yes\",\n    //  \"order\": 1,\n     // \"isDocumentRequired\": true,\n     // \"documentCategoryId\": \"76309a1a-28f3-4db8-b76c-374aa5c960b8\"\n   // }//,\n    //{\n      //\"value\": \"no\",\n     // \"label\": \"No\",\n     // \"order\": 2,\n     // \"isDocumentRequired\": false\n    //}//\n  //],\n  \"parentQuestionId\": \"853e8eec-d927-429f-9d65-b6abb84fac5c\",\n  //\"showIfParentOptionValue\": \"yes\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/questions",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["questionnaires", "questions"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Admin \u2022 Update Question",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"questionText\": \"What was your gross income?\",\n    \"isRequired\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/questions/a66dddeb-37d8-4129-b2a2-eab119bba1cb",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "questionnaires",
+                "questions",
+                "a66dddeb-37d8-4129-b2a2-eab119bba1cb"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Admin \u2022 Delete Question",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/questions/50a36cf9-dbca-4696-8a66-ce6a6bb57f2b",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "questionnaires",
+                "questions",
+                "50a36cf9-dbca-4696-8a66-ce6a6bb57f2b"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "User \u2022 Create Questionnaire Response",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{USER_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"questionnaireId\": \"<<QUESTIONNAIRE_ID>>\",\n  \"applicationId\": \"<APPLICATION_ID>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/responses",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["responses"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "User \u2022 Update Questionnaire Response",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentCategoryId\": \"01b5a7ed-1b9d-490e-8e76-dc3a8884df82\",\n  \"completionPercentage\": 25\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/responses/8d983c39-05ad-4540-9620-2355916e4ff9",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "questionnaires",
+                "responses",
+                "8d983c39-05ad-4540-9620-2355916e4ff9"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "User \u2022 Submit Questionnaire Response",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"responseId\":\"8d983c39-05ad-4540-9620-2355916e4ff9\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/responses/submit",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["questionnaires", "responses", "submit"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "User \u2022 Save Answer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"responseId\": \"8d983c39-05ad-4540-9620-2355916e4ff9\",\n  \"questionId\": \"d09a54af-7600-4f03-83cc-6de01ffa30aa\",\n  \"answer\": \"single\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/answers",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["questionnaires", "answers"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Admin \u2022 List Questionnaire Responses",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/responses",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["questionnaires", "responses"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Import Questionnaire",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"taxYear\":2026,\n  \"importFromTaxYear\":2025\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/import",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["questionnaires", "import"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Admin \u2022 Get Questionnaire Response By ApplicationId",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "questionnaires",
+                "applications",
+                "7b8e85dd-5ca9-48cd-b314-b2e1197eedde"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Admin \u2022 Get Question Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/questionnaires/questions/8aa9a618-1fc2-441c-aaf0-1c98b6e0d112",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "questionnaires",
+                "questions",
+                "8aa9a618-1fc2-441c-aaf0-1c98b6e0d112"
+              ],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Application",
+      "item": [
+        {
+          "name": "Start Application",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"year\": 2025,\n  \"isAmendment\": false,\n  \"parentApplicationId\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/start",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["applications", "start"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "List Applications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["applications"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Application Step - Questionnaire",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{USER_ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/steps/questionnaire",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "7b8e85dd-5ca9-48cd-b314-b2e1197eedde",
+                "steps",
+                "questionnaire"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Get Application Step - Documents",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ0MzFkN2MzLTc3NzctNDNjNi04YTQwLTE4N2JmNjU0MDhiNyIsInR5cGUiOiJVU0VSIiwiaWF0IjoxNzU5OTg4MzExLCJleHAiOjE3NjA1OTMxMTF9._LNUY-1bzjS-E4pWZ61-peZOlAzUIFJRPDNZLf8caI8",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/ffedd9ca-f91a-4cb3-be6d-1a667f74dcee/steps/documents",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "ffedd9ca-f91a-4cb3-be6d-1a667f74dcee",
+                "steps",
+                "documents"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Get Application Step - Agent Activation",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{USER_ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/steps/agent_activation",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "7b8e85dd-5ca9-48cd-b314-b2e1197eedde",
+                "steps",
+                "agent_activation"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Get Application Step - Review",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{USER_ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/steps/review",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "7b8e85dd-5ca9-48cd-b314-b2e1197eedde",
+                "steps",
+                "review"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Get Application Step - Processing",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{USER_ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/steps/processing",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "7b8e85dd-5ca9-48cd-b314-b2e1197eedde",
+                "steps",
+                "processing"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Get Application Step - Refund",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{USER_ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/steps/refund",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "7b8e85dd-5ca9-48cd-b314-b2e1197eedde",
+                "steps",
+                "refund"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Create Application Note (admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"applicationId\": \"7b8e85dd-5ca9-48cd-b314-b2e1197eedde\",\n  \"note\": \"Internal note from admin\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/notes",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["applications", "notes"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "List Application Notes (admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/notes",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "7b8e85dd-5ca9-48cd-b314-b2e1197eedde",
+                "notes"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Request Application Documents",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"applicationId\": \"7b8e85dd-5ca9-48cd-b314-b2e1197eedde\",\n    \"documentCategoryId\": \"09747ef9-56e2-4ada-8bea-21cd2c7cff3c\",\n    \"isRequired\": true,\n    \"note\": \"Please provide the 2023 P60\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/documents/request",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["applications", "documents", "request"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Accept Application Document",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"accepted\"\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/documents/853da8fa-4a7d-427a-9f82-d482132519bd/status",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "documents",
+                "853da8fa-4a7d-427a-9f82-d482132519bd",
+                "status"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Withdraw Application Document Request",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"withdrawn\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/documents/30c73f78-c918-4cd6-b89e-bb696d8261da/status",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "documents",
+                "30c73f78-c918-4cd6-b89e-bb696d8261da",
+                "status"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Reject Application Document",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"rejected\",\n    \"rejectedReason\": \"Document is blurry; please re-upload a clear scan.\"\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/documents/9f8e7d6c-5b4a-3a2b-1c0d-efab12345678/status",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "documents",
+                "9f8e7d6c-5b4a-3a2b-1c0d-efab12345678",
+                "status"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Mark Document Uploads Completed",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/status/documents_uploaded",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "7b8e85dd-5ca9-48cd-b314-b2e1197eedde",
+                "status",
+                "documents_uploaded"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Mark Application Review Completed",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/status/reviewed",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "7b8e85dd-5ca9-48cd-b314-b2e1197eedde",
+                "status",
+                "reviewed"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Calculate Final Amount",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"refundAmount\": 1000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/amounts/calculate",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["applications", "amounts", "calculate"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Submit Application Amount",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"applicationId\": \"7b8e85dd-5ca9-48cd-b314-b2e1197eedde\",\n    \"refundAmount\": 1000,\n    \"discountAmount\": 20\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/amounts/submit",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["applications", "amounts", "submit"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Request Offline Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"applicationId\": \"7b8e85dd-5ca9-48cd-b314-b2e1197eedde\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/payments/offline/request",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["applications", "payments", "offline", "request"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Approve Offline Payment Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"offlinePaymentRequestId\": \"7f65d40d-cdca-4008-a343-0393b3d68054\",\n    \"paymentMethod\": \"cash\",\n    \"transactionId\": \"1234567890\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/payments/offline/request/approve",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "payments",
+                "offline",
+                "request",
+                "approve"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Reject offline Payment request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"offlinePaymentRequestId\": \"7f65d40d-cdca-4008-a343-0393b3d68054\",\n    \"rejectionReason\": \"Invalid payemnt request\",\n    \"rejectionCategory\": \"invalid payment\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/payments/offline/request/reject",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "payments",
+                "offline",
+                "request",
+                "reject"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "List Completed Payments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/payments/completed",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["applications", "payments", "completed"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "user@local.taxmind.ie"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Payment Checkout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVjZGRlNzBiLTczNTAtNDk2NS05ZDEyLTFlNzkxNGYzODliMCIsInR5cGUiOiJVU0VSIiwiaWF0IjoxNzU3NjU4ODE4LCJleHAiOjE3NTgyNjM2MTh9.FKsnv95dkP8_-J2MWXFa-AZ7AWN6ofdn81hx_GkVCWM",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"applicationId\": \"7b8e85dd-5ca9-48cd-b314-b2e1197eedde\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/payments/checkout",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["applications", "payments", "checkout"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "List Pending Payment Requests",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/payments/offline/request/pending",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "payments",
+                "offline",
+                "request",
+                "pending"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "search",
+                  "value": "user@local.taxmind.ie"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Submit Application Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"applicationId\": \"7b8e85dd-5ca9-48cd-b314-b2e1197eedde\",\n  \"rating\": 5,\n  \"review\": \"Great experience, smooth process!\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/reviews",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["applications", "reviews"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "List Reviews - User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/reviews",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["applications", "reviews"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Reviews - Admin",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/reviews",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["applications", "reviews"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "pending"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Approve Review - Admin",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"approved\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/reviews/1c284039-8a70-48fb-87af-bc160184e421/status",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "reviews",
+                "1c284039-8a70-48fb-87af-bc160184e421",
+                "status"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Reject Review - Admin",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"rejected\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/reviews/1c284039-8a70-48fb-87af-bc160184e421/status",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "reviews",
+                "1c284039-8a70-48fb-87af-bc160184e421",
+                "status"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "List All Applications - Admin",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/all",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["applications", "all"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "status",
+                  "value": "refund_completed"
+                },
+                {
+                  "key": "year",
+                  "value": "2025"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Rejected offline payments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/payments/offline/request/rejected",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "payments",
+                "offline",
+                "request",
+                "rejected"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Get Application Details - Admin - User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["applications", "7b8e85dd-5ca9-48cd-b314-b2e1197eedde"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Get Application Documents - Admin",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/documents",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "7b8e85dd-5ca9-48cd-b314-b2e1197eedde",
+                "documents"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Application list of  a User - For admin",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/user?userId=3b546895-273e-49c0-81db-84e13bb4d963",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["applications", "user"],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "3b546895-273e-49c0-81db-84e13bb4d963"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Webhook check",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "revolut-signature",
+                "value": "v1=1d96627af11a45e126d15087078aac2ed15e2c4d98ece1103fd9d085af5934f3",
+                "type": "text"
+              },
+              {
+                "key": "revolut-request-timestamp",
+                "value": "1757791600049",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/payments/webhook",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["applications", "payments", "webhook"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Claim History : User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{USER_ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/claims",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["applications", "claims"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Check required documents upload status : User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{USER_ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/check/documents_uploaded",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "7b8e85dd-5ca9-48cd-b314-b2e1197eedde",
+                "check",
+                "documents_uploaded"
+              ],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Review Details - Admin",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/applications/reviews/3ec3bd24-2477-418f-9259-f6b61d6b398d",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": [
+                "applications",
+                "reviews",
+                "3ec3bd24-2477-418f-9259-f6b61d6b398d"
+              ],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "pending"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "File",
+      "item": [
+        {
+          "name": "Request Upload URL - Blog Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entityId\": \"33d9b816-0c58-4b4b-badb-8844447c5ebd\",\n  \"type\": \"blog_image\",\n  \"filename\": \"wp.jpg\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/files/request-upload",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["files", "request-upload"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Request Upload URL - Tax Return Document",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entityId\": \"7b8e85dd-5ca9-48cd-b314-b2e1197eedde\",\n  \"type\": \"tax_return_document\",\n  \"filename\": \"tax-return.pdf\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/files/request-upload",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["files", "request-upload"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Request Upload URL - Application Documents",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entityId\": \"<BLOG_ID>\",\n  \"type\": \"blog\",\n  \"filename\": \"banner.png\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/files/request-upload",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["files", "request-upload"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Request Upload URL - Document Template (file-first)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"document_template\",\n  \"filename\": \"spouse form.pdf\",\n  \"metadata\": { \n    \"templateName\": \"spouse form\" \n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/files/request-upload",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["files", "request-upload"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Request Upload URL - Application Document Direct",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"type\": \"application_document_direct\",\n    \"filename\": \"application-document.pdf\",\n    \"metadata\": {\n        \"applicationId\": \"7b8e85dd-5ca9-48cd-b314-b2e1197eedde\",\n        \"documentCategoryId\": \"09747ef9-56e2-4ada-8bea-21cd2c7cff3c\"\n    }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/files/request-upload",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["files", "request-upload"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Confirm Upload(s)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"keys\": [\n        \"local/175672579530608512918069424353_application-doc.pdf\"\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/files/confirm-upload",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["files", "confirm-upload"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Get File Metadata by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/files/:id",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["files", ":id"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "List Files (admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/files",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["files"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete File (admin & User)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{USER_ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fileId\":\"347ea0b2-bac7-4d71-8dab-6d33ab85bf1a\",\n  \"type\":\"application_document\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/files",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["files"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Cleanup Orphaned Files (admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/files/cleanup",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["files", "cleanup"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Request Upload URL - Carousel Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"carousel_image\",\n  \"filename\": \"tax-return.pdf\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/files/request-upload",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["files", "request-upload"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Request Upload URL - Chat Attachment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"type\": \"chat_attachment\",\n    \"filename\": \"chat_attachmemnt.pdf\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/files/request-upload",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["files", "request-upload"],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notification",
+      "item": [
+        {
+          "name": "Send Test Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Test Notification\",\n  \"message\": \"This is a test notification\",\n  \"notificationType\": \"user\",\n  \"fcmToken\": \"egWXtAuCQ4GQwBv3r3R6dy:APA91bHudf43BFQNWpj7rtHnpfCAZ49ZWnYcSldmKumEmXuIvwgk6hru_XH6eNjggUXWJAOS6VwhE4vTbLaRoJRWxi27E6B2M10R6VEiK8bsk37OJPMVsG4\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5001/api/v1/notifications/send",
+              "protocol": "http",
+              "host": "api",
+              "path": ["v1", "notifications", "send"],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chat",
+      "item": [
+        {
+          "name": "List Support Conversations (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/chats/admins/support-conversations",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["chats", "admins", "support-conversations"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Support Messages (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/chats/messages",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["chats", "messages"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "userId",
+                  "value": "dfe93edf-730b-4c89-84e0-851aba013905"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Application Conversations (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/chats/admins/application-conversations",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["chats", "admins", "application-conversations"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Application Messages (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/chats/messages",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["chats", "messages"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "applicationId",
+                  "value": "7b8e85dd-5ca9-48cd-b314-b2e1197eedde"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Support Messages (User)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVjZGRlNzBiLTczNTAtNDk2NS05ZDEyLTFlNzkxNGYzODliMCIsInR5cGUiOiJVU0VSIiwiaWF0IjoxNzU3NjU4ODE4LCJleHAiOjE3NTgyNjM2MTh9.FKsnv95dkP8_-J2MWXFa-AZ7AWN6ofdn81hx_GkVCWM",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/chats/messages",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["chats", "messages"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Application Messages (User)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVjZGRlNzBiLTczNTAtNDk2NS05ZDEyLTFlNzkxNGYzODliMCIsInR5cGUiOiJVU0VSIiwiaWF0IjoxNzU3NjU4ODE4LCJleHAiOjE3NTgyNjM2MTh9.FKsnv95dkP8_-J2MWXFa-AZ7AWN6ofdn81hx_GkVCWM",
+                "type": "text"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/chats/messages",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["chats", "messages"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "applicationId",
+                  "value": "7b8e85dd-5ca9-48cd-b314-b2e1197eedde"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mark Application Chats Read (User)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVjZGRlNzBiLTczNTAtNDk2NS05ZDEyLTFlNzkxNGYzODliMCIsInR5cGUiOiJVU0VSIiwiaWF0IjoxNzU3NjU4ODE4LCJleHAiOjE3NTgyNjM2MTh9.FKsnv95dkP8_-J2MWXFa-AZ7AWN6ofdn81hx_GkVCWM",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"chatType\": \"application\",\n  \"applicationId\": \"7b8e85dd-5ca9-48cd-b314-b2e1197eedde\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/chats/read",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["chats", "read"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Mark Support Chats Read (User)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVjZGRlNzBiLTczNTAtNDk2NS05ZDEyLTFlNzkxNGYzODliMCIsInR5cGUiOiJVU0VSIiwiaWF0IjoxNzU3NjU4ODE4LCJleHAiOjE3NTgyNjM2MTh9.FKsnv95dkP8_-J2MWXFa-AZ7AWN6ofdn81hx_GkVCWM",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"chatType\": \"support\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/chats/read",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["chats", "read"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Mark Support Chats Read (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"chatType\": \"support\",\n  \"userId\": \"ecdde70b-7350-4965-9d12-1e7914f389b0\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/chats/read",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["chats", "read"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Mark Application Chats Read (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"chatType\": \"application\",\n  \"applicationId\": \"7b8e85dd-5ca9-48cd-b314-b2e1197eedde\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/chats/read",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["chats", "read"],
+              "query": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Whatsapp Chats",
+      "item": [
+        {
+          "name": "List Chats",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/whatsapp-chats/conversations",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["whatsapp-chats", "conversations"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "List Messages",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/whatsapp-chats/messages",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["whatsapp-chats", "messages"],
+              "query": [
+                {
+                  "key": "phone",
+                  "value": "+919995827642"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mark message read",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+919995827642\",\n  \"userId\": null\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/whatsapp-chats/read",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["whatsapp-chats", "read"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Send Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"+919995827642\",\n  \"messageType\":\"image\",\n  \"content\": \"test\",\n  \"mediaId\":\"1258682812682175\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/whatsapp-chats/send",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["whatsapp-chats", "send"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "Downlaod Media",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{ACCESS_TOKEN}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"messageId\":\"96054a0c-6526-48a8-bc9a-a745539ebb6a\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/whatsapp-chats/download-media",
+              "protocol": "",
+              "host": "{{BASE_URL}}",
+              "path": ["whatsapp-chats", "download-media"],
+              "query": []
+            }
+          }
+        },
+        {
+          "name": "send message",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": null,
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://echo.hoppscotch.io",
+              "protocol": "https",
+              "host": "",
+              "path": [],
+              "query": []
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

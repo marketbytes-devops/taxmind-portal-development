@@ -1,0 +1,5 @@
+/dist
+/node_modules
+/src/database/migrations
+/src/index.ts
+/src/scripts/migrate.ts

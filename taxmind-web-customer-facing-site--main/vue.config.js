@@ -1,0 +1,19 @@
+const CompressionPlugin = require('compression-webpack-plugin')
+
+module.exports = {
+  transpileDependencies: [
+    'vuetify'
+  ],
+  productionSourceMap: false,
+  configureWebpack: {
+    plugins: [
+      new CompressionPlugin({
+        filename: '[path][base].gz',
+        algorithm: 'gzip',
+        test: /\.(js|css|html|svg)$/,
+        threshold: 10240,
+        minRatio: 0.8
+      })
+    ]
+  }
+}

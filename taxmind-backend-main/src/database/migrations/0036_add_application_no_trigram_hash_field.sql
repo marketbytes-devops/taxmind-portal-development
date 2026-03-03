@@ -1,0 +1,2 @@
+ALTER TABLE "applications" ADD COLUMN "application_no_trigram_hashes" text[] DEFAULT '{}' NOT NULL;--> statement-breakpoint
+CREATE INDEX "applications_application_no_trigram_hashes_idx" ON "applications" USING gin ("application_no_trigram_hashes");

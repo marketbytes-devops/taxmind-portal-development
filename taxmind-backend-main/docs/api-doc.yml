@@ -1,0 +1,3960 @@
+openapi: 3.0.0
+info:
+  title: TAXMIND-BACKEND
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api/v1
+    description: Local server
+tags:
+  - name: Admin
+  - name: RBAC
+  - name: Blog
+  - name: FAQs Management
+  - name: Social Media Management
+  - name: Tax Credits Management
+  - name: Carousel Images Management
+  - name: Document Templates Management
+  - name: Policies Management
+  - name: Query Categories Management
+  - name: Document Categories Management
+  - name: User Queries Management (Admin Only)
+  - name: Site Configuration
+  - name: Site Content
+  - name: User
+  - name: Questionnaire
+  - name: Application
+  - name: File
+  - name: Notification
+  - name: Chat
+  - name: Whatsapp Chats
+paths:
+  /admins/auth/signin:
+    post:
+      tags:
+        - Admin
+      summary: SignIn
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: qa-admin@development.taxmind.ie
+                password: TaxMind@QA2025!
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /admins/lookup:
+    get:
+      tags:
+        - Admin
+      summary: Lookup
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /admins/profile:
+    get:
+      tags:
+        - Admin
+      summary: Profile
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /admins:
+    get:
+      tags:
+        - Admin
+      summary: List Admin Users
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '100'
+        - name: keyword
+          in: query
+          schema:
+            type: string
+          example: 'jhon '
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Admin
+      summary: Register New User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Nithen PV
+                email: nithen.pv@ileafsolutions.com
+                roleId: 992f8c7d-8e40-4f12-b3b9-59a48cf62c5e
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /admins/auth/signout:
+    post:
+      tags:
+        - Admin
+      summary: Signout
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: ''
+      parameters:
+        - name: x-origin
+          in: header
+          schema:
+            type: string
+          example: app
+        - name: x-app-version
+          in: header
+          schema:
+            type: string
+          example: 0.0.1
+        - name: x-device-info
+          in: header
+          schema:
+            type: string
+          example: iphone 16
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /admins/auth/token/refresh:
+    post:
+      tags:
+        - Admin
+      summary: Refresh Token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: superadmin@local.taxmind.ie
+      parameters:
+        - name: x-origin
+          in: header
+          schema:
+            type: string
+          example: web
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{REFRESH_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /admins/auth/password/change:
+    post:
+      tags:
+        - Admin
+      summary: Change Password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                currentPassword: TaxMind@Local2025!
+                newPassword: TaxMind@Local2025!!
+      parameters:
+        - name: x-origin
+          in: header
+          schema:
+            type: string
+          example: app
+        - name: x-app-version
+          in: header
+          schema:
+            type: string
+          example: 0.0.1
+        - name: x-device-info
+          in: header
+          schema:
+            type: string
+          example: iphone 16
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /admins/auth/email/verify:
+    post:
+      tags:
+        - Admin
+      summary: Send Email Verification Code
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: nithen.pv@ileafsolutions.com
+      parameters:
+        - name: x-origin
+          in: header
+          schema:
+            type: string
+          example: web
+        - name: x-app-version
+          in: header
+          schema:
+            type: string
+          example: 0.0.1
+        - name: x-device-info
+          in: header
+          schema:
+            type: string
+          example: iphone 16
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /admins/auth/email/verify/confirm:
+    post:
+      tags:
+        - Admin
+      summary: Verify Email OTP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: nithen.pv@ileafsolutions.com
+                otp: 907206
+      parameters:
+        - name: x-origin
+          in: header
+          schema:
+            type: string
+          example: web
+        - name: x-app-version
+          in: header
+          schema:
+            type: string
+          example: 0.0.1
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /admins/auth/password/reset:
+    post:
+      tags:
+        - Admin
+      summary: Reset Password
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: nithen.pv@ileafsolutions.com
+                otp: 927454
+                newPassword: gZHForXbbx6b@
+      parameters:
+        - name: x-origin
+          in: header
+          schema:
+            type: string
+          example: app
+        - name: x-app-version
+          in: header
+          schema:
+            type: string
+          example: 0.0.1
+        - name: x-device-info
+          in: header
+          schema:
+            type: string
+          example: iphone 16
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /admins/23b21281-ed16-41eb-b15b-6c616e8968e1/profile:
+    put:
+      tags:
+        - Admin
+      summary: Update Profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Jhon Doe
+                roleId: b14089fc-e67e-4e14-8c59-5434dd643338
+                status: true
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /admins/dashboard:
+    get:
+      tags:
+        - Admin
+      summary: Dashboard
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /admins/reports:
+    get:
+      tags:
+        - Admin
+      summary: Reports
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '0'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '10'
+        - name: keyword
+          in: query
+          schema:
+            type: string
+          example: nithen
+        - name: startDate
+          in: query
+          schema:
+            type: string
+          example: '2024-10-20'
+        - name: endDate
+          in: query
+          schema:
+            type: string
+          example: '2024-11-21'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /rbac/roles:
+    get:
+      tags:
+        - RBAC
+      summary: List Roles
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: keyword
+          in: query
+          schema:
+            type: string
+          example: admin
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '10'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - RBAC
+      summary: Create Role
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                roleName: staff
+                modulePermissionIds:
+                  - bb8e9a4b-7a71-4e68-b2b8-f62544943641
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /rbac/roles/960fd7a2-048e-4a19-aff8-4bfe10d96760:
+    get:
+      tags:
+        - RBAC
+      summary: Get Role Details
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /rbac/modules:
+    get:
+      tags:
+        - RBAC
+      summary: List Modules
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /rbac/roles/01f9a77b-120b-4588-9af5-ed22d16f3e0a:
+    put:
+      tags:
+        - RBAC
+      summary: Update Role
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                roleName: staff
+                modulePermissionIds:
+                  - bb8e9a4b-7a71-4e68-b2b8-f62544943641
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - RBAC
+      summary: Delete Role
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /rbac/roles/960fd7a2-048e-4a19-aff8-4bfe10d96760/permissions:
+    get:
+      tags:
+        - RBAC
+      summary: Get Role Permissions
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /rbac/list-all-roles:
+    get:
+      tags:
+        - RBAC
+      summary: List All Roles W/O Pagination
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: keyword
+          in: query
+          schema:
+            type: string
+          example: admin
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /blogs:
+    get:
+      tags:
+        - Blog
+      summary: List Blogs
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '10'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Blog
+      summary: Create New Blog Post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: How to File Your Irish Taxes Online in 2025
+                excerpt: >-
+                  A comprehensive step-by-step guide to filing your Irish taxes
+                  online for the 2025 tax year with helpful tips and common
+                  pitfalls to avoid.
+                content: >-
+                  Filing your taxes online in Ireland has become more
+                  streamlined than ever before. The Revenue Online Service (ROS)
+                  provides a user-friendly platform that makes the entire
+                  process straightforward. In this comprehensive guide, we'll
+                  walk you through each step of the process, from gathering your
+                  essential documents to successfully submitting your return.
+
+
+                  ## Getting Started
+
+
+                  Before you begin the online filing process, ensure you have
+                  all necessary documents ready. This includes your P60, P45s,
+                  medical receipts, and any other relevant tax documents...
+                imageAlt: >-
+                  Person using laptop to file Irish taxes online with Revenue
+                  website visible on screen
+                status: true
+                isFeatured: true
+                featuredOrder: 1
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /blogs/e24416a3-bf8c-475f-b432-d03de32cc671:
+    put:
+      tags:
+        - Blog
+      summary: Update Blog Post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: How to File Your Irish Taxes Online in 2025
+                excerpt: >-
+                  A comprehensive step-by-step guide to filing your Irish taxes
+                  online for the 2025 tax year with helpful tips and common
+                  pitfalls to avoid.
+                content: >-
+                  Filing your taxes online in Ireland has become more
+                  streamlined than ever before. The Revenue Online Service (ROS)
+                  provides a user-friendly platform that makes the entire
+                  process straightforward. In this comprehensive guide, we'll
+                  walk you through each step of the process, from gathering your
+                  essential documents to successfully submitting your return.
+
+
+                  ## Getting Started
+
+
+                  Before you begin the online filing process, ensure you have
+                  all necessary documents ready. This includes your P60, P45s,
+                  medical receipts, and any other relevant tax documents...
+                image: >-
+                  https://api.taxmind.ie/file/get?key=website/blog/1738486201761gw6iV05xE.jpg
+                imageAlt: >-
+                  Person using laptop to file Irish taxes online with Revenue
+                  website visible on screen
+                status: true
+                isFeatured: true
+                featuredOrder: 1
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /blogs/2bcf87de-12c1-4dfa-9107-091816bf9410:
+    delete:
+      tags:
+        - Blog
+      summary: Delete Blog Post
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /blogs/809aba81-3670-4172-82c3-bd249f85e307/publish:
+    patch:
+      tags:
+        - Blog
+      summary: Publish Blog Post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: ''
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /blogs/how-to-file-your-irish-taxes-online-in-2025-3:
+    get:
+      tags:
+        - Blog
+      summary: Get Blog Detail
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/faqs:
+    get:
+      tags:
+        - FAQs Management
+      summary: List All FAQs
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - FAQs Management
+      summary: Create FAQ
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                question: How do I file my tax return online?
+                answer: >-
+                  You can file your tax return online using the Revenue Online
+                  Service (ROS). Simply register an account, gather your
+                  documents, and follow the step-by-step process.
+                status: false
+                displayOrder: 1
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/faqs/8e6d49a5-09c2-466c-8fbc-7cf9171061dc:
+    get:
+      tags:
+        - FAQs Management
+      summary: Get Single FAQ
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    put:
+      tags:
+        - FAQs Management
+      summary: Update FAQ
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                question: How do I file my tax return online in 2025?
+                answer: Updated answer for 2025 tax filing process...
+                status: true
+                displayOrder: 1
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/faqs/ce3a05bf-8a8e-4d0f-bc36-13dc96acd1d9:
+    delete:
+      tags:
+        - FAQs Management
+      summary: Delete FAQ
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/social-media:
+    get:
+      tags:
+        - Social Media Management
+      summary: List Social Media Links
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Social Media Management
+      summary: Create Social Media Link
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                platform: instagram
+                url: https://www.facebook.com/profile.php?id=61572630567344
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/social-media/9dbd02ea-8cd4-4a0a-a126-dc3d1a36323b:
+    put:
+      tags:
+        - Social Media Management
+      summary: Update Social Media Link
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                platform: Facebook
+                url: https://www.facebook.com/profile.php?id=61572630567344
+                icon: >-
+                  https://api.taxmind.ie/wp?key=website/socialmedia/17371767565248HukHXfhG.png
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/social-media/53a0d56e-bfc0-4e62-829d-07392db97ac9:
+    delete:
+      tags:
+        - Social Media Management
+      summary: Delete Social Media Link
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/tax-credits:
+    get:
+      tags:
+        - Tax Credits Management
+      summary: List Tax Credits
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '0'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '10'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Tax Credits Management
+      summary: Create Tax Credit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Working Family Payment
+                description: >-
+                  A weekly payment for employees and the self-employed with
+                  children.
+                details: >-
+                  Must be working at least 19 hours per week and have dependent
+                  children. Apply online through MyWelfare.ie or visit your
+                  local Intreo office. P60, payslips, birth certificates of
+                  children, bank details.
+                icon: >-
+                  https://api.taxmind.ie/wp?key=website/taxCredit/1736923625686mJZds32Dr.png
+                status: true
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/tax-credits/2b81de41-8c4d-497a-877f-cd1da84fef79:
+    get:
+      tags:
+        - Tax Credits Management
+      summary: Get Single Tax Credit
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - Tax Credits Management
+      summary: Delete Tax Credit
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/tax-credits/e450ffa9-5414-4327-9e6c-a94c531ea8a3:
+    put:
+      tags:
+        - Tax Credits Management
+      summary: Update Tax Credit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Dependent Relative Tax Credit
+                description: >-
+                  Receive €245 per dependent annually for supporting a dependent
+                  relative
+                details: >-
+                  The Dependent Relative Tax Credit is a tax credit available in
+                  Ireland to individuals who maintain a dependent relative. This
+                  credit is designed to provide financial relief to those who
+                  support a dependent family memberWho Qualifies as a Dependent
+                  Relative?A dependent relative includes:A relative, or a
+                  relative of your spouse or civil partner, who is incapacitated
+                  by old age or illness.A widowed parent, or a parent who is a
+                  surviving civil partner, regardless of their income level.A
+                  child of the claimant, or of the claimant’s spouse or civil
+                  partner, who is permanently incapacitated due to physical or
+                  mental disability.Amount of the Tax CreditThe Dependent
+                  Relative Tax Credit for 2024 is €245 and 2025 €305This amount
+                  is non-refundable, meaning it can only be used to reduce your
+                  tax liability and cannot be claimed as a cash refund.Claim it
+                  by apply now
+                icon: >-
+                  https://api.taxmind.ie/wp?key=website/taxCredit/1736923625686mJZds32Dr.png
+                status: true
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/carousel-images:
+    get:
+      tags:
+        - Carousel Images Management
+      summary: List Carousel Images
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/carousel-images/ef3a2901-e373-4b04-bb49-ff0eeb87f290:
+    delete:
+      tags:
+        - Carousel Images Management
+      summary: Delete Carousel Image
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/document-templates:
+    get:
+      tags:
+        - Document Templates Management
+      summary: List Document Templates
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '20'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/document-templates/{id}:
+    delete:
+      tags:
+        - Document Templates Management
+      summary: Delete Document Template
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/policies:
+    get:
+      tags:
+        - Policies Management
+      summary: List Policies
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '10'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Policies Management
+      summary: Create Policy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                type: privacy_policy
+                content: >-
+                  <h1>Privacy Policy</h1><p>This privacy policy explains how we
+                  collect and use your personal information...</p>
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/policies/4c639c63-6808-47b6-a244-a8097323ca69:
+    put:
+      tags:
+        - Policies Management
+      summary: Update Policy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                type: fee_structure
+                content: >-
+                  <h1>Fee structure 2025</h1><p>Service Charge Standard Fee: 7%
+                  of the total tax refund amount. VAT: Charged at the applicable
+                  rate (currently 23% in Ireland, subject to change). Payment
+                  Terms Customers will receive their tax refund directly into
+                  their bank account. An invoice for our service fee (including
+                  VAT) will be issued immediately after the refund is processed.
+                  Payment must be made within 7 days of receiving the invoice.
+                  Additional Notes Late payments may be subject to penalties or
+                  interest charges as outlined in our terms and conditions. 
+                   Customers will receive a detailed breakdown of the service fee and VAT in the invoice for transparency</p>
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/policies/{id}:
+    delete:
+      tags:
+        - Policies Management
+      summary: Delete Policy
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/policies/active:
+    get:
+      tags:
+        - Policies Management
+      summary: Get Active Policy
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+          example: privacy_policy
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/query-categories:
+    get:
+      tags:
+        - Query Categories Management
+      summary: List Query Categories
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Query Categories Management
+      summary: Create Query Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Tuition Fees
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/query-categories/a939c02b-a987-417a-b48d-7e0046c22018:
+    put:
+      tags:
+        - Query Categories Management
+      summary: Update Query Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Tax Filing Questions 2025
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/query-categories/999bcf09-6554-4945-a3d6-ad6d5cbebae7:
+    delete:
+      tags:
+        - Query Categories Management
+      summary: Delete Query Category
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/document-categories:
+    get:
+      tags:
+        - Document Categories Management
+      summary: List Document Categories
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Document Categories Management
+      summary: Create Document Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: test
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/document-categories/8493faa0-191a-4162-a590-dcef3c276ab0:
+    put:
+      tags:
+        - Document Categories Management
+      summary: Update Document Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Tax Aggregation-Notary Attested/ Payslips/ Income proof
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/document-categories/1fd0e9fb-9c77-4d70-8cd5-3fbbaa3e1b5e:
+    delete:
+      tags:
+        - Document Categories Management
+      summary: Delete Document Category
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/queries:
+    get:
+      tags:
+        - User Queries Management (Admin Only)
+      summary: List User Queries
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '10'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/queries/{id}:
+    get:
+      tags:
+        - User Queries Management (Admin Only)
+      summary: Get Single User Query
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /site-contents/config:
+    get:
+      tags:
+        - Site Configuration
+      summary: Get Site Configuration
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Site Configuration
+      summary: Update Site Configuration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                commissionPercentage: 15.6
+                vaPercentage: 1.05
+                updatedAt: '2025-08-18T10:20:41.163Z'
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/auth/signup:
+    post:
+      tags:
+        - User
+      summary: Auth - Sign Up
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Davis' OR '1'='1
+                email: manu.s+14@ileafsolutions.net
+                password: Manu@123
+                phone: '+918796451251'
+                dob: '1998-06-13'
+                profession: Doctor
+                ppsNo: 1237561Z
+                address: 5656 Main St
+                eircode: D01AB24
+                maritalStatus: single
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/auth/signin:
+    post:
+      tags:
+        - User
+      summary: Auth - Sign In
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: manu.s+9@ileafsolutions.net
+                password: Manu@123#
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/auth/email/verify:
+    post:
+      tags:
+        - User
+      summary: Verification - Send Email OTP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: manu.s+14@ileafsolutions.net
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/auth/email/verify/confirm:
+    post:
+      tags:
+        - User
+      summary: Verification - Confirm Email OTP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: manu.s+14@ileafsolutions.net
+                otp: 123456
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/auth/phone/verify:
+    post:
+      tags:
+        - User
+      summary: Verification - Send Phone OTP
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                phone: '+353800000000'
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/auth/phone/verify/confirm:
+    post:
+      tags:
+        - User
+      summary: Verification - Confirm Phone OTP (Login issues tokens)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                phone: '+353871234567'
+                otp: 123456
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/auth/signout:
+    post:
+      tags:
+        - User
+      summary: Auth - Sign Out
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: ''
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/auth/token/refresh:
+    post:
+      tags:
+        - User
+      summary: Auth - Refresh Access Token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: user@local.taxmind.ie
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/auth/password/change:
+    post:
+      tags:
+        - User
+      summary: Password - Change (Auth)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                currentPassword: TaxMind@Local2025!
+                newPassword: NewP@ssw0rd!
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/auth/password/reset:
+    post:
+      tags:
+        - User
+      summary: Password - Reset (Forgot)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: user@local.taxmind.ie
+                otp: 123456
+                newPassword: NewP@ssw0rd!
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/profile:
+    get:
+      tags:
+        - User
+      summary: Profile - Get (Auth)
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - User
+      summary: Update Profile (Auth)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: John Doeng
+                dob: 16/10/2000
+                profession: SE
+                ppsNo: 1234567A
+                address: 123 Main Street
+                eircode: D01AB24
+                maritalStatus: married
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{USER_ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/ecdde70b-7350-4965-9d12-1e7914f389b0:
+    get:
+      tags:
+        - User
+      summary: 'Get User Details (Auth: ADMIN)'
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/auth/spouse/unbind:
+    post:
+      tags:
+        - User
+      summary: Spouse - Unbind (Auth)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                reason: Divorce requested by user
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{token}}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users:
+    get:
+      tags:
+        - User
+      summary: List Users
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '20'
+        - name: startDate
+          in: query
+          schema:
+            type: string
+          example: '2025-07-20'
+        - name: endDate
+          in: query
+          schema:
+            type: string
+          example: '2025-08-19'
+        - name: keyword
+          in: query
+          schema:
+            type: string
+          example: jane
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+          example: updatedAt
+        - name: orderBy
+          in: query
+          schema:
+            type: string
+          example: desc
+        - name: status
+          in: query
+          schema:
+            type: string
+          example: unverified
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /:
+    get:
+      tags:
+        - Whatsapp Chats
+      summary: send message
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/queries:
+    post:
+      tags:
+        - User
+      summary: Contact Us - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Alice
+                email: alice@example.com
+                message: I need help with my tax filing.
+                categoryId: a939c02b-a987-417a-b48d-7e0046c22018
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - User
+      summary: List Queries
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: categoryId
+          in: query
+          schema:
+            type: string
+          example: a939c02b-a987-417a-b48d-7e0046c22018
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/agent-activations/upload:
+    post:
+      tags:
+        - User
+      summary: Update Agent Activation Status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                - noticeNo: 5842777942T
+                  customerName: PRIBIN THOMAS
+                  regnTraderNo: 1234567B
+                  mandatoryEFiler: 'No'
+                  taxTypeDutyRep: N/A
+                  documentType: Approved Agent Link
+                  periodBegin: N/A
+                  issuedDate: 25/07/2025
+                  archivedBy: N/A
+                - noticeNo: 5842777943T
+                  customerName: JOHN DOE
+                  regnTraderNo: 9140216RA
+                  mandatoryEFiler: 'No'
+                  taxTypeDutyRep: N/A
+                  documentType: Tax Registration
+                  periodBegin: N/A
+                  issuedDate: 26/07/2025
+                  archivedBy: N/A
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/agent-activations:
+    get:
+      tags:
+        - User
+      summary: List Agent Activations
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '10'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/off-boarded:
+    get:
+      tags:
+        - User
+      summary: Off-boarded Users List
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '20'
+        - name: startDate
+          in: query
+          schema:
+            type: string
+          example: '2025-07-20'
+        - name: endDate
+          in: query
+          schema:
+            type: string
+          example: '2025-08-19'
+        - name: keyword
+          in: query
+          schema:
+            type: string
+          example: user1@local.taxmind.ie
+        - name: sortBy
+          in: query
+          schema:
+            type: string
+          example: updatedAt
+        - name: orderBy
+          in: query
+          schema:
+            type: string
+          example: desc
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /users/d9161f2f-593f-49d2-a34b-9ab7561ed4b6/offboard:
+    delete:
+      tags:
+        - User
+      summary: Off-boarded User - Admin
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires:
+    get:
+      tags:
+        - Questionnaire
+      summary: Admin • List Questionnaires
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: taxYear
+          in: query
+          schema:
+            type: integer
+          example: '2025'
+        - name: status
+          in: query
+          schema:
+            type: string
+          example: published
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '20'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    post:
+      tags:
+        - Questionnaire
+      summary: Admin • Create Questionnaire (taxYear only)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                taxYear: 2024
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/645c3942-a237-4c8a-925b-b46921b2a4fb:
+    get:
+      tags:
+        - Questionnaire
+      summary: Admin • Get Questionnaire
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/responses/8d983c39-05ad-4540-9620-2355916e4ff9:
+    get:
+      tags:
+        - Questionnaire
+      summary: Admin - User • Get Questionnaire Response
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    patch:
+      tags:
+        - Questionnaire
+      summary: User • Update Questionnaire Response
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                currentCategoryId: 01b5a7ed-1b9d-490e-8e76-dc3a8884df82
+                completionPercentage: 25
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/aee9e630-158e-41f4-99cd-be8f27d776c7/publish:
+    post:
+      tags:
+        - Questionnaire
+      summary: Admin • Publish Questionnaire
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: ''
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/dca5c4c2-c3b6-446a-b193-54756aab5909:
+    delete:
+      tags:
+        - Questionnaire
+      summary: Admin • Delete Questionnaire (draft only)
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/2eb76ce8-8497-4b96-ad88-e1eeff1614d1/categories:
+    get:
+      tags:
+        - Questionnaire
+      summary: Admin • List Categories
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/categories:
+    post:
+      tags:
+        - Questionnaire
+      summary: Admin • Create Category (auto description)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                questionnaireId: 2eb76ce8-8497-4b96-ad88-e1eeff1614d1
+                name: Medical Expenses
+                sortOrder: 1
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/categories/28c59f58-7a10-4d1f-ac02-e34a328ed316:
+    patch:
+      tags:
+        - Questionnaire
+      summary: Admin • Update Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                name: Medical expenses credit
+                sortOrder: 1
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/categories/9f6fc125-9346-4459-9ea5-6d177f5d81d5:
+    delete:
+      tags:
+        - Questionnaire
+      summary: Admin • Delete Category
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/categories/87a757ed-9439-44e4-a1cd-c2783f65438d/questions:
+    get:
+      tags:
+        - Questionnaire
+      summary: Admin • List Questions in Category
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/questions:
+    post:
+      tags:
+        - Questionnaire
+      summary: Admin • Create Question
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: |
+                {
+                  "categoryId": "a8fd3654-cf8b-4132-9af7-fab0520ad5de",
+                  "questionText": "Enter the PPS Number of the dependent child",
+                  "questionType": "text",
+                  "isRequired": true,
+                  "sortOrder": 2,
+                  "helpText": "Format should be 7 digits + 1 letter",
+                  //"options": [
+                   // {
+                     // "value": "yes",
+                     // "label": "Yes",
+                    //  "order": 1,
+                     // "isDocumentRequired": true,
+                     // "documentCategoryId": "76309a1a-28f3-4db8-b76c-374aa5c960b8"
+                   // }//,
+                    //{
+                      //"value": "no",
+                     // "label": "No",
+                     // "order": 2,
+                     // "isDocumentRequired": false
+                    //}//
+                  //],
+                  "parentQuestionId": "853e8eec-d927-429f-9d65-b6abb84fac5c",
+                  //"showIfParentOptionValue": "yes"
+                }
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/questions/a66dddeb-37d8-4129-b2a2-eab119bba1cb:
+    patch:
+      tags:
+        - Questionnaire
+      summary: Admin • Update Question
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                questionText: What was your gross income?
+                isRequired: true
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/questions/50a36cf9-dbca-4696-8a66-ce6a6bb57f2b:
+    delete:
+      tags:
+        - Questionnaire
+      summary: Admin • Delete Question
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /responses:
+    post:
+      tags:
+        - Questionnaire
+      summary: User • Create Questionnaire Response
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                questionnaireId: <<QUESTIONNAIRE_ID>>
+                applicationId: <APPLICATION_ID>
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: Bearer {{USER_TOKEN}}
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/responses/submit:
+    post:
+      tags:
+        - Questionnaire
+      summary: User • Submit Questionnaire Response
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                responseId: 8d983c39-05ad-4540-9620-2355916e4ff9
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/answers:
+    post:
+      tags:
+        - Questionnaire
+      summary: User • Save Answer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                responseId: 8d983c39-05ad-4540-9620-2355916e4ff9
+                questionId: d09a54af-7600-4f03-83cc-6de01ffa30aa
+                answer: single
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/responses:
+    get:
+      tags:
+        - Questionnaire
+      summary: Admin • List Questionnaire Responses
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '20'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/import:
+    post:
+      tags:
+        - Questionnaire
+      summary: Import Questionnaire
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                taxYear: 2026
+                importFromTaxYear: 2025
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde:
+    get:
+      tags:
+        - Questionnaire
+      summary: Admin • Get Questionnaire Response By ApplicationId
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /questionnaires/questions/8aa9a618-1fc2-441c-aaf0-1c98b6e0d112:
+    get:
+      tags:
+        - Questionnaire
+      summary: Admin • Get Question Details
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/start:
+    post:
+      tags:
+        - Application
+      summary: Start Application
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                year: 2025
+                isAmendment: false
+                parentApplicationId: null
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications:
+    get:
+      tags:
+        - Application
+      summary: List Applications
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '20'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/steps/questionnaire:
+    get:
+      tags:
+        - Application
+      summary: Get Application Step - Questionnaire
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{USER_ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/ffedd9ca-f91a-4cb3-be6d-1a667f74dcee/steps/documents:
+    get:
+      tags:
+        - Application
+      summary: Get Application Step - Documents
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjQ0MzFkN2MzLTc3NzctNDNjNi04YTQwLTE4N2JmNjU0MDhiNyIsInR5cGUiOiJVU0VSIiwiaWF0IjoxNzU5OTg4MzExLCJleHAiOjE3NjA1OTMxMTF9._LNUY-1bzjS-E4pWZ61-peZOlAzUIFJRPDNZLf8caI8
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/steps/agent_activation:
+    get:
+      tags:
+        - Application
+      summary: Get Application Step - Agent Activation
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{USER_ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/steps/review:
+    get:
+      tags:
+        - Application
+      summary: Get Application Step - Review
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{USER_ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/steps/processing:
+    get:
+      tags:
+        - Application
+      summary: Get Application Step - Processing
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{USER_ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/steps/refund:
+    get:
+      tags:
+        - Application
+      summary: Get Application Step - Refund
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{USER_ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/notes:
+    post:
+      tags:
+        - Application
+      summary: Create Application Note (admin)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                applicationId: 7b8e85dd-5ca9-48cd-b314-b2e1197eedde
+                note: Internal note from admin
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/notes:
+    get:
+      tags:
+        - Application
+      summary: List Application Notes (admin)
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '20'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/documents/request:
+    post:
+      tags:
+        - Application
+      summary: Request Application Documents
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                applicationId: 7b8e85dd-5ca9-48cd-b314-b2e1197eedde
+                documentCategoryId: 09747ef9-56e2-4ada-8bea-21cd2c7cff3c
+                isRequired: true
+                note: Please provide the 2023 P60
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/documents/853da8fa-4a7d-427a-9f82-d482132519bd/status:
+    patch:
+      tags:
+        - Application
+      summary: Accept Application Document
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                status: accepted
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/documents/30c73f78-c918-4cd6-b89e-bb696d8261da/status:
+    patch:
+      tags:
+        - Application
+      summary: Withdraw Application Document Request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                status: withdrawn
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/documents/9f8e7d6c-5b4a-3a2b-1c0d-efab12345678/status:
+    patch:
+      tags:
+        - Application
+      summary: Reject Application Document
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                status: rejected
+                rejectedReason: Document is blurry; please re-upload a clear scan.
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/status/documents_uploaded:
+    patch:
+      tags:
+        - Application
+      summary: Mark Document Uploads Completed
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: ''
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/status/reviewed:
+    patch:
+      tags:
+        - Application
+      summary: Mark Application Review Completed
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: ''
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/amounts/calculate:
+    post:
+      tags:
+        - Application
+      summary: Calculate Final Amount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                refundAmount: 1000
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/amounts/submit:
+    post:
+      tags:
+        - Application
+      summary: Submit Application Amount
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                applicationId: 7b8e85dd-5ca9-48cd-b314-b2e1197eedde
+                refundAmount: 1000
+                discountAmount: 20
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/payments/offline/request:
+    post:
+      tags:
+        - Application
+      summary: Request Offline Payment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                applicationId: 7b8e85dd-5ca9-48cd-b314-b2e1197eedde
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/payments/offline/request/approve:
+    post:
+      tags:
+        - Application
+      summary: Approve Offline Payment Request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                offlinePaymentRequestId: 7f65d40d-cdca-4008-a343-0393b3d68054
+                paymentMethod: cash
+                transactionId: '1234567890'
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/payments/offline/request/reject:
+    post:
+      tags:
+        - Application
+      summary: Reject offline Payment request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                offlinePaymentRequestId: 7f65d40d-cdca-4008-a343-0393b3d68054
+                rejectionReason: Invalid payemnt request
+                rejectionCategory: invalid payment
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/payments/completed:
+    get:
+      tags:
+        - Application
+      summary: List Completed Payments
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: search
+          in: query
+          schema:
+            type: string
+          example: user@local.taxmind.ie
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '20'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/payments/checkout:
+    post:
+      tags:
+        - Application
+      summary: Create Payment Checkout
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                applicationId: 7b8e85dd-5ca9-48cd-b314-b2e1197eedde
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVjZGRlNzBiLTczNTAtNDk2NS05ZDEyLTFlNzkxNGYzODliMCIsInR5cGUiOiJVU0VSIiwiaWF0IjoxNzU3NjU4ODE4LCJleHAiOjE3NTgyNjM2MTh9.FKsnv95dkP8_-J2MWXFa-AZ7AWN6ofdn81hx_GkVCWM
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/payments/offline/request/pending:
+    get:
+      tags:
+        - Application
+      summary: List Pending Payment Requests
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '10'
+        - name: search
+          in: query
+          schema:
+            type: string
+          example: user@local.taxmind.ie
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/reviews:
+    post:
+      tags:
+        - Application
+      summary: Submit Application Review
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                applicationId: 7b8e85dd-5ca9-48cd-b314-b2e1197eedde
+                rating: 5
+                review: Great experience, smooth process!
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - Application
+      summary: List Reviews - Admin
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: status
+          in: query
+          schema:
+            type: string
+          example: pending
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '20'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/reviews/1c284039-8a70-48fb-87af-bc160184e421/status:
+    patch:
+      tags:
+        - Application
+      summary: Reject Review - Admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                status: rejected
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/all:
+    get:
+      tags:
+        - Application
+      summary: List All Applications - Admin
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '20'
+        - name: status
+          in: query
+          schema:
+            type: string
+          example: refund_completed
+        - name: year
+          in: query
+          schema:
+            type: integer
+          example: '2025'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/payments/offline/request/rejected:
+    get:
+      tags:
+        - Application
+      summary: List Rejected offline payments
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde:
+    get:
+      tags:
+        - Application
+      summary: Get Application Details - Admin - User
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/documents:
+    get:
+      tags:
+        - Application
+      summary: Get Application Documents - Admin
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/user:
+    get:
+      tags:
+        - Application
+      summary: Application list of  a User - For admin
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: userId
+          in: query
+          schema:
+            type: string
+          example: 3b546895-273e-49c0-81db-84e13bb4d963
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/payments/webhook:
+    post:
+      tags:
+        - Application
+      summary: Webhook check
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: ''
+      parameters:
+        - name: revolut-signature
+          in: header
+          schema:
+            type: string
+          example: v1=1d96627af11a45e126d15087078aac2ed15e2c4d98ece1103fd9d085af5934f3
+        - name: revolut-request-timestamp
+          in: header
+          schema:
+            type: integer
+          example: '1757791600049'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/claims:
+    get:
+      tags:
+        - Application
+      summary: 'Claim History : User'
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{USER_ACCESS_TOKEN}}'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '20'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/7b8e85dd-5ca9-48cd-b314-b2e1197eedde/check/documents_uploaded:
+    post:
+      tags:
+        - Application
+      summary: 'Check required documents upload status : User'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: ''
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{USER_ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /applications/reviews/3ec3bd24-2477-418f-9259-f6b61d6b398d:
+    get:
+      tags:
+        - Application
+      summary: Review Details - Admin
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: status
+          in: query
+          schema:
+            type: string
+          example: pending
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /files/request-upload:
+    post:
+      tags:
+        - File
+      summary: Request Upload URL - Chat Attachment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                type: chat_attachment
+                filename: chat_attachmemnt.pdf
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /files/confirm-upload:
+    post:
+      tags:
+        - File
+      summary: Confirm Upload(s)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                keys:
+                  - local/175672579530608512918069424353_application-doc.pdf
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /files/{id}:
+    get:
+      tags:
+        - File
+      summary: Get File Metadata by ID
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: id
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /files:
+    get:
+      tags:
+        - File
+      summary: List Files (admin)
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '20'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    delete:
+      tags:
+        - File
+      summary: Delete File (admin & User)
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{USER_ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /files/cleanup:
+    post:
+      tags:
+        - File
+      summary: Cleanup Orphaned Files (admin)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: ''
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /api/v1/notifications/send:
+    post:
+      tags:
+        - Notification
+      summary: Send Test Notification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                title: Test Notification
+                message: This is a test notification
+                notificationType: user
+                fcmToken: >-
+                  egWXtAuCQ4GQwBv3r3R6dy:APA91bHudf43BFQNWpj7rtHnpfCAZ49ZWnYcSldmKumEmXuIvwgk6hru_XH6eNjggUXWJAOS6VwhE4vTbLaRoJRWxi27E6B2M10R6VEiK8bsk37OJPMVsG4
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /chats/admins/support-conversations:
+    get:
+      tags:
+        - Chat
+      summary: List Support Conversations (Admin)
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '20'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /chats/messages:
+    get:
+      tags:
+        - Chat
+      summary: List Application Messages (User)
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: >-
+            Bearer
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImVjZGRlNzBiLTczNTAtNDk2NS05ZDEyLTFlNzkxNGYzODliMCIsInR5cGUiOiJVU0VSIiwiaWF0IjoxNzU3NjU4ODE4LCJleHAiOjE3NTgyNjM2MTh9.FKsnv95dkP8_-J2MWXFa-AZ7AWN6ofdn81hx_GkVCWM
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '20'
+        - name: applicationId
+          in: query
+          schema:
+            type: string
+          example: 7b8e85dd-5ca9-48cd-b314-b2e1197eedde
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /chats/admins/application-conversations:
+    get:
+      tags:
+        - Chat
+      summary: List Application Conversations (Admin)
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: Accept
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '20'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /chats/read:
+    post:
+      tags:
+        - Chat
+      summary: Mark Application Chats Read (Admin)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                chatType: application
+                applicationId: 7b8e85dd-5ca9-48cd-b314-b2e1197eedde
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /whatsapp-chats/conversations:
+    get:
+      tags:
+        - Whatsapp Chats
+      summary: List Chats
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '10'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /whatsapp-chats/messages:
+    get:
+      tags:
+        - Whatsapp Chats
+      summary: List Messages
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+        - name: phone
+          in: query
+          schema:
+            type: number
+          example: '+919995827642'
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: size
+          in: query
+          schema:
+            type: integer
+          example: '10'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /whatsapp-chats/read:
+    post:
+      tags:
+        - Whatsapp Chats
+      summary: Mark message read
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                phone: '+919995827642'
+                userId: null
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /whatsapp-chats/send:
+    post:
+      tags:
+        - Whatsapp Chats
+      summary: Send Message
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                phone: '+919995827642'
+                messageType: image
+                content: test
+                mediaId: '1258682812682175'
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /whatsapp-chats/download-media:
+    post:
+      tags:
+        - Whatsapp Chats
+      summary: Downlaod Media
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                messageId: 96054a0c-6526-48a8-bc9a-a745539ebb6a
+      parameters:
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          example: '{{ACCESS_TOKEN}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}

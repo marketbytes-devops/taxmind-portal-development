@@ -1,0 +1,2 @@
+ALTER TABLE "applications" ALTER COLUMN "paymentStatus" SET DEFAULT 'pending';--> statement-breakpoint
+ALTER TABLE "chats" ADD CONSTRAINT "chats_application_id_applications_id_fk" FOREIGN KEY ("application_id") REFERENCES "public"."applications"("id") ON DELETE no action ON UPDATE no action;
