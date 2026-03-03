@@ -1,0 +1,1 @@
+{"error":"Failed query: select \"id\", \"name\", \"email\", \"ppsNumber\", \"is_tax_agent_verification_completed\" from \"users\" \"users\" where (\"users\".\"deleted_at\" is null and (\"users\".\"name\" ilike $1 or \"users\".\"name\" ilike $2))\nparams: %ajay%,%jisna%"}
