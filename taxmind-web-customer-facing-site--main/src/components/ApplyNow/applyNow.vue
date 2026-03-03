@@ -1143,8 +1143,8 @@ export default {
           phone: this.phonenumber || "",
         };
 
-        // Add spouse details only if married and data exists
-        if (this.maritalstatus === "married") {
+        // Add spouse details only if married or civil partnership and data exists
+        if (this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") {
           if (this.spouseDetails.email) {
             queryData.spouseEmail = this.spouseDetails.email;
           }

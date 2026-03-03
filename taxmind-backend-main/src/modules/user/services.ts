@@ -127,9 +127,8 @@ export const signUp = serviceHandler(signUpSchema, async (req, res) => {
     ),
   });
 
-  // Fetch spouse details with EXACT matching
   if (
-    maritalStatus === 'married' &&
+    (maritalStatus === 'married' || maritalStatus === 'civil_partnership') &&
     spouse &&
     sEmailTrigramHashes &&
     sPhoneTrigramHashes &&
@@ -172,7 +171,7 @@ export const signUp = serviceHandler(signUpSchema, async (req, res) => {
 
   // Validate spouse uniqueness
   if (
-    maritalStatus === 'married' &&
+    (maritalStatus === 'married' || maritalStatus === 'civil_partnership') &&
     spouse &&
     spouseExist &&
     (spouseExist?.isEmailOtpVerified || spouseExist?.isPhoneOtpVerified)
@@ -275,7 +274,7 @@ export const signUp = serviceHandler(signUpSchema, async (req, res) => {
         });
 
       // If spouse details provided, create or update spouse record
-      if (maritalStatus === 'married' && spouse) {
+      if ((maritalStatus === 'married' || maritalStatus === 'civil_partnership') && spouse) {
         if (spouseExist) {
           // Update existing spouse record
           [existingSpouseUserData] = await tx
@@ -294,7 +293,7 @@ export const signUp = serviceHandler(signUpSchema, async (req, res) => {
               ppsNumber: spouse.ppsNo,
               address: spouse.address,
               eircode: spouse.eircode,
-              maritalStatus: 'married',
+              maritalStatus: maritalStatus,
               password: spouse.password ? await bcrypt.hash(spouse.password, 10) : undefined,
               passwordSetAt: spouse.password ? dateToString(now) : undefined,
               status: true,
@@ -335,7 +334,7 @@ export const signUp = serviceHandler(signUpSchema, async (req, res) => {
             ppsNumber: spouse.ppsNo,
             address: spouse.address,
             eircode: spouse.eircode,
-            maritalStatus: 'married',
+            maritalStatus: maritalStatus,
             password: await bcrypt.hash(spouse.password, 10),
             passwordSetAt: dateToString(now),
             status: true,
@@ -420,7 +419,7 @@ export const signUp = serviceHandler(signUpSchema, async (req, res) => {
 
       let spouseUserData: NewUser | null = null;
 
-      if (maritalStatus === 'married' && spouse) {
+      if ((maritalStatus === 'married' || maritalStatus === 'civil_partnership') && spouse) {
         const spouseUser: UserInsert = {
           parentId: mainUserData.id,
           name: spouse.name,
@@ -435,7 +434,7 @@ export const signUp = serviceHandler(signUpSchema, async (req, res) => {
           ppsNumber: spouse.ppsNo,
           address: spouse.address,
           eircode: spouse.eircode,
-          maritalStatus: 'married',
+          maritalStatus: maritalStatus,
           password: await bcrypt.hash(spouse.password, 10),
           passwordSetAt: dateToString(now),
           status: true,
@@ -2490,8 +2489,11 @@ export const updateProfile = serviceHandler(updateProfileSchema, async (req, res
         eircode,
         maritalStatus: currentMaritalStatus,
         parentId:
-          currentMaritalStatus != user.maritalStatus && user.maritalStatus === 'married'
-            ? null
+          (currentMaritalStatus != user.maritalStatus &&
+            (user.maritalStatus === 'married' || user.maritalStatus === 'civil_partnership'))
+            ? (currentMaritalStatus === 'married' || currentMaritalStatus === 'civil_partnership'
+              ? user.parentId
+              : null)
             : user.parentId,
       })
       .where(eq(models.users.id, user.id))
@@ -2518,7 +2520,6 @@ export const updateProfile = serviceHandler(updateProfileSchema, async (req, res
         currentMaritalStatus === 'divorced' ||
         currentMaritalStatus === 'widowed' ||
         currentMaritalStatus === 'separated' ||
-        currentMaritalStatus === 'civil_partnership' ||
         currentMaritalStatus === 'married_spouse_abroad')
     ) {
       // Changing from married to single, divorced, widowed, separated, civil partnership, or married spouse abroad - unlink spouse
@@ -2532,8 +2533,8 @@ export const updateProfile = serviceHandler(updateProfileSchema, async (req, res
           .set({ parentId: null, maritalStatus: spouseMaritalStatus })
           .where(eq(models.users.id, existingSpouse.id));
       }
-    } else if (currentMaritalStatus === 'married' && spouse) {
-      // User wants to be married and provided spouse details
+    } else if ((currentMaritalStatus === 'married' || currentMaritalStatus === 'civil_partnership') && spouse) {
+      // User wants to be married or in civil partnership and provided spouse details
 
       // Validate spouse data based on existing spouse status
       if (existingSpouse) {
@@ -2547,6 +2548,7 @@ export const updateProfile = serviceHandler(updateProfileSchema, async (req, res
           profession: spouse.profession,
           address: spouse.address,
           eircode: spouse.eircode,
+          maritalStatus: currentMaritalStatus,
         };
 
         // Email validation: allow update only if current email is not verified
@@ -2752,7 +2754,7 @@ export const updateProfile = serviceHandler(updateProfileSchema, async (req, res
             profession: spouse.profession,
             address: spouse.address,
             eircode: spouse.eircode,
-            maritalStatus: 'married',
+            maritalStatus: currentMaritalStatus,
             status: true,
             isPrimaryAccount: false,
             isEmailOtpVerified: true,

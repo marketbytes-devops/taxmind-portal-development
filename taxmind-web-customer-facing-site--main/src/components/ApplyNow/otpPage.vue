@@ -256,7 +256,7 @@ export default {
     canProceed() {
       // If only spouse verification is needed (skip user verification)
       if (this.spouseOtpVerification && !this.showUserOtp) {
-        return this.spouseEmailVerified && this.spousePhoneVerified;
+        return this.spousePhoneVerified;
       }
 
       // Check if user OTP sections are required and verified
@@ -389,8 +389,8 @@ export default {
       // Skip user verification, start directly with spouse phone verification
       this.initializeSpousePhoneVerification();
     } else if (this.normalLogin) {
-      // Normal login flow: both email and phone are verified, only need email OTP
-      // This redirects to signinPhoneVerify page, so this case may not be reached
+      // Normal login flow: phone is already verified, only need email OTP
+      this.userPhoneVerified = true;
       this.initializeUserEmailVerification();
     } else {
       // Default flow (registration/signup): start with user phone verification
@@ -626,7 +626,7 @@ export default {
 
           // Handle authentication tokens for user verification (both phone and email return tokens)
           if (
-            (type === "userPhone" || type === "userEmail") &&
+            (type === "userPhone" || type === "userEmail" || type === "spousePhone") &&
             response.data
           ) {
             // Store signature consent data from user email verification for later use
@@ -932,9 +932,9 @@ export default {
         }
 
         case "spousePhone":
-          // Move to spouse email verification
-          this.currentStep = "spouseEmail";
-          await this.sendOtp("spouseEmail");
+          // Spouse email verification removed as per requirement
+          // All verifications complete, check signature consent
+          this.checkSignatureConsent();
           break;
 
         case "spouseEmail":
@@ -952,14 +952,23 @@ export default {
         // Ensure user is authenticated before navigation
         const accessToken = localStorage.getItem("accesstoken");
         if (!accessToken) {
-          this.$snackbar.showError(
-            "Authentication required. Please verify your phone number."
-          );
-          return;
+          console.warn("No access token found in localStorage during proceedNext");
+          // If we are in profileEdit mode, we likely already have a token or don't need a new one
+          if (!this.profileEdit) {
+            this.$snackbar.showError(
+              "Authentication required. Please verify your identity."
+            );
+            return;
+          }
         }
 
-        // If profileedit is true, navigate to /profile without query parameters
-
+        // If profileEdit or normalLogin is true, navigate to /profile without query parameters
+        if (this.profileEdit || this.normalLogin) {
+          this.$router.push({ path: "/profile" }).catch(err => {
+            console.error("Navigation to /profile failed:", err);
+          });
+          return;
+        }
 
         // Wait for axios Authorization header to be set (up to 2s) before navigating
         this.waitForAxiosAuth(2000)
@@ -974,12 +983,17 @@ export default {
                   spousePhone: this.spousePhone,
                 }),
               },
+            }).catch(err => {
+              console.error("Navigation with query failed:", err);
+              this.$router.push({ path: "/profile" });
             });
           })
           .catch(() => {
             // Fallback: navigate anyway but show warning
             console.warn("Axios auth header not ready, navigating anyway");
-            this.$router.push({ path: "/profile" });
+            this.$router.push({ path: "/profile" }).catch(err => {
+              console.error("Fallback navigation failed:", err);
+            });
           });
       }
     },

@@ -2305,6 +2305,11 @@ export default {
             ? response.data.user || response.data
             : null;
         if (u) {
+          // Map spouse data from API key 'spouse' to template key 'spouseDetails'
+          if (u.spouse) {
+            u.spouseDetails = u.spouse;
+          }
+
           this.userData = u;
 
           // Map fields to local properties used by the template

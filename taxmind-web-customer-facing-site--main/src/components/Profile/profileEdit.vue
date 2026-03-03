@@ -742,52 +742,52 @@ export default {
         this.showSnackBar = true;
         return;
       }
-      if (this.maritalstatus === "married" && !this.spouseDetails.fullName) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && !this.spouseDetails.fullName) {
         this.validationErrors.spouseFullName =
           "Please provide spouse full name";
         return;
       }
       if (
-        this.maritalstatus === "married" &&
+        (this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") &&
         !this.validateName(this.spouseDetails.fullName)
       ) {
         this.validationErrors.spouseFullName =
           "Spouse name should contain only letters and spaces";
         return;
       }
-      if (this.maritalstatus === "married" && !this.spouseDetails.email) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && !this.spouseDetails.email) {
         this.validationErrors.spouseEmail = "Please provide spouse email";
         return;
       }
       // Validate spouse email format
-      if (this.maritalstatus === "married" && this.spouseDetails.email) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && this.spouseDetails.email) {
         if (!emailRegex.test(this.spouseDetails.email)) {
           this.validationErrors.spouseEmail =
             "Please provide a valid spouse email address";
           return;
         }
       }
-      if (this.maritalstatus === "married" && !this.spouseDetails.phone) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && !this.spouseDetails.phone) {
         this.validationErrors.spousePhone =
           "Please provide spouse phone number";
         return;
       }
-      if (this.maritalstatus === "married" && !this.spouseDetails.dob) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && !this.spouseDetails.dob) {
         this.msg = "Please Provide Date Of Birth Of The Spouse";
         this.showSnackBar = true;
         return;
       }
-      if (this.maritalstatus === "married" && !this.spouseDetails.profession) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && !this.spouseDetails.profession) {
         this.msg = "Please Provide Profession Of The Spouse";
         this.showSnackBar = true;
         return;
       }
-      if (this.maritalstatus === "married" && !this.spouseDetails.ppsNumber) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && !this.spouseDetails.ppsNumber) {
         this.msg = "Please Provide PPS Number Of The Spouse";
         this.showSnackBar = true;
         return;
       }
-      if (this.maritalstatus === "married" && !this.spouseDetails.eircode) {
+      if ((this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") && !this.spouseDetails.eircode) {
         this.msg = "Please Provide Ericode Of The Spouse";
         this.showSnackBar = true;
         return;
@@ -844,11 +844,11 @@ export default {
     },
     async applynow() {
       try {
-        // Check if marital status changed from Married to Single
-        if (
-          this.originalMaritalStatus === "married" &&
-          this.maritalstatus === "single"
-        ) {
+        // Check if marital status changed from Married/Civil Partnership to any status other than Married/Civil Partnership
+        const wasSpouseLinked = this.originalMaritalStatus === "married" || this.originalMaritalStatus === "civil_partnership";
+        const isSpouseLinked = this.maritalstatus === "married" || this.maritalstatus === "civil_partnership";
+
+        if (wasSpouseLinked && !isSpouseLinked) {
           // Call unbind spouse API
           try {
             await this.submitData("/users/auth/spouse/unbind");
