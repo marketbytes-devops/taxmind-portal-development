@@ -416,8 +416,8 @@ router.beforeEach((to, from, next) => {
       next();
       return;
     }
-    // If user is already authenticated, redirect to profile/dashboard
-    next({ path: "/profile" });
+    // If user is already authenticated, redirect to application/dashboard
+    next({ path: "/application" });
     return;
   }
   if (

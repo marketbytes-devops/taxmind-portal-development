@@ -962,36 +962,25 @@ export default {
           }
         }
 
-        // If profileEdit or normalLogin is true, navigate to /profile without query parameters
-        if (this.profileEdit || this.normalLogin) {
+        // If profileEdit is true, navigate back to /profile
+        if (this.profileEdit) {
           this.$router.push({ path: "/profile" }).catch(err => {
             console.error("Navigation to /profile failed:", err);
           });
           return;
         }
 
-        // Wait for axios Authorization header to be set (up to 2s) before navigating
+        // For signup, normalLogin, and all other flows → redirect to /application
         this.waitForAxiosAuth(2000)
           .then(() => {
-            this.$router.push({
-              path: "/profile",
-              query: {
-                email: this.userEmail,
-                phone: this.userPhone,
-                ...(this.spouseExists && {
-                  spouseEmail: this.spouseEmail,
-                  spousePhone: this.spousePhone,
-                }),
-              },
-            }).catch(err => {
-              console.error("Navigation with query failed:", err);
-              this.$router.push({ path: "/profile" });
+            this.$router.push({ path: "/application" }).catch(err => {
+              console.error("Navigation to /application failed:", err);
             });
           })
           .catch(() => {
             // Fallback: navigate anyway but show warning
             console.warn("Axios auth header not ready, navigating anyway");
-            this.$router.push({ path: "/profile" }).catch(err => {
+            this.$router.push({ path: "/application" }).catch(err => {
               console.error("Fallback navigation failed:", err);
             });
           });

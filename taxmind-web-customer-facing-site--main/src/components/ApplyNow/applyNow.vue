@@ -1143,16 +1143,8 @@ export default {
           phone: this.phonenumber || "",
         };
 
-        // Add spouse details only if married or civil partnership and data exists
-        if (this.maritalstatus === "married" || this.maritalstatus === "civil_partnership") {
-          if (this.spouseDetails.email) {
-            queryData.spouseEmail = this.spouseDetails.email;
-          }
-          if (this.spouseDetails.phone) {
-            queryData.spousePhone = this.spouseDetails.phone;
-          }
-          queryData.spouseExists = "true";
-        }
+        // Spouse verification is no longer required during initial application.
+        // It will be handled at the tax filing stage instead.
 
         this.$router.push({
           name: "otp-verify",

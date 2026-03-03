@@ -64,7 +64,7 @@ export default new Vuex.Store({
       });
 
       console.log('[Store] Access token saved, now initializing FCM...');
-      
+
       // Initialize FCM and send token after login
       try {
         console.log('[Store] Calling FCMService.initialize()...');
@@ -80,7 +80,9 @@ export default new Vuex.Store({
 
       // Only navigate if not explicitly disabled
       if (userData.skipNavigation !== true) {
-        router.push("/profile");
+        // Use custom redirect path if provided, otherwise default to /application
+        const destination = userData.redirectTo || "/application";
+        router.push(destination);
       }
     },
     async logoutUser({ commit }) {

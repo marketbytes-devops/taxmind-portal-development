@@ -345,10 +345,10 @@ export default {
           skipNavigation: true, // Prevent automatic navigation
         });
 
-        // Navigate to profile manually using path (same as store)
+        // Navigate to application page (post-OTP redirect goes to claim procedure)
         setTimeout(() => {
           this.$router
-            .push("/profile")
+            .push("/application")
             .then(() => { })
             .catch((err) => {
               console.error("❌ Navigation failed:", err);

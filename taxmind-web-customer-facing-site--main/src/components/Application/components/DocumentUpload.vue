@@ -218,7 +218,14 @@ export default {
                 this.$emit('documents-submitted-success');
 
                 // Show success message
-                this.$emit('show-success', 'Documents submitted successfully');
+                this.$emit('show-success', 'Documents submitted successfully! Redirecting to your profile...');
+
+                // Upon final submission of the application, redirect the user to their profile
+                setTimeout(() => {
+                    this.$router.push({ path: '/profile' }).catch(err => {
+                        console.error('Navigation to profile failed:', err);
+                    });
+                }, 1500);
             } catch (error) {
                 console.error('Error submitting documents:', error);
                 this.$emit('show-error', error.response?.data?.message || 'Failed to submit documents. Please try again.');
