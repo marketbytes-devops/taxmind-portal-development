@@ -38,91 +38,99 @@
           </v-flex>
         </v-layout>
 
+        <v-layout wrap justify-start class="my-3">
+          <v-flex xs12>
+            <v-tabs v-model="currentTab" color="#1A73E9" @change="handleTabChange">
+              <v-tab v-for="tab in tabItems" :key="tab">
+                {{ tab }}
+              </v-tab>
+            </v-tabs>
+          </v-flex>
+        </v-layout>
+
         <v-layout wrap justify-start>
           <v-flex xs12>
             <!-- Table section -->
             <v-layout wrap justify-center>
               <v-flex xs12>
-                <v-simple-table class="elevation-0">
-                  <template v-slot:default>
-                    <thead>
-                      <tr>
-                        <th v-for="header in computedHeaders" :key="header.value" class="text-left"
-                          :style="header.width ? `width: ${header.width}` : ''">
-                          {{ header.text }}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="(item, index) in usersList" :key="item.id" :style="'cursor: pointer'"
-                        @click="viewUserDetails(item)">
-                        <td>
-                          <span v-if="currentPage > 1">
-                            {{ (currentPage - 1) * limit + index + 1 }}
-                          </span>
-                          <span v-else>{{ index + 1 }}</span>
-                        </td>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.ppsNumber }}</td>
-                        <td>{{ item.email }}</td>
-                        <td>{{ item.phone }}</td>
-                        <td>{{ formatDate(item.createdAt) }}</td>
-                        <td>
-                          <span :style="{ color: item.isTaxAgentVerificationCompleted ? 'green' : 'red' }">
-                            {{
-                              item.isTaxAgentVerificationCompleted
-                                ? "Activated"
-                                : "Not Activated"
-                            }}
-                          </span>
-                        </td>
-                        <td @click.stop>
-                          <v-checkbox 
-                            :input-value="item.isTaxAgentVerificationCompleted || item.isTaxAgentVerificationRequestSent"
-                            color="primary"
-                            hide-details
-                            class="ma-0 pa-0"
-                            @click="handleROSCheckboxChange(item)"
-                            :disabled="item.isTaxAgentVerificationCompleted || !canEdit('users')"
-                          ></v-checkbox>
-                        </td>
-                       
-                        <!-- <td>{{ item.status ? "Active" : "Inactive" }}</td> -->
-                        <!-- <td v-if="status !== 'PENDING'">
-                          <v-icon
-                            v-if="item.status == 'ACTIVE'"
-                            small
-                            color="red"
-                            class="ml-1"
-                            @click.stop="openterminateDialog(item)"
-                          >
-                            mdi-cancel
-                          </v-icon>
-                          <v-icon
-                            v-if="item.status == 'INACTIVE'"
-                            small
-                            color="red"
-                            class="ml-1"
-                            @click.stop="openactivateDialog(item)"
-                          >
-                            mdi-swap-horizontal
-                          </v-icon> -->
-                        <!-- If Needed////To delete the test data -->
-                        <!-- <v-icon
-                            small
-                            color="red"
-                            class="ml-1"
-                            @click.stop="opendeleteDialog(item)"
-                          >
-                            mdi-delete
-                          </v-icon> -->
-                        <!-- </td> -->
-                      </tr>
-                    </tbody>
-                  </template>
-                </v-simple-table>
+                <div class="table-container">
+                  <v-simple-table class="elevation-0 custom-table">
+                    <template v-slot:default>
+                      <thead>
+                        <tr>
+                          <th v-for="header in computedHeaders" :key="header.value" class="text-left nowrap-cell"
+                            :style="header.width ? `width: ${header.width}` : ''">
+                            {{ header.text }}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(item, index) in usersList" :key="item.id" :style="'cursor: pointer'"
+                          @click="viewUserDetails(item)">
+                          <td class="nowrap-cell">
+                            <span v-if="currentPage > 1">
+                              {{ (currentPage - 1) * limit + index + 1 }}
+                            </span>
+                            <span v-else>{{ index + 1 }}</span>
+                          </td>
+                          <td class="nowrap-cell">{{ item.name }}</td>
+                          <td class="nowrap-cell">{{ item.ppsNumber }}</td>
+                          <td class="nowrap-cell">{{ item.email }}</td>
+                          <td class="nowrap-cell">{{ item.phone }}</td>
+                          <td class="nowrap-cell">{{ formatDate(item.createdAt) }}</td>
+                          <td class="nowrap-cell">
+                            <v-chip
+                              small
+                              :color="getStatusColor(item)"
+                              dark
+                              depressed
+                            >
+                              {{ getStatusText(item) }}
+                            </v-chip>
+                          </td>
+                          <td class="nowrap-cell">
+                            <v-chip v-if="item.isJointAssessment" :color="item.parentId ? 'info' : 'success'" dark x-small>
+                              {{ item.parentId ? 'Spouse' : 'Primary' }}
+                            </v-chip>
+                            <span v-else>-</span>
+                          </td>
+                          <td class="nowrap-cell" v-if="currentTab === 3">
+                            {{ item.pairedWith ? item.pairedWith.name : '-' }}
+                          </td>
+                          <td class="nowrap-cell">
+                            {{ item.remark || '-' }}
+                            <v-btn icon small @click.stop="openEditRemark(item)">
+                              <v-icon small>mdi-pencil</v-icon>
+                            </v-btn>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </template>
+                  </v-simple-table>
+                </div>
               </v-flex>
             </v-layout>
+
+            <!-- Edit Remark Dialog -->
+            <v-dialog v-model="editRemarkDialog" max-width="500">
+              <v-card class="rounded-lg">
+                <v-card-title class="headline">Edit Remark</v-card-title>
+                <v-card-text>
+                  <v-textarea
+                    v-model="editingRemark"
+                    label="Remark"
+                    outlined
+                    rows="3"
+                    hide-details
+                  ></v-textarea>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn text @click="editRemarkDialog = false">Cancel</v-btn>
+                  <v-btn color="#1A73E9" dark @click="saveRemark">Save</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
             <!-- pagination -->
             <v-layout wrap justify-center pt-2>
               <v-flex xs12>
@@ -221,6 +229,7 @@ import {
   terminateOrActivateUser,
   deleteUser,
   requestAgentActivation,
+  updateUserRemark,
 } from "@/api/modules/users";
 // import store from "../../../store";
 import debounce from "lodash/debounce";
@@ -243,6 +252,11 @@ export default {
       itemToDelete: null,
       itemToactivate: null,
       itemToPerDelete: null,
+      currentTab: 0,
+      tabItems: ["Active Users", "Off Board Users", "Return Users", "Joint Assessment"],
+      editRemarkDialog: false,
+      editingRemark: "",
+      selectedUserForRemark: null,
       headers: [
         { text: "Sl.No", value: "slno", align: "start" },
         { text: "Name", value: "name", align: "start" },
@@ -250,22 +264,17 @@ export default {
         { text: "Email", value: "email", align: "start" },
         { text: "Phone Number", value: "phone", align: "start" },
         { text: "Created On", value: "createdAt", align: "start" },
-        { text: "AGENT", value: "agent", align: "start" },
-        { text: "ROS Updated", value: "rosRequest", align: "start" },
-        // { text: "Status", value: "status", align: "start" },
-        // { text: "Actions", value: "id", align: "start", width: "50px" },
+        { text: "Status", value: "status", align: "start" },
+        { text: "Account Type", value: "accountType", align: "start" },
+        { text: "Remark", value: "remark", align: "start" },
       ],
       statusArray: [
         { text: "All", value: "all" },
-        // { text: "Pending", value: "pending" },
-        { text: "Active", value: "active" },
-        { text: "Terminated", value: "terminated" },
-        { text: "Unverified Customers", value: "unverified" },
-        { text: "Agent activated", value: "agent_activated" },
-        { text: "Agent not activated", value: "agent_not_activated" },
+        { text: "ROS Not Updated", value: "ros_not_updated" },
+        { text: "ROS Updated", value: "ros_updated" },
+        { text: "Agent Activated", value: "agent_activated" },
       ],
       page: 1,
-      // Initialize to 1; set correctly from URL/store in mounted()
       currentPage: 1,
       pages: 0,
       limit: 10,
@@ -294,10 +303,17 @@ export default {
       }
     },
     computedHeaders() {
-      if (this.status === "PENDING") {
-        return this.headers.filter((header) => header.value !== "id");
+      let displayHeaders = [...this.headers];
+      
+      // If current tab is Joint Assessment (index 3), add Paired With column
+      if (this.currentTab === 3) {
+        displayHeaders.splice(8, 0, { text: "Paired With", value: "pairedWith", align: "start" });
       }
-      return this.headers;
+
+      if (this.status === "PENDING") {
+        return displayHeaders.filter((header) => header.value !== "id");
+      }
+      return displayHeaders;
     },
   },
   created() {
@@ -406,6 +422,26 @@ export default {
       }
     },
 
+    getStatusText(item) {
+      if (item.isTaxAgentVerificationCompleted) {
+        return "Agent Activated";
+      } else if (item.isTaxAgentVerificationRequestSent) {
+        return "ROS Updated";
+      } else {
+        return "ROS Not Updated";
+      }
+    },
+
+    getStatusColor(item) {
+      if (item.isTaxAgentVerificationCompleted) {
+        return "#4CAF50"; // Success Green
+      } else if (item.isTaxAgentVerificationRequestSent) {
+        return "#2196F3"; // Blue
+      } else {
+        return "#FF9800"; // Warning Orange
+      }
+    },
+
     async handleROSCheckboxChange(item) {
       if (item.isTaxAgentVerificationCompleted) {
         this.msg = `Cannot modify ROS status - Agent is already activated`;
@@ -438,6 +474,30 @@ export default {
       }
     },
 
+    handleTabChange() {
+      this.currentPage = 1;
+      this.getData();
+    },
+    openEditRemark(item) {
+      this.selectedUserForRemark = item;
+      this.editingRemark = item.remark || "";
+      this.editRemarkDialog = true;
+    },
+    async saveRemark() {
+      if (!this.selectedUserForRemark) return;
+      this.appLoading = true;
+      try {
+        await updateUserRemark(this.selectedUserForRemark.id, this.editingRemark);
+        this.msg = "Remark updated successfully";
+        this.showSnackBar = true;
+        this.editRemarkDialog = false;
+        this.getData();
+      } catch (error) {
+        this.handleApiError(error);
+      } finally {
+        this.appLoading = false;
+      }
+    },
     getData() {
       // Do not mutate `keyword` here; using a local normalized value prevents
       // triggering the keyword watcher that would reset `currentPage` to 1.
@@ -455,6 +515,10 @@ export default {
       // include status if provided (route or UI) and not 'all'
       if (this.status && this.status.trim() !== "" && this.status.toLowerCase() !== "all") {
         params.status = this.status.trim();
+      } else {
+        // Fallback to tab-based status
+        const tabMap = ["active", "offboard", "return", "joint_assessment"];
+        params.status = tabMap[this.currentTab];
       }
 
       // Add date filtering if year is selected
@@ -643,6 +707,23 @@ export default {
 
 .dialog-button {
   min-width: 120px;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.custom-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.nowrap-cell {
+  white-space: nowrap !important;
+  padding: 12px 16px !important;
 }
 
 @keyframes pulse {

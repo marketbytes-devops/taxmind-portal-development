@@ -16,8 +16,7 @@ import {
 } from 'drizzle-orm';
 import * as jwt from 'jsonwebtoken';
 
-import { OTP_EXPIRATION_TIME, policyTypes } from '@/constants';
-import { activityLogEntityNames } from '@/constants';
+import { OTP_EXPIRATION_TIME, activityLogEntityNames, notificationTypes, policyTypes } from '@/constants';
 import { db, models } from '@/database';
 import {
   checkVerification as twilioCheckVerification,
@@ -27,7 +26,7 @@ import { sendSignatureRequest } from '@/integrations/zohoSign';
 import logger from '@/logger';
 import { activityLog } from '@/logger/activityLog';
 import { mail } from '@/mail';
-import { notificationHandler } from '@/notifications';
+import { adminNotificationHandler, notificationHandler } from '@/notifications';
 import { notificationTemplates } from '@/notifications/templates/index';
 import ApiError from '@/utils/apiError';
 import { hashSearchKeyword, hashTrigrams, hashWithHMAC } from '@/utils/crypto';
@@ -45,13 +44,17 @@ import {
   listQueriesSchema,
   listUserSchema,
   offBoardedUsersListSchema,
+  pairUserSchema,
   phoneVerificationCodeSchema,
+  reactivateAccountSchema,
   resetPasswordSchema,
   signInSchema,
   signUpSchema,
   submitQuerySchema,
   unbindSpouseSchema,
+  unpairUserSchema,
   updateProfileSchema,
+  updateUserRemarkSchema,
   userIdBodySchema,
   verifyEmailSchema,
   verifyPhoneSchema,
@@ -396,6 +399,7 @@ export const signUp = serviceHandler(signUpSchema, async (req, res) => {
       termsAndConditionId: terms.id,
       isSignatureConsentCompleted: isProduction ? false : true,
       signatureConsentCompletedAt: isProduction ? null : dateToString(new Date()),
+      isJointAssessment: !!((maritalStatus === 'married' || maritalStatus === 'civil_partnership') && spouse),
     };
 
     type NewUser = {
@@ -448,6 +452,7 @@ export const signUp = serviceHandler(signUpSchema, async (req, res) => {
           isPrimaryAccount: false,
           isSignatureConsentCompleted: isProduction ? false : true,
           signatureConsentCompletedAt: isProduction ? null : dateToString(new Date()),
+          isJointAssessment: true,
         };
 
         [spouseUserData] = await tx.insert(models.users).values(spouseUser).returning({
@@ -565,8 +570,7 @@ export const signIn = serviceHandler(signInSchema, async (req, res) => {
       )}]::text[] AND ${models.users.emailTrigramHashes} <@ ARRAY[${sql.join(
         emailTrigramHashes.map((h) => sql`${h}`),
         sql`, `
-      )}]::text[]`,
-      isNull(models.users.deletedAt)
+      )}]::text[]`
     ),
     columns: {
       id: true,
@@ -582,6 +586,9 @@ export const signIn = serviceHandler(signInSchema, async (req, res) => {
       isSignatureConsentCompleted: true,
       fcmToken: true,
       isAppNotificationEnabled: true,
+      deletedAt: true,
+      isReturnUser: true,
+      remark: true,
     },
     with: {
       parentUser: {
@@ -722,7 +729,13 @@ export const signIn = serviceHandler(signInSchema, async (req, res) => {
   //   return res.success('A verification code is send to your phone. Please verify your phone', data);
   // }
 
-  if (!user.status) throw new ApiError('Your account has been deactivated');
+  if (user.deletedAt || !user.status) {
+    return res.success('Account reactivation required', {
+      ...data,
+      isOffBoarded: true,
+      lastRemark: user.remark,
+    });
+  }
 
   // Enforce phone verification on each login via Twilio Verify
   // if (user.phone) {
@@ -745,6 +758,55 @@ export const signIn = serviceHandler(signInSchema, async (req, res) => {
     ...data,
     isPasswordResetRequired: false,
   });
+});
+
+export const reactivateAccount = serviceHandler(reactivateAccountSchema, async (req, res) => {
+  const { email } = req.body;
+  const emailTrigramHashes = hashTrigrams(email.toLowerCase());
+
+  const user = await db.query.users.findFirst({
+    where: sql`${models.users.emailTrigramHashes} @> ARRAY[${sql.join(
+      emailTrigramHashes.map((h) => sql`${h}`),
+      sql`, `
+    )}]::text[]`,
+  });
+
+  if (!user) throw new ApiError('User not found');
+
+  await db
+    .update(models.users)
+    .set({
+      deletedAt: null,
+      status: true,
+      isReturnUser: true,
+      returnedAt: new Date(),
+    })
+    .where(eq(models.users.id, user.id));
+
+  // Trigger internal notification to admin
+  try {
+    const activeAdmins = await db.query.admins.findMany({
+      where: eq(models.admins.status, true),
+    });
+
+    if (activeAdmins.length > 0) {
+      await adminNotificationHandler({
+        payload: {
+          title: 'User Reactivated',
+          body: `User ${user.email} has reactivated their account.`,
+          type: notificationTypes.userReactivated.key,
+        },
+        adminIds: activeAdmins.map((admin) => admin.id),
+        tokens: activeAdmins.map((admin) => admin.fcmToken).filter((t): t is string => !!t),
+      });
+    }
+
+    logger.info(`User ${user.email} has reactivated their account.`);
+  } catch (err) {
+    logger.error('Failed to trigger admin notification for reactivation:', err);
+  }
+
+  return res.success('Account reactivated successfully. You can now log in.');
 });
 
 export const verifyEmail = serviceHandler(verifyEmailSchema, async (req, res) => {
@@ -1415,12 +1477,12 @@ export const uploadAgentActivationData = serviceHandler(
         });
 
         // Send agent activation emails
-        const emailPromises = activatedUsers.map((user) =>
+        /* const emailPromises = activatedUsers.map((user) =>
           mail.agentActivationCompleted({
             recipient: user.email,
             replacements: { name: user.name },
           })
-        );
+        ); */
 
         // Send FCM notifications
         activatedUsers.map((user) => {
@@ -1433,7 +1495,7 @@ export const uploadAgentActivationData = serviceHandler(
           });
         });
 
-        await Promise.all(emailPromises);
+        // await Promise.all(emailPromises);
         logger.info(`Sent agent activation emails to ${activatedUsers.length} users`);
       } catch (emailError) {
         // Log email errors but don't fail the entire operation
@@ -1606,6 +1668,7 @@ export const getUserDetails = serviceHandler(getUserDetailsSchema, async (req, r
       parentId: true,
       createdAt: true,
       updatedAt: true,
+      isJointAssessment: true,
     },
   });
 
@@ -1694,13 +1757,20 @@ export const listUsers = serviceHandler(listUserSchema, async (req, res) => {
     case 'active':
       filters.push(
         isNull(models.users.deletedAt),
-        eq(models.users.status, true),
-        isNotNull(models.users.emailVerifiedAt),
-        isNotNull(models.users.phoneVerifiedAt),
-        eq(models.users.isSignatureConsentCompleted, true)
+        eq(models.users.status, true)
       );
       break;
 
+    case 'offboard':
+      filters.push(isNotNull(models.users.deletedAt));
+      break;
+
+    case 'return':
+      filters.push(
+        isNull(models.users.deletedAt),
+        eq(models.users.isReturnUser, true)
+      );
+      break;
     case 'pending':
       filters.push(isNull(models.users.deletedAt), eq(models.users.status, false));
       break;
@@ -1720,6 +1790,22 @@ export const listUsers = serviceHandler(listUserSchema, async (req, res) => {
       filters.push(isNotNull(models.users.deletedAt));
       break;
 
+    case 'ros_not_updated':
+      filters.push(
+        isNull(models.users.deletedAt),
+        eq(models.users.isTaxAgentVerificationCompleted, false),
+        eq(models.users.isTaxAgentVerificationRequestSent, false)
+      );
+      break;
+
+    case 'ros_updated':
+      filters.push(
+        isNull(models.users.deletedAt),
+        eq(models.users.isTaxAgentVerificationCompleted, false),
+        eq(models.users.isTaxAgentVerificationRequestSent, true)
+      );
+      break;
+
     case 'agent_activated':
       filters.push(
         isNull(models.users.deletedAt),
@@ -1727,10 +1813,10 @@ export const listUsers = serviceHandler(listUserSchema, async (req, res) => {
       );
       break;
 
-    case 'agent_not_activated':
+    case 'joint_assessment':
       filters.push(
         isNull(models.users.deletedAt),
-        eq(models.users.isTaxAgentVerificationCompleted, false)
+        eq(models.users.isJointAssessment, true)
       );
       break;
 
@@ -1835,6 +1921,10 @@ export const listUsers = serviceHandler(listUserSchema, async (req, res) => {
         updatedAt: true,
         isTaxAgentVerificationRequestSent: true,
         taxAgentVerificationRequestSentAt: true,
+        remark: true,
+        isReturnUser: true,
+        isJointAssessment: true,
+        parentId: true,
       },
       limit,
       offset,
@@ -1848,7 +1938,60 @@ export const listUsers = serviceHandler(listUserSchema, async (req, res) => {
     }),
   ]);
 
-  return res.data('Users retrieved successfully', users, { page, size, total: totalUsers });
+  // Enrich joint assessment users with their paired spouse info
+  const jointUsers = users.filter(u => u.isJointAssessment || u.parentId);
+  let pairedMap = new Map<string, { id: string; name: string }>();
+
+  if (jointUsers.length > 0) {
+    // Collect all parent IDs (for spouse users) and user IDs (for primary users)
+    const parentIds = jointUsers.filter(u => u.parentId).map(u => u.parentId!);
+    const primaryIds = jointUsers.filter(u => !u.parentId).map(u => u.id);
+
+    // Fetch parents (for spouse users who have parentId)
+    if (parentIds.length > 0) {
+      const parents = await db.query.users.findMany({
+        where: inArray(models.users.id, parentIds),
+        columns: { id: true, name: true },
+      });
+      for (const p of parents) {
+        pairedMap.set(p.id, { id: p.id, name: p.name });
+      }
+    }
+
+    // Fetch children (spouses of primary users)
+    if (primaryIds.length > 0) {
+      const children = await db.query.users.findMany({
+        where: and(
+          inArray(models.users.parentId, primaryIds),
+          isNull(models.users.deletedAt)
+        ),
+        columns: { id: true, name: true, parentId: true },
+      });
+      for (const c of children) {
+        if (c.parentId) {
+          pairedMap.set(c.parentId, { id: c.id, name: c.name });
+        }
+      }
+    }
+  }
+
+  // Attach pairedWith info to each user
+  const enrichedUsers = users.map(u => {
+    const isJoint = u.isJointAssessment || !!u.parentId;
+    if (!isJoint) return { ...u, pairedWith: null };
+
+    if (u.parentId) {
+      // This is a spouse user, paired with the parent
+      const parent = pairedMap.get(u.parentId);
+      return { ...u, pairedWith: parent || null };
+    } else {
+      // This is a primary user, paired with the child
+      const child = pairedMap.get(u.id);
+      return { ...u, pairedWith: child || null };
+    }
+  });
+
+  return res.data('Users retrieved successfully', enrichedUsers, { page, size, total: totalUsers });
 });
 export const listOffBoardedUsers = serviceHandler(offBoardedUsersListSchema, async (req, res) => {
   const { keyword, startDate, endDate, sortBy, orderBy } = req.query;
@@ -2882,3 +3025,165 @@ export const toggleAgentActivationRequestStatus = serviceHandler(
     return res.success('User agent activation request status updated successfully', {});
   }
 );
+
+export const updateUserRemark = serviceHandler(updateUserRemarkSchema, async (req, res) => {
+  const { userId } = req.params;
+  const { remark } = req.body;
+
+  const user = await db.query.users.findFirst({
+    where: eq(models.users.id, userId),
+  });
+
+  if (!user) throw new ApiError('User not found', 404);
+
+  await db
+    .update(models.users)
+    .set({
+      remark,
+      updatedAt: new Date(),
+    })
+    .where(eq(models.users.id, userId));
+
+  return res.success('Remark updated successfully');
+});
+
+export const pairUser = serviceHandler(pairUserSchema, async (req, res) => {
+  const { primaryUserId, spouseUserId } = req.body;
+
+  if (primaryUserId === spouseUserId) {
+    throw new ApiError('Cannot pair a user with themselves', 400);
+  }
+
+  const [primaryUser, spouseUser] = await Promise.all([
+    db.query.users.findFirst({ where: eq(models.users.id, primaryUserId) }),
+    db.query.users.findFirst({ where: eq(models.users.id, spouseUserId) }),
+  ]);
+
+  if (!primaryUser || !spouseUser) {
+    throw new ApiError('One or both users not found', 404);
+  }
+
+  await db.transaction(async (tx) => {
+    // Update primary user
+    await tx
+      .update(models.users)
+      .set({
+        parentId: null,
+        isJointAssessment: true,
+        updatedAt: new Date(),
+      })
+      .where(eq(models.users.id, primaryUserId));
+
+    // Update spouse user
+    await tx
+      .update(models.users)
+      .set({
+        parentId: primaryUserId,
+        isJointAssessment: true,
+        isPrimaryAccount: false,
+        updatedAt: new Date(),
+      })
+      .where(eq(models.users.id, spouseUserId));
+
+    // Log the pairing activity
+    await tx.insert(models.activityLogs).values({
+      modifiedUserId: req.admin.id,
+      entityName: activityLogEntityNames.user,
+      entityId: primaryUserId,
+      action: 'update',
+      newData: {
+        spouseUserId,
+        description: `Paired user ${primaryUser.email} with ${spouseUser.email} for joint assessment`,
+      },
+    });
+  });
+
+  return res.success('Users paired successfully for joint assessment');
+});
+
+export const unpairUser = serviceHandler(unpairUserSchema, async (req, res) => {
+  const { userId } = req.params;
+
+  const user = await db.query.users.findFirst({
+    where: eq(models.users.id, userId),
+    columns: {
+      id: true,
+      email: true,
+      parentId: true,
+      isJointAssessment: true,
+    },
+  });
+
+  if (!user) throw new ApiError('User not found', 404);
+
+  let primaryUserId: string;
+  let spouseUserId: string;
+
+  if (user.parentId) {
+    // User is the spouse; parent is the primary
+    primaryUserId = user.parentId;
+    spouseUserId = user.id;
+  } else {
+    // User is the primary; find the spouse
+    primaryUserId = user.id;
+    const spouse = await db.query.users.findFirst({
+      where: and(eq(models.users.parentId, user.id), isNull(models.users.deletedAt)),
+      columns: { id: true, email: true },
+    });
+
+    // If no parent link and no flag, then throw the Error
+    if (!spouse && !user.isJointAssessment) {
+      throw new ApiError('User is not in a joint assessment', 400);
+    }
+
+    // If flag is set but no spouse found, just clear the flag on primary
+    if (!spouse) {
+      await db.update(models.users).set({ isJointAssessment: false }).where(eq(models.users.id, user.id));
+      return res.success('Joint assessment flag cleared');
+    }
+
+    spouseUserId = spouse.id;
+  }
+
+  // Fetch both users for activity log
+  const [primaryUser, spouseUser] = await Promise.all([
+    db.query.users.findFirst({ where: eq(models.users.id, primaryUserId), columns: { id: true, email: true } }),
+    db.query.users.findFirst({ where: eq(models.users.id, spouseUserId), columns: { id: true, email: true } }),
+  ]);
+
+  await db.transaction(async (tx) => {
+    // Remove joint assessment from primary user
+    await tx
+      .update(models.users)
+      .set({
+        isJointAssessment: false,
+        updatedAt: new Date(),
+      })
+      .where(eq(models.users.id, primaryUserId));
+
+    // Remove joint assessment and parent link from spouse user
+    await tx
+      .update(models.users)
+      .set({
+        parentId: null,
+        isJointAssessment: false,
+        isPrimaryAccount: true,
+        updatedAt: new Date(),
+      })
+      .where(eq(models.users.id, spouseUserId));
+
+    // Log the unpairing activity
+    await tx.insert(models.activityLogs).values({
+      modifiedUserId: req.admin.id,
+      entityName: activityLogEntityNames.user,
+      entityId: primaryUserId,
+      action: 'update',
+      newData: {
+        spouseUserId,
+        description: `Unpaired user ${primaryUser?.email} from ${spouseUser?.email} (joint assessment removed)`,
+      },
+    });
+  });
+
+  return res.success('Users unpaired successfully');
+});

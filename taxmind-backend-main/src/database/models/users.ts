@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { AnyPgColumn, boolean, index, pgTable, text, timestamp, uuid,integer } from 'drizzle-orm/pg-core';
+import { AnyPgColumn, boolean, index, pgTable, text, timestamp, uuid, integer } from 'drizzle-orm/pg-core';
 
 import { customEncryptedType } from '../utils/customTypes';
 import { agentActivations } from './agentActivations';
@@ -99,8 +99,12 @@ export const users = pgTable(
       .defaultNow()
       .$onUpdate(() => new Date())
       .notNull(),
-      lastAgentActivationReminderSentAt: timestamp({ mode: 'date' }), // When last agent activation reminder was sent
-      agentActivationReminderSentCount: integer().default(0).notNull(), // Number of agent activation reminders sent
+    lastAgentActivationReminderSentAt: timestamp({ mode: 'date' }), // When last agent activation reminder was sent
+    agentActivationReminderSentCount: integer().default(0).notNull(), // Number of agent activation reminders sent
+    remark: text(),
+    isReturnUser: boolean().default(false).notNull(),
+    returnedAt: timestamp({ mode: 'date' }),
+    isJointAssessment: boolean().default(false).notNull(),
   },
   (t) => [
     // GIN indexes for efficient array containment searches (@> operator)

@@ -55,7 +55,11 @@
                                                 </td>
                                                 <td>{{ item.application.applicationNo || item.invoice || '-' }}</td>
                                                 <td>{{ item.user?.name || item.customer || '-' }}</td>
-
+                                                <td>
+                                                    <v-chip v-if="item.isJointPayment" color="success" dark x-small>Joint</v-chip>
+                                                    <v-chip v-else-if="item.user?.parentId" color="info" dark x-small>Spouse</v-chip>
+                                                    <v-chip v-else color="grey lighten-1" dark x-small>Primary</v-chip>
+                                                </td>
                                                 <td>{{ formatDate(item.createdAt || item.datetime) }}</td>
                                                 <td>€{{ item.claimedAmount }}</td>
                                                 <td>
@@ -214,7 +218,7 @@ export default {
                 { text: "Sl.No", value: "slno", align: "start", width: "80px" },
                 { text: "Application No", value: "applicationNo", align: "start" },
                 { text: "Customer Name", value: "customer", align: "start" },
-
+                { text: "Account", value: "account", align: "start" },
                 { text: "Date & Time", value: "datetime", align: "start" },
                 { text: "Amount", value: "amount", align: "start" },
                 { text: "Payment Method", value: "method", sortable: false },

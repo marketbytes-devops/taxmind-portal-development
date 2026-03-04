@@ -26,9 +26,87 @@
               <v-icon color="#1A73E9">mdi-chevron-left</v-icon>
             </v-btn>
           </v-flex>
-          <v-flex xs12 sm6 md8 lg8 text-start align-center pt-2 class="carousalhead">User Details
+          <v-flex xs12 sm6 md6 lg6 text-start align-center pt-2 class="carousalhead">User Details
+          </v-flex>
+          <v-flex xs12 sm6 md4 lg4 text-right pt-2>
+            <v-btn
+              v-if="!userData.parentId && !userData.spouse"
+              color="#1A73E9"
+              dark
+              @click="openPairDialog"
+            >
+              Pair Spouse
+            </v-btn>
+            <v-btn
+              v-else
+              color="error"
+              outlined
+              @click="openUnpairDialog"
+            >
+              Unpair Spouse
+            </v-btn>
+            <v-chip v-if="userData.isJointAssessment" :color="userData.parentId ? 'info' : 'success'" dark class="ml-2">
+              {{ userData.parentId ? 'Spouse Account' : 'Primary Account (Joint)' }}
+            </v-chip>
           </v-flex>
         </v-layout>
+
+        <!-- Pair User Dialog -->
+        <v-dialog v-model="pairUserDialog" max-width="600px">
+          <v-card class="rounded-lg">
+            <v-card-title class="headline">Pair with Spouse</v-card-title>
+            <v-card-text>
+              <p>Select a user to pair as a spouse for joint assessment.</p>
+              <v-autocomplete
+                v-model="selectedSpouseId"
+                :items="potentialSpouses"
+                item-text="nameEmail"
+                item-value="id"
+                label="Search User by Name or Email"
+                placeholder="Start typing..."
+                outlined
+                clearable
+                :loading="searchingUsers"
+                @update:search-input="searchPotentialSpouses"
+              >
+                <template v-slot:item="data">
+                  <v-list-item-content>
+                    <v-list-item-title>{{ data.item.name }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ data.item.email }} ({{ data.item.ppsNumber }})</v-list-item-subtitle>
+                  </v-list-item-content>
+                </template>
+              </v-autocomplete>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="pairUserDialog = false">Cancel</v-btn>
+              <v-btn color="#1A73E9" dark :loading="pairingInProgress" @click="confirmPairing">
+                Confirm Pairing
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
+        <!-- Unpair User Dialog -->
+        <v-dialog v-model="unpairUserDialog" max-width="450px">
+          <v-card class="rounded-lg">
+            <v-card-title class="headline error--text">Unpair Spouse?</v-card-title>
+            <v-card-text class="pt-2">
+              <p>Are you sure you want to break this joint assessment pairing? Both accounts will become independent primary accounts.</p>
+              <div v-if="userData.spouse" class="pa-3 grey lighten-4 rounded">
+                <strong>Current Pairing:</strong><br>
+                {{ userData.fullName }} & {{ userData.spouse.name }}
+              </div>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="unpairUserDialog = false">Cancel</v-btn>
+              <v-btn color="error" :loading="unpairingInProgress" @click="confirmUnpairing">
+                Confirm Unpair
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
 
         <v-layout wrap justify-start>
           <v-flex xs12>
@@ -283,19 +361,11 @@
             <!-- Table section -->
             <v-layout wrap justify-center>
               <v-flex xs12>
-                <v-data-table :headers="headers" :items="processedApplicationData" hide-default-footer
-                  :items-per-page="limit" class="elevation-0" style="cursor: pointer" @click:row="viewUserDetails">
-                  <!-- <template v-slot:[`item._id`]="{ item }">
-                    <v-icon
-                      small
-                      color="primary"
-                      class="ml-1"
-                      @click.stop="viewUserDetails(item)"
-                    >
-                      mdi-eye
-                    </v-icon>
-                  </template> -->
-                </v-data-table>
+                <div class="table-container">
+                  <v-data-table :headers="headers" :items="processedApplicationData" hide-default-footer
+                    :items-per-page="limit" class="elevation-0 custom-data-table" style="cursor: pointer" @click:row="viewUserDetails">
+                  </v-data-table>
+                </div>
               </v-flex>
             </v-layout>
             <!-- pagination -->
@@ -367,7 +437,13 @@
 </template>
 
 <script>
-import http from "@/api/http";
+import {
+  getUser,
+  getUserApplications,
+  listUsers,
+  pairUser,
+  unpairUser,
+} from "@/api/modules/users";
 export default {
   data() {
     return {
@@ -397,6 +473,13 @@ export default {
       pages: 0,
       limit: 5,
       userApplicationData: [],
+      pairUserDialog: false,
+      unpairUserDialog: false,
+      selectedSpouseId: null,
+      potentialSpouses: [],
+      searchingUsers: false,
+      pairingInProgress: false,
+      unpairingInProgress: false,
     };
   },
   mounted() {
@@ -462,16 +545,12 @@ export default {
   methods: {
     getData() {
       this.appLoading = true;
-      http
-        .get(`/users/${this.$route.query.id}`)
+      getUser(this.$route.query.id)
         .then((response) => {
           this.appLoading = false;
-
-          // Map response data to expected format
           const apiData = response.data.data;
-
           this.userData = {
-            // Field mapping: name → fullName for template compatibility
+            id: apiData.id,
             fullName: apiData.name,
             email: apiData.email,
             phone: apiData.phone,
@@ -481,34 +560,16 @@ export default {
             eircode: apiData.eircode,
             address: apiData.address,
             maritalStatus: apiData.maritalStatus,
-
-            // Handle potentially missing data
             spouse: apiData.spouse || null,
+            parentId: apiData.parentId,
+            isJointAssessment: apiData.isJointAssessment,
             statusHistory: apiData.statusHistory || [],
           };
-
-          // Set spouse data if available
           this.spouseData = this.userData.spouse || {};
         })
         .catch((err) => {
           this.appLoading = false;
-          if (err.response) {
-            if (err.response.status === 500) {
-              // Handle server error
-              this.ServerError = true;
-              this.msg = "A server error occurred. Please try again later.";
-            } else {
-              // Handle other errors (e.g., 422 validation error)
-              this.ServerError = false;
-              this.msg = err.response.data.message || "An error occurred.";
-            }
-          } else {
-            // Fallback for cases where err.response is undefined
-            this.ServerError = true;
-            this.msg = "An unexpected error occurred. Please try again.";
-          }
-          this.showSnackBar = true; // Show Snackbar for all error cases
-          console.log(err);
+          this.handleApiError(err);
         });
     },
     viewUserDetails(item) {
@@ -517,55 +578,89 @@ export default {
     },
     getUserApplicationData() {
       this.appLoading = true;
-      http
-        .get("/applications/user", {
-          params: {
-            userId: this.$route.query.id,
-            page: this.currentPage,
-            size: this.limit,
-          },
-        })
+      getUserApplications(this.$route.query.id, {
+        page: this.currentPage,
+        size: this.limit,
+      })
         .then((response) => {
           this.appLoading = false;
-
-          // Handle response based on new API structure
-          if (Array.isArray(response.data.data)) {
-            // New API returns array directly in data
+          if (response.data.success) {
             this.userApplicationData = response.data.data;
-            // Calculate pages from metadata if available
-            const total =
-              response.data.metadata?.total || response.data.data.length;
-            this.pages = Math.ceil(total / this.limit);
-          } else {
-            // Fallback for different response structure
-            this.userApplicationData =
-              response.data.data.applications || response.data.data;
-            this.pages = Math.ceil(
-              (response.data.data.total || response.data.data.length) /
-              this.limit
-            );
+            this.pages = Math.ceil(response.data.metadata.total / this.limit);
           }
         })
         .catch((err) => {
           this.appLoading = false;
-          if (err.response) {
-            if (err.response.status === 500) {
-              // Handle server error
-              this.ServerError = true;
-              this.msg = "A server error occurred. Please try again later.";
-            } else {
-              // Handle other errors (e.g., 422 validation error)
-              this.ServerError = false;
-              this.msg = err.response.data.message || "An error occurred.";
-            }
-          } else {
-            // Fallback for cases where err.response is undefined
-            this.ServerError = true;
-            this.msg = "An unexpected error occurred. Please try again.";
-          }
-          this.showSnackBar = true; // Show Snackbar for all error cases
           console.log(err);
         });
+    },
+    handleApiError(err) {
+      if (err.response) {
+        this.msg = err.response.data.message || "An error occurred.";
+      } else {
+        this.msg = "An unexpected error occurred.";
+      }
+      this.showSnackBar = true;
+    },
+    openPairDialog() {
+      this.pairUserDialog = true;
+      this.selectedSpouseId = null;
+      this.potentialSpouses = [];
+    },
+    async searchPotentialSpouses(val) {
+      if (!val || val.length < 3) return;
+      this.searchingUsers = true;
+      try {
+        const response = await listUsers({ keyword: val, limit: 10 });
+        if (response.data.success) {
+          this.potentialSpouses = response.data.data
+            .filter(u => u.id !== this.userData.id && !u.parentId)
+            .map(u => ({
+              ...u,
+              nameEmail: `${u.name} (${u.email})`
+            }));
+        }
+      } catch (error) {
+        console.error("Error searching users:", error);
+      } finally {
+        this.searchingUsers = false;
+      }
+    },
+    async confirmPairing() {
+      if (!this.selectedSpouseId) return;
+      this.pairingInProgress = true;
+      try {
+        const response = await pairUser(this.userData.id, this.selectedSpouseId);
+        if (response.data.success) {
+          this.msg = "Users paired successfully!";
+          this.showSnackBar = true;
+          this.pairUserDialog = false;
+          this.getData(); // Refresh user data
+        }
+      } catch (error) {
+        this.handleApiError(error);
+      } finally {
+        this.pairingInProgress = false;
+      }
+    },
+    openUnpairDialog() {
+      this.unpairUserDialog = true;
+    },
+    async confirmUnpairing() {
+      this.unpairingInProgress = true;
+      try {
+        const response = await unpairUser(this.userData.id);
+        if (response.data.success) {
+          this.msg = "Users unpaired successfully!";
+          this.showSnackBar = true;
+          this.unpairUserDialog = false;
+          this.getData(); // Refresh user data
+        }
+      } catch (error) {
+        this.handleApiError(error);
+      } finally {
+        this.unpairingInProgress = false;
+      }
     },
     formatDate(dateString) {
       const date = new Date(dateString);
@@ -627,5 +722,42 @@ export default {
     transform: scale(1.1);
     opacity: 1;
   }
+}
+
+.carousalhead {
+  color: #1a73e9;
+  font-family: opensansbold;
+  font-size: 20px;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+
+/* Force nowrap on all data table cells */
+::v-deep .custom-data-table th,
+::v-deep .custom-data-table td {
+  white-space: nowrap !important;
+  padding: 12px 16px !important;
+  font-family: 'Open Sans', sans-serif !important;
+}
+
+::v-deep .custom-data-table th {
+  background-color: #f8f9fa !important;
+  color: #333 !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  font-size: 12px !important;
+  letter-spacing: 0.5px;
+}
+
+::v-deep .custom-data-table tr:hover {
+  background-color: #f0f7ff !important;
 }
 </style>

@@ -13,7 +13,7 @@ import { getPresignedGetObjectUrl } from '@/integrations/awsS3';
 import logger from '@/logger';
 import { activityLog } from '@/logger/activityLog';
 import { mail } from '@/mail';
-import { notificationHandler,adminNotificationHandler } from '@/notifications';
+import { notificationHandler, adminNotificationHandler } from '@/notifications';
 import { notificationTemplates } from '@/notifications/templates';
 import ApiError from '@/utils/apiError';
 import { serviceHandler } from '@/utils/serviceHandler';
@@ -1596,13 +1596,13 @@ export const getQuestionnaireResponseByApplicationId = serviceHandler(
           createdAt: (r.categoryCreatedAt as unknown as Date) ?? null,
           icon: r.iconId
             ? {
-                id: r.iconId,
-                key: r.iconKey,
-                fileName: r.iconFileName,
-                mimeType: r.iconMimeType,
-                uploadedAt: (r.iconUploadedAt as unknown as Date) ?? null,
-                ...(r.iconKey ? { filePath: iconUrlMap.get(r.iconKey) } : {}),
-              }
+              id: r.iconId,
+              key: r.iconKey,
+              fileName: r.iconFileName,
+              mimeType: r.iconMimeType,
+              uploadedAt: (r.iconUploadedAt as unknown as Date) ?? null,
+              ...(r.iconKey ? { filePath: iconUrlMap.get(r.iconKey) } : {}),
+            }
             : null,
           questions: [],
         });
@@ -1962,7 +1962,7 @@ export const submitQuestionnaireResponse = serviceHandler(
       }
       return updated;
     });
-    // send email to admin notify new submission
+    /* // send email to admin notify new submission
     await mail.applicationSubmitted({
       recipient: process.env.SUPPORT_EMAIL_ID,
       replacements: {
@@ -1982,7 +1982,7 @@ export const submitQuestionnaireResponse = serviceHandler(
         }),
         adminPortalLink: `${process.env.ADMIN_DASHBOARD_BASE_URL}/#/application-view/?id=${application.id}`,
       },
-    });
+    }); */
 
     // send notification to all admins with application module permissions
     const adminsWithApplicationPermission = await db
@@ -2037,13 +2037,13 @@ export const submitQuestionnaireResponse = serviceHandler(
     }
 
     if (req.user && !req.user.isTaxAgentVerificationCompleted) {
-      // Send email to user to notify the tax agent verification is pending
+      /* // Send email to user to notify the tax agent verification is pending
       await mail.taxAgentRequest({
         recipient: application.user.email,
         replacements: {
           name: application.user.name,
         },
-      });
+      }); */
       // if (req.user.fcmToken) {
       //   // Send FCM notification to user
       //   await sendNotification({

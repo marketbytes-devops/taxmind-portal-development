@@ -515,13 +515,13 @@ export const downloadApplicationData = serviceHandler(getApplicationSchema, asyn
   const formatDateLocale = (date: Date | null) =>
     date
       ? new Date(date).toLocaleString('en-IE', {
-          day: 'numeric',
-          month: 'short',
-          year: 'numeric',
-          hour: 'numeric',
-          minute: '2-digit',
-          hour12: true,
-        })
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true,
+      })
       : '';
 
   const submittedDate =
@@ -577,15 +577,15 @@ export const downloadApplicationData = serviceHandler(getApplicationSchema, asyn
       maritalStatus: formatText(application.user.maritalStatus),
       spouse: spouse
         ? {
-            name: spouse.name || '',
-            email: spouse.email || '',
-            phone: spouse.phone || '',
-            dob: spouse.dob ? new Date(spouse.dob).toISOString().split('T')[0] : '',
-            profession: spouse.profession || '',
-            ppsNumber: spouse.ppsNumber || '',
-            eircode: spouse.eircode || '',
-            address: spouse.address || '',
-          }
+          name: spouse.name || '',
+          email: spouse.email || '',
+          phone: spouse.phone || '',
+          dob: spouse.dob ? new Date(spouse.dob).toISOString().split('T')[0] : '',
+          profession: spouse.profession || '',
+          ppsNumber: spouse.ppsNumber || '',
+          eircode: spouse.eircode || '',
+          address: spouse.address || '',
+        }
         : null,
     },
     questionnaire,
@@ -702,6 +702,7 @@ export const startApplication = serviceHandler(startApplicationSchema, async (re
       phoneVerifiedAt: true,
       isSignatureConsentCompleted: true,
       maritalStatus: true,
+      isJointAssessment: true,
     },
   });
 
@@ -848,6 +849,7 @@ export const startApplication = serviceHandler(startApplicationSchema, async (re
         status: applicationStatuses.DRAFT,
         isAmendment: !!isAmendment,
         parentId: parentApplicationId ?? null,
+        isJointApplication: currentUser.isJointAssessment,
       })
       .returning({
         id: models.applications.id,
@@ -979,12 +981,12 @@ export const listApplications = serviceHandler(listApplicationsSchema, async (re
   const catIds = docCats.map((c) => c.id);
   const fileLinks = catIds.length
     ? await db.query.applicationDocumentCategoryFiles.findMany({
-        where: inArray(
-          models.applicationDocumentCategoryFiles.applicationDocumentCategoryId,
-          catIds
-        ),
-        columns: { applicationDocumentCategoryId: true, fileId: true },
-      })
+      where: inArray(
+        models.applicationDocumentCategoryFiles.applicationDocumentCategoryId,
+        catIds
+      ),
+      columns: { applicationDocumentCategoryId: true, fileId: true },
+    })
     : [];
   const filesByCat = new Map<string, number>();
   for (const link of fileLinks) {
@@ -1018,15 +1020,15 @@ export const listApplications = serviceHandler(listApplicationsSchema, async (re
   const applicationChats =
     appIds.length > 0
       ? await db.query.chats.findMany({
-          where: and(
-            inArray(models.chats.applicationId, appIds),
-            eq(models.chats.senderType, 'admin'),
-            eq(models.chats.isRead, false),
-            isNull(models.chats.readAt),
-            isNull(models.chats.deletedAt)
-          ),
-          columns: { id: true, applicationId: true },
-        })
+        where: and(
+          inArray(models.chats.applicationId, appIds),
+          eq(models.chats.senderType, 'admin'),
+          eq(models.chats.isRead, false),
+          isNull(models.chats.readAt),
+          isNull(models.chats.deletedAt)
+        ),
+        columns: { id: true, applicationId: true },
+      })
       : [];
 
   const chatsOnApp = new Map<string, number>();
@@ -1039,9 +1041,9 @@ export const listApplications = serviceHandler(listApplicationsSchema, async (re
   const allStatusHistory =
     appIds.length > 0
       ? await db.query.applicationStatusHistories.findMany({
-          where: inArray(models.applicationStatusHistories.applicationId, appIds),
-          columns: { applicationId: true, status: true },
-        })
+        where: inArray(models.applicationStatusHistories.applicationId, appIds),
+        columns: { applicationId: true, status: true },
+      })
       : [];
 
   const statusHistoryByApp = new Map<string, Array<{ status: string }>>();
@@ -1226,45 +1228,45 @@ export const adminListApplications = serviceHandler(
             SELECT COUNT(*)
             FROM UNNEST(${models.applications.applicationNoTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+            searchHashes.map((h) => sql`${h}`),
+            sql`, `
+          )}]::text[])
           ) >= ${minMatches}`,
           // Fuzzy trigram search for email
           sql`(
             SELECT COUNT(*)
             FROM UNNEST(${models.users.emailTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+            searchHashes.map((h) => sql`${h}`),
+            sql`, `
+          )}]::text[])
           ) >= ${minMatches}`,
           // Fuzzy trigram search for phone
           sql`(
             SELECT COUNT(*)
             FROM UNNEST(${models.users.phoneTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+            searchHashes.map((h) => sql`${h}`),
+            sql`, `
+          )}]::text[])
           ) >= ${minMatches}`,
           // Fuzzy trigram search for PPS number
           sql`(
             SELECT COUNT(*)
             FROM UNNEST(${models.users.ppsNumberTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+            searchHashes.map((h) => sql`${h}`),
+            sql`, `
+          )}]::text[])
           ) >= ${minMatches}`,
           // Fuzzy trigram search for name
           sql`(
             SELECT COUNT(*)
             FROM UNNEST(${models.users.nameTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+            searchHashes.map((h) => sql`${h}`),
+            sql`, `
+          )}]::text[])
           ) >= ${minMatches}`
         )
       );
@@ -1272,7 +1274,7 @@ export const adminListApplications = serviceHandler(
     if (paymentStatus) {
       filters.push(eq(models.applications.status, applicationStatuses.REFUND_COMPLETED));
       filters.push(eq(models.applications.paymentStatus, paymentStatus));
-    } 
+    }
 
     // For search functionality with user fields, we need to use a join
     let query = db
@@ -1325,12 +1327,12 @@ export const adminListApplications = serviceHandler(
     const appIds = rows.map((a) => a.id);
     const questionnaireResponses = appIds.length
       ? await db.query.questionnaireResponses.findMany({
-          where: and(
-            isNull(models.questionnaireResponses.deletedAt),
-            inArray(models.questionnaireResponses.applicationId, appIds)
-          ),
-          columns: { id: true, status: true, completionPercentage: true, applicationId: true },
-        })
+        where: and(
+          isNull(models.questionnaireResponses.deletedAt),
+          inArray(models.questionnaireResponses.applicationId, appIds)
+        ),
+        columns: { id: true, status: true, completionPercentage: true, applicationId: true },
+      })
       : [];
 
     const qRespByApp = new Map<string, (typeof questionnaireResponses)[number]>();
@@ -1342,23 +1344,23 @@ export const adminListApplications = serviceHandler(
     const applicationChats =
       appIds.length > 0
         ? await db
-            .select({ id: models.chats.id, applicationId: models.chats.applicationId })
-            .from(models.chats)
-            .leftJoin(
-              models.adminReadChats,
-              and(
-                eq(models.adminReadChats.chatId, models.chats.id),
-                eq(models.adminReadChats.adminId, req.admin.id)
-              )
+          .select({ id: models.chats.id, applicationId: models.chats.applicationId })
+          .from(models.chats)
+          .leftJoin(
+            models.adminReadChats,
+            and(
+              eq(models.adminReadChats.chatId, models.chats.id),
+              eq(models.adminReadChats.adminId, req.admin.id)
             )
-            .where(
-              and(
-                inArray(models.chats.applicationId, appIds),
-                isNull(models.adminReadChats.chatId),
-                eq(models.chats.senderType, 'user'),
-                sql`admin_read_chats.chat_id IS NULL`
-              )
+          )
+          .where(
+            and(
+              inArray(models.chats.applicationId, appIds),
+              isNull(models.adminReadChats.chatId),
+              eq(models.chats.senderType, 'user'),
+              sql`admin_read_chats.chat_id IS NULL`
             )
+          )
         : [];
 
     const chatsOnApp = new Map<string, number>();
@@ -1588,12 +1590,12 @@ export const getApplicationDetails = serviceHandler(getApplicationSchema, async 
   const catIds = docCats.map((c) => c.id);
   const fileLinks = catIds.length
     ? await db.query.applicationDocumentCategoryFiles.findMany({
-        where: inArray(
-          models.applicationDocumentCategoryFiles.applicationDocumentCategoryId,
-          catIds
-        ),
-        columns: { applicationDocumentCategoryId: true, fileId: true },
-      })
+      where: inArray(
+        models.applicationDocumentCategoryFiles.applicationDocumentCategoryId,
+        catIds
+      ),
+      columns: { applicationDocumentCategoryId: true, fileId: true },
+    })
     : [];
 
   const filesByCat = new Map<string, number>();
@@ -2465,6 +2467,7 @@ export const submitApplicationAmounts = serviceHandler(
         taxReturnDocumentId: true,
         userId: true,
         applicationNo: true,
+        isJointApplication: true,
       },
       with: {
         applicationStatusHistories: { columns: { status: true } },
@@ -2575,6 +2578,8 @@ export const submitApplicationAmounts = serviceHandler(
           id: models.applications.id,
           applicationNo: models.applications.applicationNo,
           year: models.applications.year,
+          userId: models.applications.userId,
+          isJointApplication: models.applications.isJointApplication,
           isAmendment: models.applications.isAmendment,
           status: models.applications.status,
           createdAt: models.applications.createdAt,
@@ -2623,6 +2628,7 @@ export const submitApplicationAmounts = serviceHandler(
             transactionId: null,
             transactionNo: `TXN-${generateAlphaNumCode()}`,
             metadata,
+            isJointPayment: application.isJointApplication,
           })
           .onConflictDoUpdate({
             target: models.payments.applicationId,
@@ -2632,6 +2638,7 @@ export const submitApplicationAmounts = serviceHandler(
               paymentMethod: paymentMethods.OTHER,
               transactionNo: `TXN-${generateAlphaNumCode()}`,
               metadata,
+              isJointPayment: application.isJointApplication,
             },
           });
       }
@@ -2925,10 +2932,10 @@ export const checkDocumentsUploadedStatus = serviceHandler(
       return updatedApplication;
     });
 
-    await mail.applicationReview({
+    /* await mail.applicationReview({
       recipient: app.user.email,
       replacements: { name: app.user.name },
-    });
+    }); */
 
     // if (app.user.fcmToken) {
     //   await sendNotification({
@@ -3218,11 +3225,11 @@ export const approveOfflinePaymentRequest = serviceHandler(
         .where(eq(models.offlinePaymentRequests.id, offlinePaymentRequestId))
         .returning();
 
-      // Mark application payment status as completed
-      await tx
+      const [appUpdated] = await tx
         .update(models.applications)
         .set({ paymentStatus: 'completed', updatedAt: new Date() })
-        .where(eq(models.applications.id, oprUpdated.applicationId));
+        .where(eq(models.applications.id, oprUpdated.applicationId))
+        .returning({ isJointApplication: models.applications.isJointApplication });
 
       await tx
         .insert(models.payments)
@@ -3235,6 +3242,7 @@ export const approveOfflinePaymentRequest = serviceHandler(
           status: 'completed',
           transactionId: oprUpdated.verifiedTransactionId,
           transactionNo: `TXN-${generateAlphaNumCode()}`,
+          isJointPayment: appUpdated.isJointApplication,
         })
         .onConflictDoUpdate({
           target: models.payments.applicationId,
@@ -3246,6 +3254,7 @@ export const approveOfflinePaymentRequest = serviceHandler(
             status: 'completed',
             transactionId: oprUpdated.verifiedTransactionId,
             transactionNo: `TXN-${generateAlphaNumCode()}`,
+            isJointPayment: appUpdated.isJointApplication,
           },
         })
         .returning();
@@ -3253,6 +3262,13 @@ export const approveOfflinePaymentRequest = serviceHandler(
       return oprUpdated;
     });
 
+    /* await mail.paymentReceived({
+      recipient: opr.user.email,
+      replacements: {
+        name: opr.user.name,
+        amount: opr.claimedAmount,
+      },
+    }); */
     notificationHandler({
       tokens: opr.user.fcmToken?.split(','),
       payload: {
@@ -3343,10 +3359,10 @@ export const rejectOfflinePaymentRequest = serviceHandler(
       return oprUpdated;
     });
 
-    await mail.offlinePaymentRejected({
+    /* await mail.offlinePaymentRejected({
       recipient: opr.user.email,
       replacements: { name: opr.user.name, amount: opr.claimedAmount, reason: rejectionReason },
-    });
+    }); */
 
     // if (opr.user.fcmToken) {
     //   await sendNotification({
@@ -3415,6 +3431,7 @@ export const createPaymentCheckout = serviceHandler(
         year: true,
         isAmendment: true,
         paymentStatus: true,
+        isJointApplication: true,
       },
     });
     if (!application) throw new ApiError('Application not found', 404);
@@ -3460,11 +3477,11 @@ export const createPaymentCheckout = serviceHandler(
 
     const revolutCustomer = !req.user.revolutCustomerId
       ? await createCustomer({
-          name: req.user.name,
-          email: req.user.email,
-          phone: req.user.phone,
-          dob: req.user.dob,
-        })
+        name: req.user.name,
+        email: req.user.email,
+        phone: req.user.phone,
+        dob: req.user.dob,
+      })
       : await getCustomer(req.user.revolutCustomerId);
 
     if (!req.user.revolutCustomerId) {
@@ -3545,6 +3562,7 @@ export const createPaymentCheckout = serviceHandler(
         transactionId: order.id,
         transactionNo: `TXN-${generateAlphaNumCode()}`,
         metadata,
+        isJointPayment: application.isJointApplication,
       })
       .onConflictDoUpdate({
         target: models.payments.applicationId,
@@ -3552,6 +3570,7 @@ export const createPaymentCheckout = serviceHandler(
           status: 'pending',
           transactionId: order.id,
           transactionNo: `TXN-${generateAlphaNumCode()}`,
+          isJointPayment: application.isJointApplication,
         },
       })
       .returning({ id: models.payments.id });
@@ -3617,7 +3636,7 @@ export const paymentWebhook = async (req: Request, res: Response) => {
           })
           .where(eq(models.payments.applicationId, order.metadata.applicationId));
       });
-      await mail.paymentReceived({
+      /* await mail.paymentReceived({
         recipient: order.metadata.customerEmail,
         replacements: {
           name: order.metadata.customerName,
@@ -3629,7 +3648,7 @@ export const paymentWebhook = async (req: Request, res: Response) => {
             day: '2-digit',
           }),
         },
-      });
+      }); */
       if (user) {
         notificationHandler({
           tokens: user.fcmToken?.split(','),
@@ -3668,13 +3687,13 @@ export const paymentWebhook = async (req: Request, res: Response) => {
           failureReason: reason,
         })
         .where(eq(models.payments.applicationId, order.metadata.applicationId));
-      await mail.paymentFailed({
+      /* await mail.paymentFailed({
         recipient: order.metadata.customerEmail,
         replacements: {
           name: order.metadata.customerName,
           amount: Math.round(order.amount / 100),
         },
-      });
+      }); */
       if (user) {
         notificationHandler({
           tokens: user.fcmToken?.split(','),
@@ -3724,45 +3743,45 @@ export const listCompletedPayments = serviceHandler(
             SELECT COUNT(*)
             FROM UNNEST(${models.applications.applicationNoTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+          searchHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
           ) >= ${minMatches}`,
         // Fuzzy trigram search for email
         sql`(
             SELECT COUNT(*)
             FROM UNNEST(${models.users.emailTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+          searchHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
           ) >= ${minMatches}`,
         // Fuzzy trigram search for phone
         sql`(
             SELECT COUNT(*)
             FROM UNNEST(${models.users.phoneTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+          searchHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
           ) >= ${minMatches}`,
         // Fuzzy trigram search for PPS number
         sql`(
             SELECT COUNT(*)
             FROM UNNEST(${models.users.ppsNumberTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+          searchHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
           ) >= ${minMatches}`,
         // Fuzzy trigram search for name
         sql`(
             SELECT COUNT(*)
             FROM UNNEST(${models.users.nameTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+          searchHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
           ) >= ${minMatches}`
       );
 
@@ -3778,22 +3797,22 @@ export const listCompletedPayments = serviceHandler(
       // Optimized count query - only join users table if search is needed
       search && search.trim()
         ? db
-            .select({ count: sql<number>`count(${models.payments.id})` })
-            .from(models.payments)
-            .leftJoin(models.users, eq(models.payments.userId, models.users.id))
-            .leftJoin(
-              models.applications,
-              eq(models.payments.applicationId, models.applications.id)
-            )
-            .where(where)
+          .select({ count: sql<number>`count(${models.payments.id})` })
+          .from(models.payments)
+          .leftJoin(models.users, eq(models.payments.userId, models.users.id))
+          .leftJoin(
+            models.applications,
+            eq(models.payments.applicationId, models.applications.id)
+          )
+          .where(where)
         : db
-            .select({ count: sql<number>`count(${models.payments.id})` })
-            .from(models.payments)
-            .leftJoin(
-              models.applications,
-              eq(models.payments.applicationId, models.applications.id)
-            )
-            .where(where),
+          .select({ count: sql<number>`count(${models.payments.id})` })
+          .from(models.payments)
+          .leftJoin(
+            models.applications,
+            eq(models.payments.applicationId, models.applications.id)
+          )
+          .where(where),
 
       // Main data query with selective field selection
       db
@@ -3883,45 +3902,45 @@ export const listPendingOfflinePaymentRequests = serviceHandler(
             SELECT COUNT(*)
             FROM UNNEST(${models.applications.applicationNoTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+          searchHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
           ) >= ${minMatches}`,
         // Fuzzy trigram search for email
         sql`(
             SELECT COUNT(*)
             FROM UNNEST(${models.users.emailTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+          searchHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
           ) >= ${minMatches}`,
         // Fuzzy trigram search for phone
         sql`(
             SELECT COUNT(*)
             FROM UNNEST(${models.users.phoneTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+          searchHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
           ) >= ${minMatches}`,
         // Fuzzy trigram search for PPS number
         sql`(
             SELECT COUNT(*)
             FROM UNNEST(${models.users.ppsNumberTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+          searchHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
           ) >= ${minMatches}`,
         // Fuzzy trigram search for name
         sql`(
             SELECT COUNT(*)
             FROM UNNEST(${models.users.nameTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+          searchHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
           ) >= ${minMatches}`
       );
 
@@ -3937,22 +3956,22 @@ export const listPendingOfflinePaymentRequests = serviceHandler(
       // Optimized count query - only join users table if search is needed
       search && search.trim()
         ? db
-            .select({ count: sql<number>`count(${models.offlinePaymentRequests.id})` })
-            .from(models.offlinePaymentRequests)
-            .leftJoin(models.users, eq(models.offlinePaymentRequests.userId, models.users.id))
-            .leftJoin(
-              models.applications,
-              eq(models.offlinePaymentRequests.applicationId, models.applications.id)
-            )
-            .where(where)
+          .select({ count: sql<number>`count(${models.offlinePaymentRequests.id})` })
+          .from(models.offlinePaymentRequests)
+          .leftJoin(models.users, eq(models.offlinePaymentRequests.userId, models.users.id))
+          .leftJoin(
+            models.applications,
+            eq(models.offlinePaymentRequests.applicationId, models.applications.id)
+          )
+          .where(where)
         : db
-            .select({ count: sql<number>`count(${models.offlinePaymentRequests.id})` })
-            .from(models.offlinePaymentRequests)
-            .leftJoin(
-              models.applications,
-              eq(models.offlinePaymentRequests.applicationId, models.applications.id)
-            )
-            .where(where),
+          .select({ count: sql<number>`count(${models.offlinePaymentRequests.id})` })
+          .from(models.offlinePaymentRequests)
+          .leftJoin(
+            models.applications,
+            eq(models.offlinePaymentRequests.applicationId, models.applications.id)
+          )
+          .where(where),
 
       // Main data query with selective field selection
       db
@@ -4039,45 +4058,45 @@ export const listRejectedOfflinePaymentRequests = serviceHandler(
             SELECT COUNT(*)
             FROM UNNEST(${models.applications.applicationNoTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+          searchHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
           ) >= ${minMatches}`,
         // Fuzzy trigram search for email
         sql`(
             SELECT COUNT(*)
             FROM UNNEST(${models.users.emailTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+          searchHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
           ) >= ${minMatches}`,
         // Fuzzy trigram search for phone
         sql`(
             SELECT COUNT(*)
             FROM UNNEST(${models.users.phoneTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+          searchHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
           ) >= ${minMatches}`,
         // Fuzzy trigram search for PPS number
         sql`(
             SELECT COUNT(*)
             FROM UNNEST(${models.users.ppsNumberTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+          searchHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
           ) >= ${minMatches}`,
         // Fuzzy trigram search for name
         sql`(
             SELECT COUNT(*)
             FROM UNNEST(${models.users.nameTrigramHashes}) AS t1
             WHERE t1 = ANY(ARRAY[${sql.join(
-              searchHashes.map((h) => sql`${h}`),
-              sql`, `
-            )}]::text[])
+          searchHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
           ) >= ${minMatches}`
       );
       if (searchCondition) {
@@ -4092,22 +4111,22 @@ export const listRejectedOfflinePaymentRequests = serviceHandler(
       // Optimized count query - only join users table if search is needed
       search && search.trim()
         ? db
-            .select({ count: sql<number>`count(${models.offlinePaymentRequests.id})` })
-            .from(models.offlinePaymentRequests)
-            .leftJoin(models.users, eq(models.offlinePaymentRequests.userId, models.users.id))
-            .leftJoin(
-              models.applications,
-              eq(models.offlinePaymentRequests.applicationId, models.applications.id)
-            )
-            .where(where)
+          .select({ count: sql<number>`count(${models.offlinePaymentRequests.id})` })
+          .from(models.offlinePaymentRequests)
+          .leftJoin(models.users, eq(models.offlinePaymentRequests.userId, models.users.id))
+          .leftJoin(
+            models.applications,
+            eq(models.offlinePaymentRequests.applicationId, models.applications.id)
+          )
+          .where(where)
         : db
-            .select({ count: sql<number>`count(${models.offlinePaymentRequests.id})` })
-            .from(models.offlinePaymentRequests)
-            .leftJoin(
-              models.applications,
-              eq(models.offlinePaymentRequests.applicationId, models.applications.id)
-            )
-            .where(where),
+          .select({ count: sql<number>`count(${models.offlinePaymentRequests.id})` })
+          .from(models.offlinePaymentRequests)
+          .leftJoin(
+            models.applications,
+            eq(models.offlinePaymentRequests.applicationId, models.applications.id)
+          )
+          .where(where),
 
       // Main data query with selective field selection
       db

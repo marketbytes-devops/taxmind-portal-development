@@ -46,6 +46,15 @@ export function getUser(userId) {
     },
   });
 }
+
+export function getUserApplications(userId, params = {}) {
+  return http.get(`/users/${userId}/applications`, {
+    params,
+    headers: {
+      Accept: "application/json",
+    },
+  });
+}
 /**
  * Activate or terminate user status
  * Note: TAXMIND.json doesn't specify exact endpoint,
@@ -109,6 +118,48 @@ export function requestAgentActivation(userId) {
     {
       userId: userId,
     },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
+}
+
+export function updateUserRemark(userId, remark) {
+  return http.patch(
+    `/users/${userId}/remark`,
+    { remark },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
+}
+
+export function pairUser(primaryUserId, spouseUserId) {
+  return http.post(
+    "/users/pair",
+    {
+      primaryUserId,
+      spouseUserId,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
+}
+
+export function unpairUser(userId) {
+  return http.post(
+    `/users/${userId}/unpair`,
+    {},
     {
       headers: {
         "Content-Type": "application/json",

@@ -42,6 +42,11 @@
                     </td>
                     <td class="body-cell">{{ item.application.applicationNo || item.transactionNo || '-' }}</td>
                     <td class="body-cell">{{ item.user?.name || item.customer || '-' }}</td>
+                    <td class="body-cell">
+                      <v-chip v-if="item.isJointPayment" color="success" dark x-small>Joint</v-chip>
+                      <v-chip v-else-if="item.user?.parentId" color="info" dark x-small>Spouse</v-chip>
+                      <v-chip v-else color="grey lighten-1" dark x-small>Primary</v-chip>
+                    </td>
                     <td class="body-cell">{{ item.paymentMethod || item.method || '-' }}</td>
                     <td class="body-cell">{{ item.transactionId || item.transaction || '-' }}</td>
                     <td class="body-cell">{{ formatDate(item.createdAt || item.datetime) }}</td>
@@ -94,6 +99,7 @@ export default {
         { text: "Sl.No", value: "slno", align: "start", width: "80px" },
         { text: "Application No", value: "applicationNo", align: "start" },
         { text: "Customer Name", value: "customer", align: "start" },
+        { text: "Account", value: "account", align: "start" },
         { text: "Payment Method", value: "method", align: "start" },
         { text: "Transaction ID", value: "transaction", align: "start" },
         { text: "Date & Time", value: "datetime", align: "start" },

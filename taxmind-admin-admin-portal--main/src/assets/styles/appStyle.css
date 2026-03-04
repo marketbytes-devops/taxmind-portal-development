@@ -10,20 +10,24 @@ body {
   font-weight: 400;
   text-transform: capitalize;
 }
+
 .editbox {
   font-family: opensanssemibold;
   font-size: 20px;
   text-transform: uppercase;
 }
+
 .card-header {
   font-family: opensanssemibold;
   font-size: 20px;
 }
+
 .btnstyle {
   font-family: opensansregular;
   font-weight: 600;
   text-transform: uppercase;
 }
+
 .churchcardhead {
   font-family: opensansbold;
   font-size: 15px;
@@ -35,11 +39,13 @@ body {
   font-size: 10px;
   text-transform: uppercase;
 }
+
 .passwordbtn {
   font-family: opensanssemibold;
   font-size: 13px;
   text-transform: uppercase;
 }
+
 .churchdes {
   font-family: opensanssemibold;
   font-size: 17px;
@@ -55,12 +61,14 @@ body {
   color: black;
   text-transform: uppercase;
 }
+
 .addChurch {
   font-family: opensansregular;
   font-size: 14px;
   text-align: justify;
   color: black !important;
 }
+
 .forgotpass1 {
   font-family: opensansregular;
   font-size: 14px;
@@ -74,6 +82,7 @@ body {
   text-align: justify;
   color: black !important;
 }
+
 .forgotpass {
   font-family: opensansregular;
   font-size: 20px;
@@ -129,40 +138,42 @@ body {
   opacity: 0.8;
   border-radius: 4px;
 }
+
 .v-data-table-header {
   color: white;
 }
 
 .v-data-table .v-data-table-header tr th {
-  text-align: left !important; /* Ensure text alignment */
-
+  text-align: left !important;
   color: black !important;
   font-family: opensansbold;
   font-size: 14px !important;
   text-transform: uppercase;
-  padding: 12px !important;
+  padding: 12px 16px !important;
+  white-space: nowrap !important;
 }
 
-.v-data-table tr td {
+.v-data-table tr td,
+.v-simple-table tr td {
   font-size: 12px !important;
   color: black;
   font-family: opensansregular;
+  white-space: nowrap !important;
+  padding: 12px 16px !important;
 }
 
-.v-data-table .v-data-table__wrapper {
-  overflow-x: auto; /* Enable horizontal scrolling if content overflows */
+.v-data-table .v-data-table__wrapper,
+.table-container {
+  overflow-x: auto !important;
 }
 
 .v-data-table .v-data-table-header th {
-  min-width: 50px; /* Minimum width for columns */
-  max-width: 300px; /* Maximum width to prevent overflow */
-  text-align: left !important; /* Align text to the left */
+  min-width: 100px;
+  text-align: left !important;
 }
 
 .v-data-table th {
-  white-space: nowrap; /* Prevent wrapping */
-  overflow: hidden; /* Hide overflow text */
-  text-overflow: ellipsis; /* Add ellipsis for overflowing text */
+  white-space: nowrap;
 }
 
 #virtual-scroll-table {
@@ -265,6 +276,7 @@ input::-webkit-inner-spin-button {
     display: none !important;
   }
 }
+
 /* width */
 
 ::-webkit-scrollbar {
@@ -298,6 +310,7 @@ input::-webkit-inner-spin-button {
   font-family: opensansregular !important;
   color: black !important;
 }
+
 /* NEW */
 .carousalhead {
   font-family: DMSans;

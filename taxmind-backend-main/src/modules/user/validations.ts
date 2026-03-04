@@ -480,6 +480,11 @@ export const listUserSchema = z.object({
           'unverified',
           'agent_activated',
           'agent_not_activated',
+          'ros_not_updated',
+          'ros_updated',
+          'offboard',
+          'return',
+          'joint_assessment',
         ])
         .optional(),
     })
@@ -737,4 +742,30 @@ export const updateProfileSchema = z.object({
         path: ['spouse'],
       }
     ),
+});
+export const reactivateAccountSchema = z.object({
+  body: z.object({
+    email: emailValidator,
+  }),
+});
+
+export const updateUserRemarkSchema = z.object({
+  params: z.object({
+    userId: uuidSchema,
+  }),
+  body: z.object({
+    remark: z.string().max(500),
+  }),
+});
+export const pairUserSchema = z.object({
+  body: z.object({
+    primaryUserId: uuidSchema,
+    spouseUserId: uuidSchema,
+  }),
+});
+
+export const unpairUserSchema = z.object({
+  params: z.object({
+    userId: uuidSchema,
+  }),
 });

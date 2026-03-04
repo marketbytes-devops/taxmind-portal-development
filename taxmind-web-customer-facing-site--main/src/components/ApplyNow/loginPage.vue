@@ -56,6 +56,30 @@
         </v-layout>
       </v-flex>
     </v-layout>
+
+    <!-- Reactivation Dialog -->
+    <v-dialog v-model="showReactivateDialog" max-width="450" persistent>
+      <v-card class="rounded-xl pa-4">
+        <v-card-title class="headline text-center justify-center">
+          <v-icon color="#1A73E9" size="48" class="mb-2">mdi-account-reactivate</v-icon>
+          <div class="w-100">Activate Account?</div>
+        </v-card-title>
+        <v-card-text class="text-center subtitle-1 pb-6">
+          Your account is currently inactive. Do you want to activate this account?
+          <div v-if="lastRemark" class="mt-4 pa-3 grey lighten-4 rounded-lg text-left italic">
+            <strong>Last Remark:</strong> {{ lastRemark }}
+          </div>
+        </v-card-text>
+        <v-card-actions class="pb-4 justify-center">
+          <v-btn color="grey darken-1" text @click="showReactivateDialog = false" class="px-6 rounded-lg">
+            No
+          </v-btn>
+          <v-btn color="#1A73E9" dark @click="confirmReactivation" class="px-6 rounded-lg ml-3">
+            Yes, Activate
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -73,9 +97,29 @@ export default {
       showPassword: false,
       email: null,
       password: null,
+      showReactivateDialog: false,
+      lastRemark: null,
     };
   },
   methods: {
+    async confirmReactivation() {
+      this.appLoading = true;
+      try {
+        const response = await this.submitData("/users/auth/reactivate", {
+          email: this.email,
+        });
+        if (response.success) {
+          this.$snackbar.showSuccess("Account reactivated! Please log in.");
+          this.showReactivateDialog = false;
+        } else {
+          throw new Error(response.message || "Reactivation failed");
+        }
+      } catch (error) {
+        this.handleApiError(error);
+      } finally {
+        this.appLoading = false;
+      }
+    },
     redirectToForgotPassword() {
       this.$router.push({ name: "forgot-password" });
     },
@@ -141,6 +185,13 @@ export default {
       const isPasswordResetRequired =
         data?.user?.isPasswordResetRequired || data?.isPasswordResetRequired || false;
       const userEmail = data?.user?.email || data?.email || this.email;
+      const isOffBoarded = data?.isOffBoarded || false;
+
+      if (isOffBoarded) {
+        this.lastRemark = data?.lastRemark;
+        this.showReactivateDialog = true;
+        return;
+      }
 
 
       // CASE 0: Password reset required - redirect to forgot password page

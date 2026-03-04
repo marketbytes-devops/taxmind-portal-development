@@ -57,6 +57,8 @@ export const notificationTypes = {
   // Account
   termsAndConditions: { key: 'terms_and_conditions', category: 'account' },
   offboardUser: { key: 'offboard_user', category: 'account' },
+  userModified: { key: 'user_modified', category: 'account' },
+  userReactivated: { key: 'user_reactivated', category: 'account' },
   newAdminAccount: { key: 'new_admin_account', category: 'account' },
 
   // Customer Support

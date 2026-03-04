@@ -1,4 +1,4 @@
-import { and, eq, isNull,lt, sql, or } from 'drizzle-orm';
+import { and, eq, isNull, lt, sql, or } from 'drizzle-orm';
 
 import { db, models } from '@/database';
 import logger from '@/logger';
@@ -48,10 +48,10 @@ export async function executeAgentActivationReminderJob(): Promise<AgentActivati
             continue;
           }
 
-          await mail.taxAgentRequest({
+          /* await mail.taxAgentRequest({
             recipient: user.email,
             replacements: { name: user.name },
-          });
+          }); */
 
           // Update the last reminder timestamp and increment counter
           await db.execute(
@@ -94,9 +94,9 @@ async function findUsersForAgentActivationReminder(
   offset: number,
   limit: number
 ): Promise<UserToNotify[]> {
-   // Calculate date 7 days ago for comparison
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  // Calculate date 7 days ago for comparison
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
   const users = await db.query.users.findMany({
     where: and(
       isNull(models.users.deletedAt),

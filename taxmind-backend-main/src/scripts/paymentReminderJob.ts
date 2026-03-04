@@ -104,12 +104,12 @@ export async function executePaymentReminderJob(): Promise<PaymentReminderStats>
         }
 
         // Send payment reminder email
-        await mail.paymentReminder({
+        /* await mail.paymentReminder({
           recipient: application.userEmail,
           replacements: {
             name: application.userName,
           },
-        });
+        }); */
 
         // Update the lastPaymentReminderSentAt timestamp and increment reminder count
         await db.execute(

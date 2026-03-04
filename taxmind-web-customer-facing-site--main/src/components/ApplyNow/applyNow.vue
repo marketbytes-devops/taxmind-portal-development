@@ -693,6 +693,7 @@
 <script>
 import { ApiMigrationMixin } from "@/utils/apiMigration";
 import PhoneNumberInput from "../Common/PhoneNumberInput.vue";
+import { getProfileData } from "@/services/profile";
 
 export default {
   components: {
@@ -799,7 +800,9 @@ export default {
       spousePhoneData: null,
     };
   },
-  mounted() {},
+  mounted() {
+    this.prefillProfile();
+  },
   computed: {
     formattedDate() {
       if (!this.date) return "";
@@ -830,6 +833,56 @@ export default {
     },
   },
   methods: {
+    async prefillProfile() {
+      const token = localStorage.getItem("accesstoken");
+      if (!token) return;
+
+      try {
+        const response = await getProfileData();
+        if (response && response.success) {
+          const user = response.data;
+          this.name = user.name || this.name;
+          this.email = user.email || this.email;
+          this.phonenumber = user.phone || this.phonenumber;
+          this.profession = user.profession || this.profession;
+          this.ppsnumber = user.ppsNumber || this.ppsnumber;
+          this.ericode = user.eircode || this.ericode;
+          this.address = user.address || this.address;
+          this.maritalstatus = user.maritalStatus || this.maritalstatus;
+
+          // Format DOB if available (format: YYYY-MM-DD or DD/MM/YYYY)
+          if (user.dob) {
+            if (user.dob.includes("/")) {
+              const [day, month, year] = user.dob.split("/");
+              this.date = `${year}-${month}-${day}`;
+            } else {
+              this.date = user.dob;
+            }
+          }
+
+          if (user.spouse) {
+            this.spouseDetails.fullName = user.spouse.name || this.spouseDetails.fullName;
+            this.spouseDetails.email = user.spouse.email || this.spouseDetails.email;
+            this.spouseDetails.phone = user.spouse.phone || this.spouseDetails.phone;
+            this.spouseDetails.profession = user.spouse.profession || this.spouseDetails.profession;
+            this.spouseDetails.ppsNumber = user.spouse.ppsNumber || this.spouseDetails.ppsNumber;
+            this.spouseDetails.eircode = user.spouse.eircode || this.spouseDetails.eircode;
+            this.spouseDetails.address = user.spouse.address || this.spouseDetails.address;
+
+            if (user.spouse.dob) {
+              if (user.spouse.dob.includes("/")) {
+                const [day, month, year] = user.spouse.dob.split("/");
+                this.spouseDetails.dob = `${year}-${month}-${day}`;
+              } else {
+                this.spouseDetails.dob = user.spouse.dob;
+              }
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error prefilling profile:", error);
+      }
+    },
     // Helper method to format date from YYYY-MM-DD to DD/MM/YYYY
     formatDateForAPI(dateString) {
       if (!dateString) return null;

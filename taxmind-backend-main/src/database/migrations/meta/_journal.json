@@ -295,6 +295,20 @@
       "when": 1769151122907,
       "tag": "0041_add_reminder_count_in_application_users",
       "breakpoints": true
+    },
+    {
+      "idx": 42,
+      "version": "7",
+      "when": 1772612776024,
+      "tag": "0042_applied-referral-code-points-claimed-field",
+      "breakpoints": true
+    },
+    {
+      "idx": 43,
+      "version": "7",
+      "when": 1772617883811,
+      "tag": "0043_applied-referral-code-points-claimed-field",
+      "breakpoints": true
     }
   ]
 }

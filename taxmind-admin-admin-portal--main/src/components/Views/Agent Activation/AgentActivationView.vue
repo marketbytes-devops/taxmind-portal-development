@@ -104,61 +104,54 @@ export default {
       // Table headers matching API response
       headers: [
         {
-          text: "Notice\nNo",
+          text: "Notice No",
           value: "noticeNo",
           sortable: false,
           align: "left",
           width: "140px",
         },
         {
-          text: "Customer\nName",
+          text: "Customer Name",
           value: "customerName",
           sortable: false,
           align: "left",
           width: "180px",
         },
         {
-          text: "Regn./Trader\nNo./Doc ID",
+          text: "Regn./Trader No./Doc ID",
           value: "regnTraderNo",
           sortable: false,
           align: "left",
           width: "140px",
         },
         {
-          text: "Mandatory\nEFiler",
+          text: "Mandatory EFiler",
           value: "mandatoryEFiler",
           sortable: false,
           align: "left",
           width: "120px",
         },
         {
-          text: "Document\nType",
+          text: "Document Type",
           value: "documentType",
           sortable: false,
           align: "left",
           width: "140px",
         },
         {
-          text: "Period\nBegin",
+          text: "Period Begin",
           value: "periodBegin",
           sortable: false,
           align: "left",
           width: "120px",
         },
         {
-          text: "Issued\nDate",
+          text: "Issued Date",
           value: "issuedDate",
           sortable: false,
           align: "left",
           width: "120px",
         },
-        // {
-        //   text: "Tax Type/\nDuty Report",
-        //   value: "taxTypeDutyReport",
-        //   sortable: false,
-        //   align: "left",
-        //   width: "140px",
-        // },
       ],
 
       // Initialize with empty array, will be populated from API

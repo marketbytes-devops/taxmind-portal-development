@@ -19,7 +19,9 @@ import {
   listQueries,
   listUsers,
   offboardUser,
+  pairUser,
   phoneVerificationCode,
+  reactivateAccount,
   resetPassword,
   signIn,
   signOut,
@@ -27,7 +29,9 @@ import {
   submitQuery,
   toggleAgentActivationRequestStatus,
   unbindSpouse,
+  unpairUser,
   updateProfile,
+  updateUserRemark,
   uploadAgentActivationData,
   verifyEmail,
   verifyPhone,
@@ -37,6 +41,7 @@ const router = Router();
 
 router.post('/auth/signin', signIn);
 router.post('/auth/signup', signUp);
+router.post('/auth/reactivate', reactivateAccount);
 router.post('/auth/signout', authorize('USER'), signOut);
 router.post('/auth/token/refresh', getAccessToken);
 router.post('/auth/password/change', authorize('USER'), changePassword);
@@ -52,6 +57,9 @@ router.get('/', authorize('ADMIN'), paginate, listUsers);
 router.post('/auth/spouse/unbind', authorize('USER'), unbindSpouse);
 router.delete('/auth/delete-account', authorize('USER'), deleteAccount);
 router.delete('/:userId/offboard', authorize('ADMIN'), offboardUser);
+router.patch('/:userId/remark', authorize('ADMIN'), updateUserRemark);
+router.post('/pair', authorize('ADMIN'), pairUser);
+router.post('/:userId/unpair', authorize('ADMIN'), unpairUser);
 
 // Admin-only: upload agent activation records
 router.post(
