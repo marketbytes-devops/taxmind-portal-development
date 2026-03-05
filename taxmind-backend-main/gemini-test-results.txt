@@ -1,0 +1,5 @@
+Starting Gemini Test
+API Key length: 39
+Attempting model: gemini-flash-latest...
+✅ Success with gemini-flash-latest: Hello! How can I help you today?
+Test Finished

@@ -3,7 +3,7 @@ import { db, models } from '@/database';
 import { serviceHandler } from '@/utils/serviceHandler';
 import ApiError from '@/utils/apiError';
 import * as maya from '@/integrations/maya';
-import * as openai from '@/integrations/openai';
+import * as gemini from '@/integrations/gemini';
 import * as s3 from '@/integrations/awsS3';
 import { hashWithHMAC } from '@/utils/crypto';
 import logger from '@/logger';
@@ -78,8 +78,8 @@ export const processTaxReturn = serviceHandler(
             // 6. AI Summary (Robust handling - if this fails, we still return the masked file)
             let summary = '';
             try {
-                const extractedText = await openai.extractTextFromPDF(maskedBuffer);
-                summary = await openai.generateTaxDocumentSummary(extractedText);
+                const extractedText = await gemini.extractTextFromPDF(maskedBuffer);
+                summary = await gemini.generateTaxDocumentSummary(extractedText);
             } catch (aiError: any) {
                 logger.warn('AI Summarization failed but process will continue', aiError);
                 summary = 'Automated summary failed. Please enter the details manually from the masked document.';
