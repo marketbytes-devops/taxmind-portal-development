@@ -72,6 +72,8 @@ export const applications = pgTable(
     flatFee: customEncryptedType<string>('text', 'flatFee'), // Encrypted flat fee amount
     paymentReminderSentCount: integer().default(0).notNull(), // Number of payment reminders sent
     isJointApplication: boolean().default(false).notNull(),
+    automatedSummary: text(), // AI generated summary
+    taxReturnSummary: text(), // Finalized/Edited summary
   },
   (t) => [
     // Frequent filters and sorts

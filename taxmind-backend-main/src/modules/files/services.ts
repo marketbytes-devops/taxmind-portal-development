@@ -157,7 +157,14 @@ const associateFileWithEntity = async (
       });
 
       if (category?.iconId) {
-        await deleteFileFromS3AndDB(category.iconId);
+        const oldIconId = category.iconId;
+        // Unlink first to avoid foreign key constraint error
+        await db
+          .update(models.questionCategories)
+          .set({ iconId: null })
+          .where(eq(models.questionCategories.id, entityId));
+
+        await deleteFileFromS3AndDB(oldIconId);
       }
 
       await db
@@ -229,7 +236,14 @@ const associateFileWithEntity = async (
 
       // Delete old file if exists
       if (app.taxReturnDocumentId) {
-        await deleteFileFromS3AndDB(app.taxReturnDocumentId);
+        const oldFileId = app.taxReturnDocumentId;
+        // Unlink from application first to avoid foreign key constraint error
+        await db
+          .update(models.applications)
+          .set({ taxReturnDocumentId: null })
+          .where(eq(models.applications.id, entityId));
+
+        await deleteFileFromS3AndDB(oldFileId);
       }
 
       // Associate new file

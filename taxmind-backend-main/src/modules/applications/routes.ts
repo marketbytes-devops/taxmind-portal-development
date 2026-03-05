@@ -39,6 +39,7 @@ import {
   updateApplicationReviewStatus,
   updateDocumentRequestStatus,
 } from './services';
+import { confirmTaxReturn, processTaxReturn } from './workflow';
 
 const router = Router();
 
@@ -255,4 +256,20 @@ router.get(
   requirePermission(MODULE_CONFIGS.applications.name, 'view'),
   getApplicationDetails
 );
+
+// Tax Return specialized workflow
+router.post(
+  '/:applicationId/process-tax-return',
+  authorize('ADMIN'),
+  requirePermission(MODULE_CONFIGS.applications.name, 'edit'),
+  processTaxReturn
+);
+
+router.post(
+  '/:applicationId/confirm-tax-return',
+  authorize('ADMIN'),
+  requirePermission(MODULE_CONFIGS.applications.name, 'edit'),
+  confirmTaxReturn
+);
+
 export default router;

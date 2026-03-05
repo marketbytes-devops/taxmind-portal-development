@@ -463,3 +463,32 @@ export function submitQuestionnaireResponse(payload) {
     },
   });
 }
+
+/**
+ * Process a tax return document with Maya & AI
+ * @param {string} applicationId - The application ID
+ * @returns {Promise} - Promise resolving to the summary and masked file info
+ */
+export function processTaxReturn(applicationId) {
+  return http.post(`/applications/${applicationId}/process-tax-return`, {}, {
+    headers: {
+      Accept: "application/json",
+    },
+    timeout: 300000, // 5 minutes for document processing
+  });
+}
+
+/**
+ * Finalize and confirm a tax return summary
+ * @param {string} applicationId - The application ID
+ * @param {Object} confirmData - The finalized summary
+ * @returns {Promise} - Promise resolving to the confirmation result
+ */
+export function confirmTaxReturn(applicationId, confirmData) {
+  return http.post(`/applications/${applicationId}/confirm-tax-return`, confirmData, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    timeout: 300000, // 5 minutes for processing/emailing
+  });
+}

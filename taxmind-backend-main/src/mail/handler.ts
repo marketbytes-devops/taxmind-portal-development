@@ -155,4 +155,13 @@ export const mail = {
       replacements,
     });
   },
+
+  taxReturnProcessed: async function ({ recipient, replacements }: MailHandlerParams) {
+    await sendMail({
+      recipient,
+      subject: 'Your Tax Return is Ready - Taxmind',
+      templateName: 'tax_return_processed',
+      replacements,
+    });
+  },
 };

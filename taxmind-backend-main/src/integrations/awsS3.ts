@@ -76,3 +76,20 @@ export const getPresignedGetObjectUrl = async (
     throw err;
   }
 };
+
+export const getFileBuffer = async (key: string): Promise<Buffer> => {
+  const command = new GetObjectCommand({
+    Bucket: process.env.AWS_S3_BUCKET_NAME,
+    Key: key,
+  });
+  try {
+    const response = await s3Client.send(command);
+    const byteArray = await response.Body?.transformToByteArray();
+    if (!byteArray) throw new Error('Empty response body from S3');
+    return Buffer.from(byteArray);
+  } catch (err) {
+    logger.error(`Failed to get file buffer for key: ${key}`);
+    logger.error((err as Error).message);
+    throw err;
+  }
+};

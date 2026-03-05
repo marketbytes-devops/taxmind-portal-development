@@ -309,6 +309,13 @@
       "when": 1772617883811,
       "tag": "0043_applied-referral-code-points-claimed-field",
       "breakpoints": true
+    },
+    {
+      "idx": 44,
+      "version": "7",
+      "when": 1772636775918,
+      "tag": "0044_applied-referral-code-points-claimed-field",
+      "breakpoints": true
     }
   ]
 }

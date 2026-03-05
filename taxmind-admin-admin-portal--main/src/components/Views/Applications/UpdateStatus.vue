@@ -340,8 +340,55 @@
                   </v-flex>
                 </v-layout>
               </div>
+
+              <!-- Maya & AI Processing Section -->
+              <div v-if="uploadedFile && !automatedSummary" class="mt-4">
+                <v-btn color="secondary" depressed block :loading="processingMaya" @click="processWithMaya" :disabled="!canEdit('applications')">
+                  <v-icon left>mdi-auto-fix</v-icon>
+                  Process with Maya & AI
+                </v-btn>
+              </div>
             </div>
           </v-flex>
+        </v-layout>
+
+        <!-- Automated Summary Section (Post-Processing) -->
+        <v-layout mt-4 wrap v-if="automatedSummary && !finalSummaryConfirmed">
+           <v-flex xs12 sm12 md8 lg8 xl6 pa-4>
+              <v-card elevation="0" outlined style="border-radius: 4px" class="pa-4 bg-light-blue">
+                <h3 class="card-title mb-2">Automated Document Summary</h3>
+                <p class="text-caption grey--text mb-4">Generated via Maya Anonymization & OpenAI</p>
+                
+                <v-textarea
+                  v-model="editableSummary"
+                  outlined
+                  label="Edit Summary"
+                  rows="10"
+                  counter
+                  class="summary-editor"
+                  :disabled="!canEdit('applications')"
+                ></v-textarea>
+
+                <div class="d-flex justify-end mt-4">
+                  <v-btn
+                    v-if="maskedFileUrl"
+                    color="secondary"
+                    outlined
+                    depressed
+                    class="mr-4"
+                    tag="a"
+                    :href="maskedFileUrl"
+                    target="_blank"
+                  >
+                    <v-icon left>mdi-eye</v-icon>
+                    Preview Masked Document
+                  </v-btn>
+                  <v-btn color="primary" depressed @click="confirmFinalSummary" :loading="confirmingSummary" :disabled="!canEdit('applications')">
+                    Confirm & Send to Client
+                  </v-btn>
+                </div>
+              </v-card>
+           </v-flex>
         </v-layout>
 
         <!-- Submit Button -->
@@ -361,7 +408,7 @@
 <script>
 
 import ServerError from "@/components/Common/500.vue";
-import { calculateAmount, submitAmount } from "@/api/modules/applications";
+import { calculateAmount, submitAmount, processTaxReturn, confirmTaxReturn } from "@/api/modules/applications";
 import { files } from "@/api";
 import { deleteFile } from "@/api/modules/files";
 import permissionMixin from '@/mixins/permissionMixin';
@@ -407,6 +454,15 @@ export default {
       calculationDetails: null,
       apiDiscountAmount: 0,
       apiFinalAmount: 0,
+
+      // Maya & AI Integration states
+      processingMaya: false,
+      automatedSummary: null,
+      editableSummary: "",
+      confirmingSummary: false,
+      finalSummaryConfirmed: false,
+      maskedFileId: null,
+      maskedFileUrl: null,
 
     };
   },
@@ -812,23 +868,79 @@ export default {
             discountAmount: parseFloat(this.discountAmount) || 0
           });
 
-          // Reset form to hide submit button and clear all fields
-          this.resetForm();
+          this.msg = response.data.message || "Amount submitted successfully";
+          this.showSnackBar = true;
+          this.submitLoading = false;
+          this.appLoading = false;
+          this.showSubmitConfirmation = false;
 
-          // Wait a bit then reload application data from parent
-          setTimeout(() => {
-            this.loadApplicationData();
-          }, 500);
-        } else {
-          throw new Error("Invalid response from server");
+          // Update applicant data locally to reflect changes
+          this.applicantdata.status = this.selectedStatus;
+          // You might need to refresh the whole page or trigger a parent update
         }
       } catch (error) {
         this.submitLoading = false;
-        this.showSubmitConfirmation = false;
         this.appLoading = false;
+        this.showSubmitConfirmation = false;
         this.msg = error.response?.data?.error || "Error submitting amount";
         this.showSnackBar = true;
         console.error("Submit error:", error);
+      }
+    },
+
+    async processWithMaya() {
+      try {
+        this.processingMaya = true;
+        this.msg = "Starting document anonymization & AI summary generation...";
+        this.showSnackBar = true;
+
+        const response = await processTaxReturn(this.applicantdata.id);
+        
+        if (response && response.data && response.data.data) {
+          const { summary, maskedFileId, maskedFileUrl } = response.data.data;
+          this.automatedSummary = summary;
+          this.editableSummary = summary;
+          this.maskedFileId = maskedFileId;
+          this.maskedFileUrl = maskedFileUrl;
+          this.msg = "Process completed! Please review and edit the summary.";
+          this.showSnackBar = true;
+        }
+      } catch (error) {
+        console.error("Maya Processing Error:", error);
+        this.msg = error.response?.data?.message || "Failed to process document with Maya/AI";
+        this.showSnackBar = true;
+      } finally {
+        this.processingMaya = false;
+      }
+    },
+    
+    
+
+    async confirmFinalSummary() {
+      try {
+        this.confirmingSummary = true;
+        
+        const payload = {
+          summary: this.editableSummary,
+          maskedFileId: this.maskedFileId
+        };
+
+        const response = await confirmTaxReturn(this.applicantdata.id, payload);
+
+        if (response && response.data) {
+          this.finalSummaryConfirmed = true;
+          this.msg = "Summary confirmed. Masked document is now visible to the client and email sent.";
+          this.showSnackBar = true;
+          
+          // Refresh data
+          this.loadApplicationData();
+        }
+      } catch (error) {
+        console.error("Confirm Summary Error:", error);
+        this.msg = error.response?.data?.message || "Failed to confirm summary";
+        this.showSnackBar = true;
+      } finally {
+        this.confirmingSummary = false;
       }
     },
 
@@ -910,6 +1022,19 @@ export default {
         this.selectedStatus = this.applicantdata.status;
         this.refundAmount = this.applicantdata.refundAmount;
         this.discountAmount = this.applicantdata.discountAmount;
+
+        // Load automated summary if already exists
+        if (this.applicantdata.automatedSummary) {
+          this.automatedSummary = this.applicantdata.automatedSummary;
+        }
+        
+        // Load finalized summary if already exists
+        if (this.applicantdata.taxReturnSummary) {
+          this.editableSummary = this.applicantdata.taxReturnSummary;
+          this.finalSummaryConfirmed = true;
+        } else if (this.automatedSummary) {
+          this.editableSummary = this.automatedSummary;
+        }
       }
     },
   },

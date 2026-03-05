@@ -234,3 +234,19 @@ export const updateApplicationReviewStatusSchema = z.object({
   params: z.object({ id: z.uuid('Invalid review ID') }),
   body: z.object({ status: z.enum(['approved', 'rejected']) }),
 });
+
+export const processTaxReturnSchema = z.object({
+  params: z.object({
+    applicationId: z.uuid('Invalid application ID'),
+  }),
+});
+
+export const confirmTaxReturnSchema = z.object({
+  params: z.object({
+    applicationId: z.uuid('Invalid application ID'),
+  }),
+  body: z.object({
+    summary: z.string().min(1, 'Summary is required'),
+    maskedFileId: z.uuid().optional(),
+  }),
+});
