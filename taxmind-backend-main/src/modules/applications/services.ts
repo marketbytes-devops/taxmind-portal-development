@@ -3032,12 +3032,12 @@ export const setReviewedStatus = serviceHandler(setReviewedStatusSchema, async (
     return updatedApplication;
   });
 
-  await mail.filingCompleted({
+  /* await mail.filingCompleted({
     recipient: app.user.email,
     replacements: {
       name: app.user.name,
     },
-  });
+  }); */
 
   // if (app.user.fcmToken) {
   //   await sendNotification({

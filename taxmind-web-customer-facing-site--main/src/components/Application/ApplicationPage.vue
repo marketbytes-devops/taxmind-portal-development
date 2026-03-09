@@ -10,22 +10,43 @@
     />
     <!-- Global snackbar is used via this.$snackbar.showSuccess/showError -->
 
-    <WelcomeHeader :userName="userName" @create-success="handleCreateSuccess" />
+    <WelcomeHeader 
+      ref="welcomeHeader"
+      :userName="userName" 
+      :isFirstTime="!appLoading && applicationsList.length === 0"
+      @create-success="handleCreateSuccess" 
+    />
 
     <!-- Display message if no applications found -->
     <div
       v-if="!appLoading && applicationsList.length === 0"
       class="no-applications"
     >
-      <v-card class="text-center pa-8">
-        <v-icon size="64" color="grey lighten-1"
-          >mdi-file-document-outline</v-icon
-        >
-        <h3 class="mt-4">No Applications Found</h3>
-        <p class="grey--text">
-          You haven't created any applications yet. Click "New Claim" to get
-          started.
-        </p>
+      <v-card class="text-center pa-12 welcome-card" flat>
+        <v-layout column align-center justify-center class="py-6">
+          <div class="welcome-illustration-wrapper mb-8">
+            <div class="glow-effect"></div>
+            <div class="icon-circle">
+              <v-icon size="72" color="#1A73E9">mdi-text-box-plus-outline</v-icon>
+            </div>
+          </div>
+          <h2 class="welcome-title font-weight-bold mb-3">Start Your Tax Refund Journey</h2>
+          <p class="welcome-subtitle grey--text text--darken-1 mb-10">
+            Welcome to TaxMind! You don't have any active claims yet.<br/>
+            Let's get started by creating your first application for a tax refund.
+          </p>
+          <v-btn 
+            x-large 
+            color="#1A73E9" 
+            dark 
+            class="start-claim-btn"
+            @click="$refs.welcomeHeader.handleButtonClick()"
+            :ripple="false"
+          >
+            <span class="btn-text">Start My First Claim</span>
+            <v-icon right size="20">mdi-arrow-right</v-icon>
+          </v-btn>
+        </v-layout>
       </v-card>
     </div>
 
@@ -209,6 +230,100 @@ $blue: #3073f8;
   .page-info {
     font-weight: 500;
     color: #333;
+  }
+}
+.welcome-card {
+  border-radius: 20px !important;
+  background: linear-gradient(145deg, #ffffff 0%, #f8faff 100%);
+  border: 1px solid rgba(26, 115, 233, 0.08) !important;
+  box-shadow: 0 10px 40px rgba(26, 115, 233, 0.05) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #1A73E9, #64B5F6);
+}
+
+.welcome-illustration-wrapper {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glow-effect {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(26, 115, 233, 0.15) 0%, rgba(26, 115, 233, 0) 70%);
+  border-radius: 50%;
+  animation: pulse-glow 3s infinite ease-in-out;
+}
+
+.icon-circle {
+  position: relative;
+  z-index: 1;
+  width: 100px;
+  height: 100px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(26, 115, 233, 0.1);
+}
+
+.welcome-title {
+  color: #1e293b;
+  font-size: 28px;
+  letter-spacing: -0.5px;
+}
+
+.welcome-subtitle {
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 480px;
+}
+
+.start-claim-btn {
+  border-radius: 12px !important;
+  padding: 0 32px !important;
+  height: 56px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  letter-spacing: 0.3px !important;
+  background: linear-gradient(135deg, #1A73E9 0%, #0d47a1 100%) !important;
+  box-shadow: 0 8px 20px rgba(26, 115, 233, 0.25) !important;
+  transition: all 0.3s ease !important;
+}
+
+.start-claim-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(26, 115, 233, 0.35) !important;
+}
+
+@keyframes pulse-glow {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0.5;
   }
 }
 </style>

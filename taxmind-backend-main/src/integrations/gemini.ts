@@ -33,18 +33,57 @@ export const generateTaxDocumentSummary = async (text: string): Promise<string> 
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({ model: 'gemini-flash-latest' });
 
-        const prompt = `You are a professional tax consultant assistant. Your task is to provide a concise and structured summary of a tax receipt or tax document from a government portal. 
-Extract key information such as:
-- Document Type (e.g., P21 Balancing Statement, Statement of Liability, etc.)
-- Tax Year
-- Total Income
-- Tax Paid
-- Tax Refund/Liability Amount
-- Key allowances mentioned
+        const prompt = `You are a senior Irish tax consultant preparing a formal document summary for a client file. Analyze the following tax document and produce a highly professional, plain-text summary report.
 
-Format the summary clearly using bullet points. Be accurate and professional. If information is missing or unclear due to masking, state it clearly.
+STRICT FORMATTING RULES:
+- Do NOT use any Markdown symbols (no *, **, #, ##, ###, -, backticks, or underscores)
+- Do NOT use bullet points of any kind
+- Use clean section headings in ALL CAPS
+- Separate each section with a blank line
+- Use clean label-value formatting like: "Gross Income: €00,000.00"
+- Do not include any introductory or closing conversational text
 
-Please summarize the following tax document text:\n\n${text}`;
+Use exactly this structure:
+
+TAX DOCUMENT SUMMARY
+
+Document Type: [value]
+Tax Year: [value]
+Prepared By: TaxMind Automated Analysis
+
+
+
+INCOME AND TAX DETAILS
+
+Gross Income: [value]
+Taxable Income: [value]
+PAYE Deducted: [value]
+USC Deducted: [value]
+Total Tax Paid: [value]
+
+
+FINAL ASSESSMENT
+
+Assessment Result: [Refund / Underpayment / Balanced]
+Amount: [value]
+Payment Method: [value or Not Specified]
+
+
+
+ KEY ALLOWANCES AND TAX CREDITS
+
+[List each credit/allowance on its own line as: Credit Name: €amount]
+
+
+ NOTES AND OBSERVATIONS
+
+[Write 2-4 full professional sentences covering any adjustments, anomalies, masked data, income sources, or amendment status. No bullet points.]
+
+
+If any value cannot be determined from the document, write "Not Specified". If PPS Number is masked, note it as expected per data privacy compliance. Maintain a formal, neutral, client-ready tone throughout.
+
+Document Text to Summarize:
+${text}`;
 
         logger.info('Sending prompt to Gemini...');
         const result = await model.generateContent(prompt);

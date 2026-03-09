@@ -53,6 +53,7 @@ import {
   submitQuerySchema,
   unbindSpouseSchema,
   unpairUserSchema,
+  updateActivationStatusSchema,
   updateProfileSchema,
   updateUserRemarkSchema,
   userIdBodySchema,
@@ -2988,6 +2989,49 @@ export const updateProfile = serviceHandler(updateProfileSchema, async (req, res
 // });
 
 //Admin-only: endpoint to mark users where admins requested their agent activation in ROS
+export const updateUserActivationStatus = serviceHandler(
+  updateActivationStatusSchema,
+  async (req, res) => {
+    const { userId } = req.params;
+    const { status } = req.body;
+
+    const user = await db.query.users.findFirst({
+      where: and(isNull(models.users.deletedAt), eq(models.users.id, userId)),
+    });
+
+    if (!user) throw new ApiError('User not found', 404);
+
+    const now = dateToString(new Date());
+    let updateData: any = {};
+
+    if (status === 'ros_not_updated') {
+      updateData = {
+        isTaxAgentVerificationRequestSent: false,
+        taxAgentVerificationRequestSentAt: null,
+        isTaxAgentVerificationCompleted: false,
+        taxAgentVerificationCompletedAt: null,
+      };
+    } else if (status === 'ros_updated') {
+      updateData = {
+        isTaxAgentVerificationRequestSent: true,
+        taxAgentVerificationRequestSentAt: now,
+        isTaxAgentVerificationCompleted: false,
+        taxAgentVerificationCompletedAt: null,
+      };
+    } else if (status === 'agent_activated') {
+      updateData = {
+        isTaxAgentVerificationRequestSent: true, // If activated, request must have been sent
+        isTaxAgentVerificationCompleted: true,
+        taxAgentVerificationCompletedAt: now,
+      };
+    }
+
+    await db.update(models.users).set(updateData).where(eq(models.users.id, userId));
+
+    return res.success('User activation status updated successfully', {});
+  }
+);
+
 export const toggleAgentActivationRequestStatus = serviceHandler(
   userIdBodySchema,
   async (req, res) => {

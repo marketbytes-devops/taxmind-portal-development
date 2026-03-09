@@ -769,3 +769,11 @@ export const unpairUserSchema = z.object({
     userId: uuidSchema,
   }),
 });
+export const updateActivationStatusSchema = z.object({
+  params: z.object({
+    userId: uuidSchema,
+  }),
+  body: z.object({
+    status: z.enum(['ros_not_updated', 'ros_updated', 'agent_activated']),
+  }),
+});

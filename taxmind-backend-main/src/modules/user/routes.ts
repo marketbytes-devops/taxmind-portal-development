@@ -31,6 +31,7 @@ import {
   unbindSpouse,
   unpairUser,
   updateProfile,
+  updateUserActivationStatus,
   updateUserRemark,
   uploadAgentActivationData,
   verifyEmail,
@@ -57,6 +58,7 @@ router.get('/', authorize('ADMIN'), paginate, listUsers);
 router.post('/auth/spouse/unbind', authorize('USER'), unbindSpouse);
 router.delete('/auth/delete-account', authorize('USER'), deleteAccount);
 router.delete('/:userId/offboard', authorize('ADMIN'), offboardUser);
+router.patch('/:userId/activation-status', authorize('ADMIN'), updateUserActivationStatus);
 router.patch('/:userId/remark', authorize('ADMIN'), updateUserRemark);
 router.post('/pair', authorize('ADMIN'), pairUser);
 router.post('/:userId/unpair', authorize('ADMIN'), unpairUser);

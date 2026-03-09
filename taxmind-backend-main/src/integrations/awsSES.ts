@@ -3,7 +3,9 @@ import {
   SendBulkTemplatedEmailCommand,
   SendEmailCommand,
   SendTemplatedEmailCommand,
+  SendRawEmailCommand,
 } from '@aws-sdk/client-ses';
+import nodemailer from 'nodemailer';
 
 import logger from '@/logger';
 import { formatTemplate } from '@/utils/formatTemplate';
@@ -19,6 +21,11 @@ interface SendMailParams {
   replacements: Record<string, unknown>;
   isBulk?: boolean; // treat each recipient independently
   templateId?: string; // SES template name (pre-created in SES)
+  attachments?: {
+    filename: string;
+    content: Buffer;
+    contentType?: string;
+  }[];
 }
 
 const { AWS_ACCESS_KEY, AWS_SECRET_KEY, AWS_REGION, SUPPORT_EMAIL_ID } = process.env;
@@ -30,6 +37,10 @@ const sesClient = new SESClient({
   },
 });
 
+const transporter = nodemailer.createTransport({
+  SES: { ses: sesClient, aws: { SendRawEmailCommand } },
+} as any);
+
 export const sendMail = async ({
   replyTo,
   sender,
@@ -39,6 +50,7 @@ export const sendMail = async ({
   replacements,
   isBulk = false,
   templateId,
+  attachments,
 }: SendMailParams) => {
   const fromAddress = sender ?? SUPPORT_EMAIL_ID!;
   const recipients = Array.isArray(recipient) ? recipient : [recipient];
@@ -77,6 +89,21 @@ export const sendMail = async ({
     const htmlBody = loadTemplate(templateName, replacements);
 
     console.log({ fromAddress, recipients, formattedSubject });
+
+    if (attachments && attachments.length > 0) {
+      // Use nodemailer to send raw email with attachments
+      const info = await transporter.sendMail({
+        from: fromAddress,
+        to: recipients,
+        subject: formattedSubject,
+        html: htmlBody,
+        replyTo: replyTo,
+        attachments: attachments,
+      });
+      console.log('nodemailer send response:', info);
+      return;
+    }
+
     // Single (or multi-To) send
     const command = new SendEmailCommand({
       Source: fromAddress,
