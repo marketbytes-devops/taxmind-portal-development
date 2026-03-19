@@ -5,9 +5,24 @@
         {{ welcomeText }} <span class="name">{{ userName }}</span>{{ messageText }}
       </div>
       <div v-if="showButton">
-        <v-btn class="action-btn ml-4" color="primary" :ripple="false" depressed dark @click="handleButtonClick">
-          {{ buttonText }}
-        </v-btn>
+        <v-tooltip v-model="isFirstTime" top color="#1A73E9">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn 
+              class="action-btn ml-4" 
+              :class="{ 'pulse-btn': isFirstTime }"
+              color="primary" 
+              :ripple="false" 
+              depressed 
+              dark 
+              @click="handleButtonClick"
+              v-bind="attrs"
+              v-on="on"
+            >
+              {{ buttonText }}
+            </v-btn>
+          </template>
+          <span>Click here to start your refund process!</span>
+        </v-tooltip>
       </div>
     </div>
 
@@ -50,6 +65,10 @@ export default {
     showButton: {
       type: Boolean,
       default: true,
+    },
+    isFirstTime: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -132,5 +151,25 @@ $blue: #3073f8;
 .name {
   color: $blue;
   font-family: "DM Sans", sans-serif;
+}
+
+.pulse-btn {
+  animation: pulse-animation 2s infinite;
+  box-shadow: 0 0 0 0 rgba(26, 115, 233, 0.7);
+}
+
+@keyframes pulse-animation {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(26, 115, 233, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 15px rgba(26, 115, 233, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(26, 115, 233, 0);
+  }
 }
 </style>

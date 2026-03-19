@@ -522,24 +522,16 @@ export const agentActivationUploadSchema = z.object({
   body: z
     .array(
       z.object({
-        noticeNo: z
-          .string({ message: 'Notice number is required' })
-          .min(1, 'Notice number is required'),
-        customerName: z
-          .string({ message: 'Customer name is required' })
-          .min(1, 'Customer name is required'),
+        noticeNo: z.string().optional(),
+        customerName: z.string().optional(),
         regnTraderNo: z
           .string({ message: 'Registration/Trader number is required' })
           .min(1, 'Registration/Trader number is required'),
         mandatoryEFiler: z.string().optional(),
         taxTypeDutyRep: z.string().optional(),
-        documentType: z
-          .string({ message: 'Document type is required' })
-          .min(1, 'Document type is required'),
+        documentType: z.string().optional(),
         periodBegin: z.string().optional(),
-        issuedDate: z
-          .string({ message: 'Issued date is required' })
-          .min(1, 'Issued date is required'),
+        issuedDate: z.string().optional(),
         archivedBy: z.string().optional(),
       })
     )
@@ -767,5 +759,13 @@ export const pairUserSchema = z.object({
 export const unpairUserSchema = z.object({
   params: z.object({
     userId: uuidSchema,
+  }),
+});
+export const updateActivationStatusSchema = z.object({
+  params: z.object({
+    userId: uuidSchema,
+  }),
+  body: z.object({
+    status: z.enum(['ros_not_updated', 'ros_updated', 'agent_activated']),
   }),
 });

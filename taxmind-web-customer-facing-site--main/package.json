@@ -12,6 +12,7 @@
     "migrate-component": "node scripts/migrate-component.js"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "aos": "^2.3.4",
     "axios": "^1.5.1",
     "core-js": "^3.6.5",

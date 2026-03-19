@@ -140,6 +140,19 @@ export function updateUserRemark(userId, remark) {
   );
 }
 
+export function updateUserActivationStatus(userId, status) {
+  return http.patch(
+    `/users/${userId}/activation-status`,
+    { status },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    }
+  );
+}
+
 export function pairUser(primaryUserId, spouseUserId) {
   return http.post(
     "/users/pair",

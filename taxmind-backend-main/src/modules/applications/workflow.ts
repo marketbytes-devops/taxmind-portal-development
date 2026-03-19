@@ -11,6 +11,7 @@ import { processTaxReturnSchema, confirmTaxReturnSchema } from './validations';
 import { applicationStatuses, paymentStatuses } from '@/constants';
 import * as revolut from '@/integrations/revolut';
 import { mail } from '@/mail/handler';
+import { generateTaxSummaryPdf } from '@/utils/generateTaxSummaryPdf';
 
 /**
  * Service to process a tax return document:
@@ -195,7 +196,14 @@ export const confirmTaxReturn = serviceHandler(
         }
 
         // 3. Send Email Notification
+        /* 
         try {
+            const pdfBuffer = await generateTaxSummaryPdf({
+                name: app.user.name,
+                summary: summary,
+                year: app.year
+            });
+
             await mail.taxReturnProcessed({
                 recipient: app.user.email,
                 replacements: {
@@ -203,12 +211,20 @@ export const confirmTaxReturn = serviceHandler(
                     summary: summary.replace(/\n/g, '<br>'), // Simple formatting for HTML
                     year: app.year,
                     paymentUrl: paymentUrl
-                }
+                },
+                attachments: [
+                    {
+                        filename: `tax_summary_${app.year}.pdf`,
+                        content: pdfBuffer,
+                        contentType: 'application/pdf'
+                    }
+                ]
             });
         } catch (err) {
             logger.error('Failed to send confirmation email', err);
         }
+        */
 
-        return res.success('Tax return confirmed and finalized. Notification sent to client.');
+        return res.success('Tax return confirmed and finalized.');
     }
 );

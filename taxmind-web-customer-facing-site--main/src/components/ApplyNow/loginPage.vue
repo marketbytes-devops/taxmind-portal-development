@@ -172,9 +172,6 @@ export default {
       }
     },
     async handleLoginSuccess(response) {
-      // Clear form
-      this.resetForm();
-
       // Extract verification status and user data
       const data = response.data;
       const isEmailVerified =
@@ -192,6 +189,9 @@ export default {
         this.showReactivateDialog = true;
         return;
       }
+
+      // Clear form
+      this.resetForm();
 
 
       // CASE 0: Password reset required - redirect to forgot password page

@@ -205,37 +205,13 @@ export default {
       return headerMap[displayHeader] || displayHeader;
     },
 
-    // Validate CSV headers
     validateHeaders(headers) {
-      const expectedDisplayHeaders = [
-        "Notice No.",
-        "Customer Name",
-        "Regn./Trader No./Doc ID",
-        "Mandatory EFiler",
-        "Tax Type/Duty/Rep. Oblig.",
-        "Document Type",
-        "Period Begin",
-        "Issued Date",
-        "Archived By"
-      ];
-
-      // Check if all expected headers are present
-      const missingHeaders = expectedDisplayHeaders.filter(expected => !headers.includes(expected));
+      const requiredHeader = "Regn./Trader No./Doc ID";
       
-      if (missingHeaders.length > 0) {
+      if (!headers.includes(requiredHeader)) {
         return {
           isValid: false,
-          error: `Invalid CSV format. Missing required headers: ${missingHeaders.join(", ")}`
-        };
-      }
-
-      // Check if there are extra headers
-      const extraHeaders = headers.filter(header => !expectedDisplayHeaders.includes(header));
-      
-      if (extraHeaders.length > 0) {
-        return {
-          isValid: false,
-          error: `Invalid CSV format. Unexpected headers found: ${extraHeaders.join(", ")}`
+          error: `Invalid CSV format. Missing required header: ${requiredHeader}`
         };
       }
 

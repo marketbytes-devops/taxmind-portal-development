@@ -53,6 +53,7 @@ import {
   submitQuerySchema,
   unbindSpouseSchema,
   unpairUserSchema,
+  updateActivationStatusSchema,
   updateProfileSchema,
   updateUserRemarkSchema,
   userIdBodySchema,
@@ -1514,24 +1515,55 @@ export const uploadAgentActivationData = serviceHandler(
 export const listAgentActivations = serviceHandler(listAgentActivationSchema, async (req, res) => {
   const { limit, offset, page, size } = req.pagination;
 
-  const [totalRecords, records] = await Promise.all([
-    db.$count(models.agentActivations),
-    db.query.agentActivations.findMany({
+  // We want to see users who:
+  // 1. Have requested activation (isTaxAgentVerificationRequestSent = true)
+  // 2. OR have been activated (isTaxAgentVerificationCompleted = true)
+  // 3. OR have a record in the agent_activations table (history)
+  const whereClause = or(
+    eq(models.users.isTaxAgentVerificationRequestSent, true),
+    eq(models.users.isTaxAgentVerificationCompleted, true),
+    sql`exists (select 1 from agent_activations where user_id = ${models.users.id})`
+  );
+
+  const [totalRecords, usersWithActivations] = await Promise.all([
+    db.$count(models.users, and(isNull(models.users.deletedAt), whereClause)),
+    db.query.users.findMany({
+      where: and(isNull(models.users.deletedAt), whereClause),
       limit,
       offset,
-      orderBy: desc(models.agentActivations.createdAt),
-      // with: {
-      //   user: {
-      //     columns: {
-      //       id: true,
-      //       name: true,
-      //       email: true,
-      //       ppsNumber: true,
-      //     },
-      //   },
-      // },
+      orderBy: desc(models.users.updatedAt),
+      columns: {
+        id: true,
+        name: true,
+        email: true,
+        ppsNumber: true,
+        isTaxAgentVerificationCompleted: true,
+        isTaxAgentVerificationRequestSent: true,
+      },
+      with: {
+        agentActivation: true,
+      },
     }),
   ]);
+
+  // Flatten the records to match the format expected by the frontend
+  const records = usersWithActivations.map((user) => {
+    const activation = user.agentActivation || {};
+    return {
+      userId: user.id,
+      noticeNo: activation.noticeNo || 'N/A',
+      customerName: activation.customerName || user.name,
+      regnTraderNo: activation.regnTraderNo || user.ppsNumber,
+      mandatoryEFiler: activation.mandatoryEFiler || 'N/A',
+      documentType: activation.documentType || (user.isTaxAgentVerificationRequestSent ? 'Pending Activation' : 'N/A'),
+      periodBegin: activation.periodBegin || 'N/A',
+      issuedDate: activation.issuedDate || 'N/A',
+      taxTypeDutyReport: activation.taxTypeDutyReport || 'N/A',
+      archivedBy: activation.archivedBy || 'N/A',
+      isActivated: !!user.isTaxAgentVerificationCompleted,
+      requestSent: !!user.isTaxAgentVerificationRequestSent,
+    };
+  });
 
   return res.success('Agent activations retrieved successfully', {
     totalRecords,
@@ -2988,6 +3020,49 @@ export const updateProfile = serviceHandler(updateProfileSchema, async (req, res
 // });
 
 //Admin-only: endpoint to mark users where admins requested their agent activation in ROS
+export const updateUserActivationStatus = serviceHandler(
+  updateActivationStatusSchema,
+  async (req, res) => {
+    const { userId } = req.params;
+    const { status } = req.body;
+
+    const user = await db.query.users.findFirst({
+      where: and(isNull(models.users.deletedAt), eq(models.users.id, userId)),
+    });
+
+    if (!user) throw new ApiError('User not found', 404);
+
+    const now = dateToString(new Date());
+    let updateData: any = {};
+
+    if (status === 'ros_not_updated') {
+      updateData = {
+        isTaxAgentVerificationRequestSent: false,
+        taxAgentVerificationRequestSentAt: null,
+        isTaxAgentVerificationCompleted: false,
+        taxAgentVerificationCompletedAt: null,
+      };
+    } else if (status === 'ros_updated') {
+      updateData = {
+        isTaxAgentVerificationRequestSent: true,
+        taxAgentVerificationRequestSentAt: now,
+        isTaxAgentVerificationCompleted: false,
+        taxAgentVerificationCompletedAt: null,
+      };
+    } else if (status === 'agent_activated') {
+      updateData = {
+        isTaxAgentVerificationRequestSent: true, // If activated, request must have been sent
+        isTaxAgentVerificationCompleted: true,
+        taxAgentVerificationCompletedAt: now,
+      };
+    }
+
+    await db.update(models.users).set(updateData).where(eq(models.users.id, userId));
+
+    return res.success('User activation status updated successfully', {});
+  }
+);
+
 export const toggleAgentActivationRequestStatus = serviceHandler(
   userIdBodySchema,
   async (req, res) => {

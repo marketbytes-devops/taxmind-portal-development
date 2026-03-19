@@ -3,6 +3,11 @@ import { sendMail } from '../integrations/awsSES';
 interface MailHandlerParams {
   recipient: string;
   replacements: { [x: string]: unknown };
+  attachments?: {
+    filename: string;
+    content: Buffer;
+    contentType?: string;
+  }[];
 }
 
 export const mail = {
@@ -156,12 +161,13 @@ export const mail = {
     });
   },
 
-  taxReturnProcessed: async function ({ recipient, replacements }: MailHandlerParams) {
+  taxReturnProcessed: async function ({ recipient, replacements, attachments }: MailHandlerParams) {
     await sendMail({
       recipient,
       subject: 'Your Tax Return is Ready - Taxmind',
       templateName: 'tax_return_processed',
       replacements,
+      attachments,
     });
   },
 };

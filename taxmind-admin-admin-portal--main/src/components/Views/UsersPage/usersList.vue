@@ -79,14 +79,31 @@
                           <td class="nowrap-cell">{{ item.phone }}</td>
                           <td class="nowrap-cell">{{ formatDate(item.createdAt) }}</td>
                           <td class="nowrap-cell">
-                            <v-chip
-                              small
-                              :color="getStatusColor(item)"
+                            <v-select
+                              :value="getCurrentStatusValue(item)"
+                              :items="activationStatusArray"
+                              @change="(val) => handleStatusChange(item, val)"
+                              dense
+                              flat
+                              hide-details
+                              solo
+                              class="status-select"
+                              :background-color="getStatusColor(item)"
                               dark
-                              depressed
+                              @click.stop
+                              style="width: 180px; border-radius: 20px;"
                             >
-                              {{ getStatusText(item) }}
-                            </v-chip>
+                              <template v-slot:selection="{ item }">
+                                <span class="white--text font-weight-bold" style="font-size: 12px; width: 100%; text-align: center;">{{ item.text }}</span>
+                              </template>
+                              <template v-slot:item="{ item }">
+                                <v-list-item-content>
+                                  <v-list-item-title :style="{ color: item.color }">
+                                    ● {{ item.text }}
+                                  </v-list-item-title>
+                                </v-list-item-content>
+                              </template>
+                            </v-select>
                           </td>
                           <td class="nowrap-cell">
                             <v-chip v-if="item.isJointAssessment" :color="item.parentId ? 'info' : 'success'" dark x-small>
@@ -230,6 +247,7 @@ import {
   deleteUser,
   requestAgentActivation,
   updateUserRemark,
+  updateUserActivationStatus,
 } from "@/api/modules/users";
 // import store from "../../../store";
 import debounce from "lodash/debounce";
@@ -279,6 +297,11 @@ export default {
       pages: 0,
       limit: 10,
       yearArray: [],
+      activationStatusArray: [
+        { text: "ROS Not Updated", value: "ros_not_updated", color: "#FF9800" },
+        { text: "ROS Updated", value: "ros_updated", color: "#2196F3" },
+        { text: "Agent Activated", value: "agent_activated", color: "#4CAF50" },
+      ],
     };
   },
   computed: {
@@ -429,6 +452,42 @@ export default {
         return "ROS Updated";
       } else {
         return "ROS Not Updated";
+      }
+    },
+
+    getCurrentStatusValue(item) {
+      if (item.isTaxAgentVerificationCompleted) {
+        return "agent_activated";
+      } else if (item.isTaxAgentVerificationRequestSent) {
+        return "ros_updated";
+      } else {
+        return "ros_not_updated";
+      }
+    },
+
+    async handleStatusChange(item, newStatus) {
+      this.appLoading = true;
+      try {
+        await updateUserActivationStatus(item.id, newStatus);
+        
+        // Update local item to reflect changes immediately
+        if (newStatus === "ros_not_updated") {
+          item.isTaxAgentVerificationRequestSent = false;
+          item.isTaxAgentVerificationCompleted = false;
+        } else if (newStatus === "ros_updated") {
+          item.isTaxAgentVerificationRequestSent = true;
+          item.isTaxAgentVerificationCompleted = false;
+        } else if (newStatus === "agent_activated") {
+          item.isTaxAgentVerificationRequestSent = true;
+          item.isTaxAgentVerificationCompleted = true;
+        }
+        
+        this.msg = `Status updated to ${this.activationStatusArray.find(a => a.value === newStatus).text} for ${item.name}`;
+        this.showSnackBar = true;
+      } catch (error) {
+        this.handleApiError(error);
+      } finally {
+        this.appLoading = false;
       }
     },
 
@@ -736,5 +795,23 @@ export default {
     transform: scale(1.1);
     opacity: 1;
   }
+}
+
+.status-select >>> .v-input__control {
+  min-height: 32px !important;
+}
+
+.status-select >>> .v-input__slot {
+  padding: 0 12px !important;
+  border-radius: 20px !important;
+}
+
+.status-select >>> .v-select__selection {
+  margin: 0 !important;
+  width: 100%;
+}
+
+.status-select >>> .v-input__append-inner {
+  margin-top: 4px !important;
 }
 </style>
