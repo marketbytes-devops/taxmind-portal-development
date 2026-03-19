@@ -40,7 +40,7 @@
               :hide-default-footer="true" class="agent-activation-table" :mobile-breakpoint="0">
               <!-- Item Template -->
               <template v-slot:item="{ item }">
-                <tr :class="table - row">
+                <tr :class="{'pending-row': !item.isActivated}">
                   <td>
                     <span class="cell-text">{{ item.noticeNo }}</span>
                   </td>
@@ -54,6 +54,9 @@
                     <span class="cell-text">{{ item.mandatoryEFiler }}</span>
                   </td>
                   <td>
+                    <v-chip dark :color="item.isActivated ? 'success' : 'warning'" x-small class="mr-1">
+                      {{ item.isActivated ? 'Active' : 'Pending' }}
+                    </v-chip>
                     <span class="cell-text">{{ item.documentType }}</span>
                   </td>
                   <td>
@@ -62,9 +65,6 @@
                   <td>
                     <span class="cell-text">{{ item.issuedDate }}</span>
                   </td>
-                  <!-- <td>
-                    <span class="cell-text">{{ item.taxTypeDutyReport }}</span>
-                  </td> -->
                 </tr>
               </template>
             </v-data-table>
@@ -345,8 +345,16 @@ export default {
   transition: background-color 0.2s ease;
 }
 
+.agent-activation-table tbody tr.pending-row {
+  background: #fffbef; /* Light yellow for pending/inactive */
+}
+
 .agent-activation-table tbody tr:hover {
   background: #f8f9fa;
+}
+
+.agent-activation-table tbody tr.pending-row:hover {
+  background: #fff3cd;
 }
 
 /* ----- Cells ----- */

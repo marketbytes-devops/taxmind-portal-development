@@ -196,6 +196,7 @@ export const confirmTaxReturn = serviceHandler(
         }
 
         // 3. Send Email Notification
+        /* 
         try {
             const pdfBuffer = await generateTaxSummaryPdf({
                 name: app.user.name,
@@ -222,7 +223,8 @@ export const confirmTaxReturn = serviceHandler(
         } catch (err) {
             logger.error('Failed to send confirmation email', err);
         }
+        */
 
-        return res.success('Tax return confirmed and finalized. Notification sent to client.');
+        return res.success('Tax return confirmed and finalized.');
     }
 );
