@@ -513,6 +513,7 @@ export const offBoardedUsersListSchema = z.object({
         })
         .optional(),
       keyword: z.string().optional(),
+      profession: z.string().optional(),
     })
     .strict(),
 });

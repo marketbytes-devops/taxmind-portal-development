@@ -54,6 +54,10 @@ export default {
       type: String,
       default: null,
     },
+    block: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     iconSize() {

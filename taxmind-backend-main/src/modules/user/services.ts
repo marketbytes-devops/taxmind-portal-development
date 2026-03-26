@@ -2057,7 +2057,7 @@ export const listUsers = serviceHandler(listUserSchema, async (req, res) => {
   return res.data('Users retrieved successfully', enrichedUsers, { page, size, total: totalUsers });
 });
 export const listOffBoardedUsers = serviceHandler(offBoardedUsersListSchema, async (req, res) => {
-  const { keyword, startDate, endDate, sortBy, orderBy } = req.query;
+  const { keyword, startDate, endDate, sortBy, orderBy, profession } = req.query;
   const { limit, offset, page, size } = req.pagination;
 
   // Build filters (date range + keyword)

@@ -37,6 +37,7 @@ export const admins = pgTable(
       .defaultNow()
       .$onUpdate(() => new Date())
       .notNull(),
+    deletedAt: timestamp('deleted_at'),
     fcmToken: text(),
   },
   (t) => ({

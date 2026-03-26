@@ -214,7 +214,7 @@ export default {
     };
   },
   mounted() {
-    this.fetchModules();
+    // this.fetchModules();
   },
   watch: {
     value(val) {

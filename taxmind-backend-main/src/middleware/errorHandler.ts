@@ -49,6 +49,11 @@ export const standardErrorHandler = (
 
   // fail safe
   // console.error("[Error] Unhandled:", error);
-  logger.error(JSON.stringify(error));
+  const errorLog = {
+    message: error.message || 'Unknown error',
+    stack: error.stack,
+    ...(error instanceof Error ? {} : error), // Include other properties if it's not a standard Error
+  };
+  logger.error(JSON.stringify(errorLog));
   return response.serverError();
 };

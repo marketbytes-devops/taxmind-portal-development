@@ -11,6 +11,7 @@ export const roles = pgTable('roles', {
     .defaultNow()
     .$onUpdate(() => new Date())
     .notNull(),
+  deletedAt: timestamp('deleted_at'),
 });
 
 export const rolesRelations = relations(roles, ({ many }) => ({
