@@ -12,7 +12,6 @@ notes.txt
 logs
 
 dist
-logs
 start.sh
 .husky_backup
 NOTES.txt
@@ -21,3 +20,12 @@ api-responses-sample/**
 server-config.txt
 deploy-dev.sh
 .secrets
+
+# Test and debug files
+test-*.ts
+testPdf.ts
+error.json
+error.log
+query-out.txt
+test-output.pdf
+user_results.json
