@@ -316,6 +316,13 @@
       "when": 1772636775918,
       "tag": "0044_applied-referral-code-points-claimed-field",
       "breakpoints": true
+    },
+    {
+      "idx": 45,
+      "version": "7",
+      "when": 1774435424823,
+      "tag": "0045_add-profession-trigrams",
+      "breakpoints": true
     }
   ]
 }

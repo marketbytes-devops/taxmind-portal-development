@@ -30,7 +30,9 @@ async function populateTrigramHashes() {
         email: true,
         phone: true,
         ppsNumber: true,
+        profession: true,
         emailTrigramHashes: true,
+        professionTrigramHashes: true,
       },
     });
 
@@ -39,7 +41,7 @@ async function populateTrigramHashes() {
     } else {
       // Filter users that need updates (empty arrays)
       const usersToUpdate = users.filter(
-        (u) => !u.emailTrigramHashes || u.emailTrigramHashes.length === 0
+        (u) => (!u.emailTrigramHashes || u.emailTrigramHashes.length === 0) || (!u.professionTrigramHashes || u.professionTrigramHashes.length === 0)
       );
 
       if (usersToUpdate.length === 0) {
@@ -70,6 +72,7 @@ async function populateTrigramHashes() {
               const emailTrigramHashes = hashTrigrams(user.email);
               const phoneTrigramHashes = hashTrigrams(user.phone);
               const ppsNumberTrigramHashes = hashTrigrams(user.ppsNumber);
+              const professionTrigramHashes = hashTrigrams(user.profession);
 
               // Update user with trigram hashes
               await db
@@ -79,6 +82,7 @@ async function populateTrigramHashes() {
                   emailTrigramHashes,
                   phoneTrigramHashes,
                   ppsNumberTrigramHashes,
+                  professionTrigramHashes,
                 })
                 .where(eq(models.users.id, user.id));
 

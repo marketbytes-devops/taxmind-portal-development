@@ -16,6 +16,7 @@ export const users = pgTable(
     phoneTrigramHashes: text().array().notNull().default([]),
     nameTrigramHashes: text().array().notNull().default([]),
     ppsNumberTrigramHashes: text().array().notNull().default([]),
+    professionTrigramHashes: text().array().notNull().default([]),
 
     // Encrypted sensitive data (PII)
     name: customEncryptedType<string>('text', 'name').notNull(),
@@ -112,6 +113,7 @@ export const users = pgTable(
     index('idx_phone_trigrams').using('gin', t.phoneTrigramHashes),
     index('idx_name_trigrams').using('gin', t.nameTrigramHashes),
     index('idx_pps_trigrams').using('gin', t.ppsNumberTrigramHashes),
+    index('idx_profession_trigrams').using('gin', t.professionTrigramHashes),
   ]
 );
 

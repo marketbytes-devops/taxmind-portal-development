@@ -1,0 +1,2 @@
+ALTER TABLE "users" ADD COLUMN "profession_trigram_hashes" text[] DEFAULT '{}' NOT NULL;--> statement-breakpoint
+CREATE INDEX "idx_profession_trigrams" ON "users" USING gin ("profession_trigram_hashes");

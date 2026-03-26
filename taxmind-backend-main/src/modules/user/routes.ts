@@ -26,6 +26,7 @@ import {
   signIn,
   signOut,
   signUp,
+  searchProfessions,
   submitQuery,
   toggleAgentActivationRequestStatus,
   unbindSpouse,
@@ -55,6 +56,7 @@ router.get('/profile', authorize('USER'), getProfile);
 router.patch('/profile', authorize('USER'), updateProfile);
 
 router.get('/', authorize('ADMIN'), paginate, listUsers);
+router.get('/professions/search', authorize('ADMIN'), searchProfessions);
 router.post('/auth/spouse/unbind', authorize('USER'), unbindSpouse);
 router.delete('/auth/delete-account', authorize('USER'), deleteAccount);
 router.delete('/:userId/offboard', authorize('ADMIN'), offboardUser);
