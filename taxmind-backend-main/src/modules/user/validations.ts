@@ -487,6 +487,7 @@ export const listUserSchema = z.object({
           'joint_assessment',
         ])
         .optional(),
+      profession: z.string().optional(),
     })
     .strict(),
 });
@@ -767,5 +768,11 @@ export const updateActivationStatusSchema = z.object({
   }),
   body: z.object({
     status: z.enum(['ros_not_updated', 'ros_updated', 'agent_activated']),
+  }),
+});
+
+export const searchProfessionSchema = z.object({
+  query: z.object({
+    keyword: z.string().optional(),
   }),
 });

@@ -20,21 +20,56 @@
     <v-layout wrap justify-center>
       <v-flex pt-5 xs11 sm11 md11 lg11 xl11>
         <!-- Header Section -->
+        <!-- Header Section -->
         <v-layout wrap justify-start class="my-3">
-          <v-flex xs12 sm4 md6 lg6 text-start align-center pt-2 class="carousalhead">Users List
+          <v-flex xs12 sm12 md4 lg4 text-start align-center pt-2 class="carousalhead">Users List
           </v-flex>
-          <v-flex xs12 sm4 md2 lg2 text-end align-center pt-2 class="carousalhead"><v-text-field v-model="keyword"
+          <v-flex xs12 sm6 md2 lg2 text-end align-center pt-2 class="carousalhead">
+            <v-text-field v-model="keyword"
               ref="searchField" dense placeholder="Search User .." solo flat outlined hide-details="auto"
               append-icon="mdi-magnify" clearable style="border-color: rgba(99, 102, 123, 0.1)">
             </v-text-field>
           </v-flex>
-          <v-flex xs12 sm4 md2 lg2 text-end align-center pt-2 pl-lg-2 pl-sm-2 pl-md-2 class="carousalhead">
+          <v-flex xs12 sm6 md2 lg2 text-end align-center pt-2 pl-lg-2 pl-sm-2 pl-md-2 class="carousalhead">
             <v-select :hide-details="true" v-model="status" :items="statusArray" item-text="text" item-value="value"
               label="Status" style="font-family: opensansregular" solo dense flat outlined></v-select>
           </v-flex>
-          <v-flex xs12 sm4 md2 lg2 pl-lg-2 pl-sm-2 pl-md-2 text-end align-center pt-2 class="carousalhead">
+          <v-flex xs12 sm6 md2 lg2 pl-lg-2 pl-sm-2 pl-md-2 text-end align-center pt-2 class="carousalhead">
+            <v-autocomplete :hide-details="true" v-model="profession" :items="professions" :search-input.sync="professionSearch"
+              :loading="isLoadingProfessions" label="Profession" placeholder="Search Profession.." no-data-text="Type to search.."
+              style="font-family: opensansregular" solo dense clearable flat outlined append-icon="mdi-briefcase-search"></v-autocomplete>
+          </v-flex>
+          <v-flex xs12 sm6 md2 lg2 pl-lg-2 pl-sm-2 pl-md-2 text-end align-center pt-2 class="carousalhead">
+             <v-btn color="#1A73E9" text @click="clearAllFilters" small height="40">Clear All</v-btn>
+          </v-flex>
+        </v-layout>
+
+        <v-layout wrap justify-start class="mb-3">
+          <v-flex xs12 sm4 md2 lg2 pr-lg-2 pr-md-2 text-start align-center pt-2 class="carousalhead">
             <v-select :hide-details="true" v-model="year" :items="yearArray" label="Year"
               style="font-family: opensansregular" solo dense clearable flat outlined></v-select>
+          </v-flex>
+          <v-flex xs12 sm4 md2 lg2 px-lg-2 px-md-2 text-start align-center pt-2 class="carousalhead">
+            <v-select :hide-details="true" v-model="month" :items="monthArray" item-text="text" item-value="value"
+              label="Month" style="font-family: opensansregular" solo dense clearable flat outlined></v-select>
+          </v-flex>
+          <v-flex xs12 sm4 md3 lg3 px-lg-2 px-md-2 text-start align-center pt-2 class="carousalhead">
+            <v-menu v-model="startDateMenu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto">
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field v-model="customStartDate" label="From Date" prepend-inner-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" 
+                  solo dense flat outlined hide-details="auto" style="font-family: opensansregular"></v-text-field>
+              </template>
+              <v-date-picker v-model="customStartDate" @input="startDateMenu = false"></v-date-picker>
+            </v-menu>
+          </v-flex>
+          <v-flex xs12 sm4 md3 lg3 pl-lg-2 pl-md-2 text-start align-center pt-2 class="carousalhead">
+            <v-menu v-model="endDateMenu" :close-on-content-click="false" transition="scale-transition" offset-y min-width="auto">
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field v-model="customEndDate" label="To Date" prepend-inner-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" 
+                  solo dense flat outlined hide-details="auto" style="font-family: opensansregular"></v-text-field>
+              </template>
+              <v-date-picker v-model="customEndDate" @input="endDateMenu = false"></v-date-picker>
+            </v-menu>
           </v-flex>
         </v-layout>
 
@@ -248,6 +283,7 @@ import {
   requestAgentActivation,
   updateUserRemark,
   updateUserActivationStatus,
+  searchProfessions,
 } from "@/api/modules/users";
 // import store from "../../../store";
 import debounce from "lodash/debounce";
@@ -297,6 +333,38 @@ export default {
       pages: 0,
       limit: 10,
       yearArray: [],
+      profession: null,
+      professions: [],
+      professionSearch: null,
+      isLoadingProfessions: false,
+      month: null,
+      customStartDate: null,
+      customEndDate: null,
+      professionArray: [
+        "Employee",
+        "Self-Employed",
+        "Director",
+        "Retired",
+        "Student",
+        "Unemployed",
+        "Other"
+      ],
+      monthArray: [
+        { text: "January", value: 1 },
+        { text: "February", value: 2 },
+        { text: "March", value: 3 },
+        { text: "April", value: 4 },
+        { text: "May", value: 5 },
+        { text: "June", value: 6 },
+        { text: "July", value: 7 },
+        { text: "August", value: 8 },
+        { text: "September", value: 9 },
+        { text: "October", value: 10 },
+        { text: "November", value: 11 },
+        { text: "December", value: 12 },
+      ],
+      startDateMenu: false,
+      endDateMenu: false,
       activationStatusArray: [
         { text: "ROS Not Updated", value: "ros_not_updated", color: "#FF9800" },
         { text: "ROS Updated", value: "ros_updated", color: "#2196F3" },
@@ -341,6 +409,7 @@ export default {
   },
   created() {
     this.debouncedGetData = debounce(this.getData, 1000);
+    this.fetchProfessionsDebounced = debounce(this.fetchProfessions, 500);
   },
   watch: {
     '$route.query.page': {
@@ -380,6 +449,29 @@ export default {
     keyword() {
       this.currentPage = 1;
       this.debouncedGetData();
+    },
+    profession() {
+      this.currentPage = 1;
+      this.debouncedGetData();
+    },
+    month() {
+      this.currentPage = 1;
+      this.getData();
+    },
+    customStartDate() {
+      this.currentPage = 1;
+      this.getData();
+    },
+    customEndDate() {
+      this.currentPage = 1;
+      this.getData();
+    },
+    professionSearch(val) {
+      if (val && val.length > 0) {
+        this.fetchProfessionsDebounced(val);
+      } else {
+        this.professions = [];
+      }
     },
   },
   mounted() {
@@ -442,6 +534,21 @@ export default {
       this.yearArray = [];
       for (let year = startYear; year <= currentYear; year++) {
         this.yearArray.push(year);
+      }
+    },
+
+    async fetchProfessions(keyword) {
+      if (!keyword) return;
+      this.isLoadingProfessions = true;
+      try {
+        const response = await searchProfessions(keyword);
+        if (response.data && response.data.data) {
+          this.professions = response.data.data;
+        }
+      } catch (error) {
+        console.error("Error fetching professions:", error);
+      } finally {
+        this.isLoadingProfessions = false;
       }
     },
 
@@ -533,6 +640,18 @@ export default {
       }
     },
 
+    clearAllFilters() {
+      this.keyword = "";
+      this.status = "all";
+      this.year = null;
+      this.month = null;
+      this.profession = null;
+      this.customStartDate = null;
+      this.customEndDate = null;
+      this.currentPage = 1;
+      this.getData();
+    },
+
     handleTabChange() {
       this.currentPage = 1;
       this.getData();
@@ -580,8 +699,20 @@ export default {
         params.status = tabMap[this.currentTab];
       }
 
-      // Add date filtering if year is selected
-      if (this.year) {
+      // Add profession filter
+      if (this.profession) {
+        params.profession = this.profession;
+      }
+
+      // Add date filtering
+      if (this.customStartDate && this.customEndDate) {
+        params.startDate = this.customStartDate;
+        params.endDate = this.customEndDate;
+      } else if (this.year && this.month) {
+        const lastDay = new Date(this.year, this.month, 0).getDate();
+        params.startDate = `${this.year}-${String(this.month).padStart(2, '0')}-01`;
+        params.endDate = `${this.year}-${String(this.month).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+      } else if (this.year) {
         params.startDate = `${this.year}-01-01`;
         params.endDate = `${this.year}-12-31`;
       }

@@ -181,3 +181,12 @@ export function unpairUser(userId) {
     }
   );
 }
+
+export function searchProfessions(keyword) {
+  return http.get('/users/professions/search', {
+    params: { keyword },
+    headers: {
+      Accept: 'application/json',
+    },
+  });
+}

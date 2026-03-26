@@ -56,6 +56,7 @@ import {
   updateActivationStatusSchema,
   updateProfileSchema,
   updateUserRemarkSchema,
+  searchProfessionSchema,
   userIdBodySchema,
   verifyEmailSchema,
   verifyPhoneSchema,
@@ -89,6 +90,7 @@ export const signUp = serviceHandler(signUpSchema, async (req, res) => {
   const phoneTrigramHashes = hashTrigrams(phone);
   const ppsNumberTrigramHashes = hashTrigrams(ppsNo);
   const nameTrigramHashes = hashTrigrams(name.toLowerCase());
+  const professionTrigramHashes = hashTrigrams(profession.toLowerCase());
 
   type UserInsert = typeof models.users.$inferInsert;
   type UserSelect = typeof models.users.$inferSelect;
@@ -98,6 +100,7 @@ export const signUp = serviceHandler(signUpSchema, async (req, res) => {
   const sPhoneTrigramHashes = spouse ? hashTrigrams(spouse.phone) : null;
   const sPpsTrigramHashes = spouse ? hashTrigrams(spouse.ppsNo) : null;
   const sNameTrigramHashes = spouse ? hashTrigrams(spouse.name.toLowerCase()) : null;
+  const sProfessionTrigramHashes = spouse ? hashTrigrams(spouse.profession.toLowerCase()) : null;
 
   // Check if user exists by EXACT matching - must match ALL trigrams
   // Using @> (contains) operator ensures we only find users with EXACT same email/phone/pps
@@ -245,6 +248,7 @@ export const signUp = serviceHandler(signUpSchema, async (req, res) => {
           phoneTrigramHashes,
           ppsNumberTrigramHashes,
           nameTrigramHashes,
+          professionTrigramHashes,
           phone,
           dob,
           profession,
@@ -291,6 +295,7 @@ export const signUp = serviceHandler(signUpSchema, async (req, res) => {
               phoneTrigramHashes: sPhoneTrigramHashes!,
               ppsNumberTrigramHashes: sPpsTrigramHashes!,
               nameTrigramHashes: sNameTrigramHashes!,
+              professionTrigramHashes: sProfessionTrigramHashes!,
               phone: spouse.phone,
               dob: spouse.dob,
               profession: spouse.profession,
@@ -380,6 +385,7 @@ export const signUp = serviceHandler(signUpSchema, async (req, res) => {
       phoneTrigramHashes,
       ppsNumberTrigramHashes,
       nameTrigramHashes,
+      professionTrigramHashes,
       phone,
       dob,
       profession,
@@ -1778,7 +1784,7 @@ export const getUserDetails = serviceHandler(getUserDetailsSchema, async (req, r
 });
 
 export const listUsers = serviceHandler(listUserSchema, async (req, res) => {
-  const { keyword, startDate, endDate, sortBy, orderBy, status } = req.query;
+  const { keyword, startDate, endDate, sortBy, orderBy, status, profession } = req.query;
   const { limit, offset, page, size } = req.pagination;
 
   // Build filters (date range + keyword)
@@ -1919,8 +1925,33 @@ export const listUsers = serviceHandler(listUserSchema, async (req, res) => {
           searchHashes.map((h) => sql`${h}`),
           sql`, `
         )}]::text[])
+        ) >= ${minMatches}`,
+        sql`(
+          SELECT COUNT(*)
+          FROM UNNEST(${models.users.professionTrigramHashes}) AS t1
+          WHERE t1 = ANY(ARRAY[${sql.join(
+          searchHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
         ) >= ${minMatches}`
       )
+    );
+  }
+
+  // Specific profession filter
+  if (profession) {
+    const professionHashes = hashSearchKeyword(profession.toLowerCase());
+    // For specific filter, we want a high degree of similarity
+    const minMatchesVal = Math.ceil(professionHashes.length * 0.8);
+    filters.push(
+      sql`(
+        SELECT COUNT(*)
+        FROM UNNEST(${models.users.professionTrigramHashes}) AS t1
+        WHERE t1 = ANY(ARRAY[${sql.join(
+          professionHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
+      ) >= ${minMatchesVal}`
     );
   }
 
@@ -2090,8 +2121,33 @@ export const listOffBoardedUsers = serviceHandler(offBoardedUsersListSchema, asy
           searchHashes.map((h) => sql`${h}`),
           sql`, `
         )}]::text[])
+        ) >= ${minMatches}`,
+        sql`(
+          SELECT COUNT(*)
+          FROM UNNEST(${models.users.professionTrigramHashes}) AS t1
+          WHERE t1 = ANY(ARRAY[${sql.join(
+          searchHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
         ) >= ${minMatches}`
       )
+    );
+  }
+
+  // Specific profession filter
+  if (profession) {
+    const professionHashes = hashSearchKeyword(profession.toLowerCase());
+    // For specific filter, we want a high degree of similarity
+    const minMatchesVal = Math.ceil(professionHashes.length * 0.8);
+    filters.push(
+      sql`(
+        SELECT COUNT(*)
+        FROM UNNEST(${models.users.professionTrigramHashes}) AS t1
+        WHERE t1 = ANY(ARRAY[${sql.join(
+          professionHashes.map((h) => sql`${h}`),
+          sql`, `
+        )}]::text[])
+      ) >= ${minMatchesVal}`
     );
   }
 
@@ -2597,6 +2653,7 @@ export const updateProfile = serviceHandler(updateProfileSchema, async (req, res
   const ppsNumberTrigramHashes = hashTrigrams(ppsNo);
   const nameTrigramHashes = hashTrigrams(name.toLowerCase());
   const phoneTrigramHashes = hashTrigrams(phone);
+  const professionTrigramHashes = hashTrigrams(profession.toLowerCase());
 
   // Check if user PPS number conflicts with another user using exact matching
   const ppsConflict = await db.query.users.findFirst({
@@ -2677,6 +2734,7 @@ export const updateProfile = serviceHandler(updateProfileSchema, async (req, res
         name,
         nameTrigramHashes,
         ppsNumberTrigramHashes,
+        professionTrigramHashes,
         dob,
         profession,
         ppsNumber: ppsNo,
@@ -2743,6 +2801,7 @@ export const updateProfile = serviceHandler(updateProfileSchema, async (req, res
           nameTrigramHashes: hashTrigrams(spouse.name.toLowerCase()),
           dob: spouse.dob,
           profession: spouse.profession,
+          professionTrigramHashes: hashTrigrams(spouse.profession.toLowerCase()),
           address: spouse.address,
           eircode: spouse.eircode,
           maritalStatus: currentMaritalStatus,
@@ -2881,6 +2940,7 @@ export const updateProfile = serviceHandler(updateProfileSchema, async (req, res
         const spousePhoneTrigramHashes = hashTrigrams(spouse.phone!);
         const spousePpsTrigramHashes = hashTrigrams(spouse.ppsNo!);
         const spouseNameTrigramHashes = hashTrigrams(spouse.name.toLowerCase());
+        const spouseProfessionTrigramHashes = hashTrigrams(spouse.profession.toLowerCase());
 
         // Check for conflicts with existing users using exact matching
         const conflicts = await Promise.all([
@@ -2947,6 +3007,7 @@ export const updateProfile = serviceHandler(updateProfileSchema, async (req, res
             ppsNumber: spouse.ppsNo!,
             ppsNumberTrigramHashes: spousePpsTrigramHashes,
             nameTrigramHashes: spouseNameTrigramHashes,
+            professionTrigramHashes: spouseProfessionTrigramHashes,
             dob: spouse.dob,
             profession: spouse.profession,
             address: spouse.address,
@@ -3261,4 +3322,56 @@ export const unpairUser = serviceHandler(unpairUserSchema, async (req, res) => {
   });
 
   return res.success('Users unpaired successfully');
+});
+
+export const searchProfessions = serviceHandler(searchProfessionSchema, async (req, res) => {
+  const { keyword } = req.query;
+
+  if (!keyword) {
+    return res.success('Professions retrieved', []);
+  }
+
+  // Hash the search keyword's trigrams
+  try {
+    const searchHashes = hashTrigrams(keyword.toLowerCase());
+    
+    // Require at least partial match
+    const minMatches = Math.ceil(searchHashes.length * 0.4);
+
+    const results = await db
+      .select({
+        profession: models.users.profession,
+      })
+      .from(models.users)
+      .where(
+        and(
+          isNull(models.users.deletedAt),
+          sql`(
+            SELECT COUNT(*)
+            FROM UNNEST(${models.users.professionTrigramHashes}) AS t1
+            WHERE t1 = ANY(ARRAY[${sql.join(
+              searchHashes.map((h) => sql`${h}`),
+              sql`, `
+            )}]::text[])
+          ) >= ${minMatches}`
+        )
+      )
+      .limit(100);
+
+    // Decrypting is handled by drizzle custom type mapping
+    const uniqueProfessionsSet = new Set();
+    results.forEach((r) => {
+      if (r.profession) {
+         // Case-insensitive normalization
+         uniqueProfessionsSet.add(r.profession.trim());
+      }
+    });
+    
+    const uniqueProfessions = Array.from(uniqueProfessionsSet);
+    
+    return res.success('Professions retrieved', uniqueProfessions);
+  } catch (error) {
+    console.error('Error searching professions:', error);
+    return res.success('Professions retrieved', []);
+  }
 });
