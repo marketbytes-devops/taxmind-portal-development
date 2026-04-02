@@ -43,6 +43,7 @@ import {
   listCompletedPaymentsSchema,
   listPendingOfflinePaymentRequestsSchema,
   listRejectedOfflinePaymentRequestsSchema,
+  markPaymentAsCompletedSchema,
   rejectOfflinePaymentRequestSchema,
   setDocumentsVerifiedStatusSchema,
   setReviewedStatusSchema,
@@ -3293,6 +3294,137 @@ export const approveOfflinePaymentRequest = serviceHandler(
       verifiedTransactionId: updated.verifiedTransactionId,
       verifiedPaymentDate: updated.verifiedPaymentDate,
     });
+  }
+);
+
+export const markPaymentAsCompleted = serviceHandler(
+  markPaymentAsCompletedSchema,
+  async (req, res) => {
+    const adminId = req.admin.id;
+    const { applicationId } = req.body;
+
+    // Verify application exists
+    const app = await db.query.applications.findFirst({
+      where: and(isNull(models.applications.deletedAt), eq(models.applications.id, applicationId)),
+      columns: {
+        id: true,
+        userId: true,
+        paymentStatus: true,
+        finalAmount: true,
+        flatFee: true,
+        isJointApplication: true,
+      },
+    });
+
+    if (!app) throw new ApiError('Application not found', 404);
+
+    if (app.paymentStatus === 'completed') {
+      return res.success('Payment already marked as completed');
+    }
+
+    // Check if there is an existing offline payment request
+    const existingOpr = await db.query.offlinePaymentRequests.findFirst({
+      where: and(
+        isNull(models.offlinePaymentRequests.deletedAt),
+        eq(models.offlinePaymentRequests.applicationId, applicationId),
+        eq(models.offlinePaymentRequests.status, 'pending')
+      ),
+    });
+
+    if (existingOpr) {
+      // Reuse approve logic by simulating the request body
+      const updated = await db.transaction(async (tx) => {
+        const [oprUpdated] = await tx
+          .update(models.offlinePaymentRequests)
+          .set({
+            status: 'approved',
+            reviewedBy: adminId,
+            reviewedAt: new Date(),
+            verifiedPaymentMethod: paymentMethods.CASH,
+            verifiedTransactionId: 'MANUAL_OVERRIDE',
+            verifiedPaymentDate: new Date(),
+            updatedAt: new Date(),
+          })
+          .where(eq(models.offlinePaymentRequests.id, existingOpr.id))
+          .returning();
+
+        await tx
+          .update(models.applications)
+          .set({ paymentStatus: 'completed', updatedAt: new Date() })
+          .where(eq(models.applications.id, applicationId));
+
+        await tx
+          .insert(models.payments)
+          .values({
+            applicationId: applicationId,
+            userId: app.userId,
+            amount: existingOpr.claimedAmount,
+            currency: 'EUR',
+            paymentMethod: paymentMethods.CASH,
+            status: 'completed',
+            transactionId: 'MANUAL_OVERRIDE',
+            transactionNo: `TXN-${generateAlphaNumCode()}`,
+            isJointPayment: app.isJointApplication,
+          })
+          .onConflictDoUpdate({
+            target: models.payments.applicationId,
+            set: {
+              userId: app.userId,
+              amount: existingOpr.claimedAmount,
+              paymentMethod: paymentMethods.CASH,
+              status: 'completed',
+              transactionId: 'MANUAL_OVERRIDE',
+              updatedAt: new Date(),
+            },
+          });
+
+        return oprUpdated;
+      });
+
+      return res.success('Payment marked as completed via offline request approval', updated);
+    }
+
+    // Manual completion if NO offline request exists
+    const paymentRecord = await db.transaction(async (tx) => {
+      await tx
+        .update(models.applications)
+        .set({ paymentStatus: 'completed', updatedAt: new Date() })
+        .where(eq(models.applications.id, applicationId));
+
+      const amountToPay = app.flatFee || app.finalAmount || '0';
+
+      const [newPayment] = await tx
+        .insert(models.payments)
+        .values({
+          applicationId,
+          userId: app.userId,
+          amount: amountToPay,
+          currency: 'EUR',
+          paymentMethod: paymentMethods.CASH,
+          status: 'completed',
+          transactionId: 'MANUAL_OVERRIDE',
+          transactionNo: `TXN-${generateAlphaNumCode()}`,
+          isJointPayment: app.isJointApplication,
+          processedAt: new Date(),
+        })
+        .onConflictDoUpdate({
+          target: models.payments.applicationId,
+          set: {
+            userId: app.userId,
+            amount: amountToPay,
+            paymentMethod: paymentMethods.CASH,
+            status: 'completed',
+            transactionId: 'MANUAL_OVERRIDE',
+            processedAt: new Date(),
+            updatedAt: new Date(),
+          },
+        })
+        .returning();
+
+      return newPayment;
+    });
+
+    return res.success('Payment marked as completed manually', paymentRecord);
   }
 );
 

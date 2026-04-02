@@ -250,3 +250,9 @@ export const confirmTaxReturnSchema = z.object({
     maskedFileId: z.uuid().optional(),
   }),
 });
+
+export const markPaymentAsCompletedSchema = z.object({
+  body: z.object({
+    applicationId: z.uuid('Invalid application ID'),
+  }),
+});

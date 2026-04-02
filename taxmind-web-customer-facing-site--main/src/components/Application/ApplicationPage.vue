@@ -98,6 +98,7 @@ export default {
       size: 10,
       totalPages: 1,
       totalItems: null,
+      hasAutoOpenedModal: false, // Added to track if modal was auto-opened
     };
   },
 
@@ -152,6 +153,16 @@ export default {
         }
 
         this.appLoading = false;
+
+        // Automatically open the modal if the user has no applications
+        if (this.applicationsList.length === 0 && !this.hasAutoOpenedModal) {
+          this.hasAutoOpenedModal = true;
+          this.$nextTick(() => {
+            if (this.$refs.welcomeHeader) {
+              this.$refs.welcomeHeader.handleButtonClick();
+            }
+          });
+        }
       } catch (error) {
         this.appLoading = false;
 

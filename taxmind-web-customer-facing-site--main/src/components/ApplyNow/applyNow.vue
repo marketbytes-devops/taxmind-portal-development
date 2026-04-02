@@ -58,7 +58,7 @@
                         <v-flex xs12 text-left>
                           <v-layout wrap justify-center>
                             <v-flex xs12 lg12 md12>
-                              <span class="textFieldstyle">Full Name</span>
+                              <span class="textFieldstyle">Full Name <span class="red--text">*</span></span>
                               <v-text-field
                                 v-model="name"
                                 :error="!!validationErrors.name"
@@ -89,7 +89,7 @@
                               </v-text-field>
                             </v-flex> -->
                             <v-flex xs12 lg6 md6 pt-lg-2 pt-md-2>
-                              <span class="textFieldstyle">Email Address</span>
+                              <span class="textFieldstyle">Email Address <span class="red--text">*</span></span>
                               <v-text-field
                                 v-model="email"
                                 :error="!!validationErrors.email"
@@ -113,16 +113,17 @@
                               pt-lg-2
                               pt-md-2
                             >
+                              <span class="textFieldstyle">Phone Number <span class="red--text">*</span></span>
                               <PhoneNumberInput
                                 v-model="phonenumber"
-                                label="Phone Number"
+                                :label="''"
                                 :error="!!validationErrors.phonenumber"
                                 :error-message="validationErrors.phonenumber"
                                 @update:phoneData="onPhoneUpdate"
                               />
                             </v-flex>
                             <v-flex xs12 lg6 md6 pt-lg-2 pt-md-2>
-                              <span class="textFieldstyle">Date of Birth</span>
+                              <span class="textFieldstyle">Date of Birth <span class="red--text">*</span></span>
                               <v-menu
                                 ref="menu"
                                 v-model="menu"
@@ -173,7 +174,7 @@
                               pt-lg-2
                               pt-md-2
                             >
-                              <span class="textFieldstyle">Profession</span>
+                              <span class="textFieldstyle">Profession <span class="red--text">*</span></span>
                               <v-text-field
                                 v-model="profession"
                                 class="rounded-lg pt-1"
@@ -191,7 +192,7 @@
                             <v-flex xs12 lg6 md6>
                               <v-layout wrap justify-center>
                                 <v-flex xs12>
-                                  <span class="textFieldstyle">PPS Number</span>
+                                  <span class="textFieldstyle">PPS Number <span class="red--text">*</span></span>
                                   <v-text-field
                                     v-model="ppsnumber"
                                     :error="!!validationErrors.ppsnumber"
@@ -207,7 +208,7 @@
                                   </v-text-field>
                                 </v-flex>
                                 <v-flex xs12 pt-md-8>
-                                  <span class="textFieldstyle">Eircode</span>
+                                  <span class="textFieldstyle">Eircode <span class="red--text">*</span></span>
                                   <v-text-field
                                     v-model="ericode"
                                     :error="!!validationErrors.ericode"
@@ -225,7 +226,7 @@
                               </v-layout>
                             </v-flex>
                             <v-flex xs12 lg6 md6 pl-lg-2 pl-md-2>
-                              <span class="textFieldstyle">Address</span>
+                              <span class="textFieldstyle">Address <span class="red--text">*</span></span>
                               <v-textarea
                                 v-model="address"
                                 class="rounded-lg pt-1"
@@ -241,7 +242,7 @@
                           <v-layout wrap justify-center pt-lg-2 pt-md-2>
                             <v-flex xs12 lg6 md6>
                               <v-layout align-center>
-                                <span class="textFieldstyle">Password</span>
+                                <span class="textFieldstyle">Password <span class="red--text">*</span></span>
                                 <v-tooltip bottom>
                                   <template v-slot:activator="{ on, attrs }">
                                     <v-icon
@@ -286,7 +287,7 @@
                               pt-sm-5
                               pt-md-0
                             >
-                              <span class="textFieldstyle">Marital Status</span>
+                              <span class="textFieldstyle">Marital Status <span class="red--text">*</span></span>
                               <v-select
                                 v-model="maritalstatus"
                                 class="rounded-lg pt-1"
@@ -315,7 +316,7 @@
                             <v-flex xs12 text-left pt-5>
                               <v-layout wrap justify-center>
                                 <v-flex xs12 lg12 md12>
-                                  <span class="textFieldstyle">Full Name</span>
+                                  <span class="textFieldstyle">Full Name <span class="red--text">*</span></span>
                                   <v-text-field
                                     v-model="spouseDetails.fullName"
                                     :error="!!validationErrors.spouseFullName"
@@ -351,7 +352,7 @@
                                 </v-flex> -->
                                 <v-flex xs12 lg6 md6 pt-lg-2 pt-md-2>
                                   <span class="textFieldstyle"
-                                    >Email Address</span
+                                    >Email Address <span class="red--text">*</span></span
                                   >
                                   <v-text-field
                                     v-model="spouseDetails.email"
@@ -378,9 +379,10 @@
                                   pt-lg-2
                                   pt-md-2
                                 >
+                                  <span class="textFieldstyle">Phone Number <span class="red--text">*</span></span>
                                   <PhoneNumberInput
                                     v-model="spouseDetails.phone"
-                                    label="Phone Number"
+                                    :label="''"
                                     :error="!!validationErrors.spousePhone"
                                     :error-message="validationErrors.spousePhone"
                                     @update:phoneData="onSpousePhoneUpdate"
@@ -388,7 +390,7 @@
                                 </v-flex>
                                 <v-flex xs12 lg6 md6 pt-lg-2 pt-md-2>
                                   <span class="textFieldstyle"
-                                    >Date of Birth</span
+                                    >Date of Birth <span class="red--text">*</span></span
                                   >
                                   <v-menu
                                     ref="menu1"
@@ -449,7 +451,7 @@
                                   pt-lg-2
                                   pt-md-2
                                 >
-                                  <span class="textFieldstyle">Profession</span>
+                                  <span class="textFieldstyle">Profession <span class="red--text">*</span></span>
                                   <v-text-field
                                     v-model="spouseDetails.profession"
                                     class="rounded-lg pt-1"
@@ -468,7 +470,7 @@
                                   <v-layout wrap justify-center>
                                     <v-flex xs12>
                                       <span class="textFieldstyle"
-                                        >PPS Number</span
+                                        >PPS Number <span class="red--text">*</span></span
                                       >
                                       <v-text-field
                                         v-model="spouseDetails.ppsNumber"
@@ -495,7 +497,7 @@
                                       >
                                         <v-flex xs6 lg6 md6 sm6>
                                           <span class="textFieldstyle"
-                                            >Eircode</span
+                                            >Eircode <span class="red--text">*</span></span
                                           >
                                         </v-flex>
                                         <v-flex xs6 lg6 md6 sm6>
@@ -535,7 +537,7 @@
                                   <v-layout wrap justify-center pt-1 pt-sm-0>
                                     <v-flex xs6 lg6 md6 sm6>
                                       <span class="textFieldstyle"
-                                        >Address</span
+                                        >Address <span class="red--text">*</span></span
                                       >
                                     </v-flex>
                                     <v-flex xs6 lg6 md6 sm6>
@@ -565,7 +567,7 @@
                               <v-layout wrap justify-center pt-lg-2 pt-md-2>
                                 <v-flex xs12 lg6 md6>
                                   <v-layout align-center>
-                                    <span class="textFieldstyle">Password</span>
+                                    <span class="textFieldstyle">Password <span class="red--text">*</span></span>
                                     <v-tooltip bottom>
                                       <template v-slot:activator="{ on, attrs }">
                                         <v-icon

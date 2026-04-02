@@ -41,7 +41,7 @@
       <v-expansion-panel-content class="px-0">
         <component v-if="expandedPanel === i" :applicantdata="applicantdata" :userData="userData"
           :showCopyButtons="showCopyButtons" :showViewButton="showViewButton" :stepData="panel.stepData"
-          :is="panel.component" @status-updated="handleStatusUpdated"
+          :is="panel.component" @status-updated="handleStatusUpdated" @refresh="handleStatusUpdated"
           @documents-completed="$emit('documents-completed')" @review-completed="$emit('review-completed')" />
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -53,6 +53,7 @@ import DocumentUploaded from "./DocumentUploaded.vue";
 import AgentActivation from "./AgentActivation.vue";
 import DocumentReview from "./DocumentReview.vue";
 import AgentTaxFiling from "./AgentTaxFiling.vue";
+import PaymentConfirmation from "./PaymentConfirmation.vue";
 
 export default {
   props: {
@@ -79,6 +80,7 @@ export default {
     AgentActivation,
     DocumentReview,
     AgentTaxFiling,
+    PaymentConfirmation,
   },
   data() {
     return {
@@ -88,6 +90,7 @@ export default {
         { title: "Agent Activation", component: AgentActivation, showPendingStatus: false, key: "agent_activation" },
         { title: "Review by Tax Agent", component: DocumentReview, showPendingStatus: false, key: "review" },
         { title: "Revenue Processing Tax Filing", component: AgentTaxFiling, showPendingStatus: false, key: "processing" },
+        { title: "Payment Completed", component: PaymentConfirmation, showPendingStatus: false, key: "payment" },
       ],
       expandedPanel: null,
     };
@@ -113,6 +116,16 @@ export default {
             pendingDocuments: step.data ? step.data.pendingDocuments : null,
           };
         }
+
+        // Special handling for payment panel if not in steps array
+        if (panel.key === 'payment') {
+          return {
+            ...panel,
+            completed: this.applicantdata.paymentStatus === 'completed',
+            stepData: {},
+          };
+        }
+
         return panel;
       });
     }

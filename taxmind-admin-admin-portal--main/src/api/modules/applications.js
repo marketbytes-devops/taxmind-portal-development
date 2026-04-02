@@ -492,3 +492,21 @@ export function confirmTaxReturn(applicationId, confirmData) {
     timeout: 300000, // 5 minutes for processing/emailing
   });
 }
+
+/**
+ * Manually mark an application's payment as completed
+ * @param {string} applicationId - The application ID
+ * @returns {Promise} - Promise resolving to the update result
+ */
+export function markPaymentAsCompleted(applicationId) {
+  return http.post(
+    `/applications/payments/manual-complete`,
+    { applicationId },
+    {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }
+  );
+}
