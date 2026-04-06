@@ -68,12 +68,13 @@ export default {
     return {
       // Default statuses if steps are not available from API
       defaultStatuses: [
-        "Initial Review & Enquiry",
+        "Questionnaire Submitted",
         "Document Upload",
         "Agent Activation",
-        "Review",
-        "Processing",
-        "Refund Amount",
+        "Review by Tax Agent",
+        "Revenue Processing Tax Filing",
+        "Refund Approved",
+        "Payment Completed",
       ],
     };
   },
@@ -83,17 +84,27 @@ export default {
       if (this.applicantdata && this.applicantdata.steps && this.applicantdata.steps.length > 0) {
         // Sort steps by stageIndex if available
         const sortedSteps = [...this.applicantdata.steps].sort((a, b) => a.stageIndex - b.stageIndex);
-        return sortedSteps.map(step => step.title);
+        const titles = sortedSteps.map(step => step.title);
+        
+        // Add "Payment Completed" if not in the steps (it's a virtual step for admin)
+        if (!titles.includes("Payment Completed")) {
+          titles.push("Payment Completed");
+        }
+        return titles;
       }
       return this.defaultStatuses;
     },
   },
   methods: {
     isStepActive(status) {
-      // Check if applicantdata exists and has steps
-      if (!this.applicantdata || !this.applicantdata.steps) {
-        return false;
+      if (!this.applicantdata) return false;
+
+      // Special case for Payment Completed virtual step
+      if (status === "Payment Completed") {
+        return this.applicantdata.paymentStatus === 'completed';
       }
+
+      if (!this.applicantdata.steps) return false;
 
       // Find the step with matching title and check its status
       const step = this.applicantdata.steps.find(step => step.title === status);
@@ -139,6 +150,10 @@ export default {
       });
     },
     getStepStatus(status) {
+      if (status === "Payment Completed") {
+        return this.applicantdata.paymentStatus === 'completed' ? 'completed' : 'pending';
+      }
+
       // Check if applicantdata exists and has steps
       if (!this.applicantdata || !this.applicantdata.steps) {
         return null;
@@ -200,43 +215,7 @@ export default {
       const totalSteps = this.allStatuses.length;
       if (totalSteps <= 1) return { display: 'none' };
 
-      // Get the step name for this index
-      const stepName = this.allStatuses[index];
-
-      // Custom positioning for each step
-      const stepPositions = {
-        'Questionnaire Submitted': {
-          left: '1%',
-          width: '22.2%'
-        },
-        'Document Upload': {
-          left: '22%',
-          width: '20%'
-        },
-        'Agent Activation': {
-          left: '40%',
-          width: '20%'
-        },
-        'Review by Tax Agent': {
-          left: '60%',
-          width: '16%'
-        },
-        'Revenue Processing Tax Filing': {
-          left: '77.9%',
-          width: '21%'
-        },
-
-      };
-
-      // Return custom position if defined for this step
-      if (stepPositions[stepName]) {
-        return {
-          ...stepPositions[stepName],
-          display: 'block'
-        };
-      }
-
-      // Fallback to calculated positions for any other steps
+      // Simplified calculation for 7 steps
       const segmentWidth = 100 / (totalSteps - 1);
       const leftPosition = (index / (totalSteps - 1)) * 100;
 

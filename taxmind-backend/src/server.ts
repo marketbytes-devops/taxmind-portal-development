@@ -15,6 +15,10 @@ import { initializeCronJobs } from './scripts/cronScheduler';
 async function startServer() {
   createEnv();
   checkDbConnection();
+  if (process.env.NODE_ENV === 'local') {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    logger.warn('⚠️ Disabling TLS verification in local environment');
+  }
 
   // Get host from environment and store in Express
   // const host = process.env.HOST || '0.0.0.0';

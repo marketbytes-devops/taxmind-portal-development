@@ -89,7 +89,7 @@
                               </v-text-field>
                             </v-flex> -->
                             <v-flex xs12 lg6 md6 pt-lg-2 pt-md-2>
-                              <span class="textFieldstyle">Email Address</span>
+                              <span class="textFieldstyle">Email Address <span class="red--text ml-1">*</span></span>
                               <v-text-field
                                 v-model="email"
                                 :error="!!validationErrors.email"
@@ -116,13 +116,14 @@
                               <PhoneNumberInput
                                 v-model="phonenumber"
                                 label="Phone Number"
+                                required
                                 :error="!!validationErrors.phonenumber"
                                 :error-message="validationErrors.phonenumber"
                                 @update:phoneData="onPhoneUpdate"
                               />
                             </v-flex>
                             <v-flex xs12 lg6 md6 pt-lg-2 pt-md-2>
-                              <span class="textFieldstyle">Date of Birth</span>
+                              <span class="textFieldstyle">Date of Birth <span class="red--text ml-1">*</span></span>
                               <v-menu
                                 ref="menu"
                                 v-model="menu"
@@ -191,7 +192,7 @@
                             <v-flex xs12 lg6 md6>
                               <v-layout wrap justify-center>
                                 <v-flex xs12>
-                                  <span class="textFieldstyle">PPS Number</span>
+                                  <span class="textFieldstyle">PPS Number <span class="red--text ml-1">*</span></span>
                                   <v-text-field
                                     v-model="ppsnumber"
                                     :error="!!validationErrors.ppsnumber"
@@ -207,7 +208,7 @@
                                   </v-text-field>
                                 </v-flex>
                                 <v-flex xs12 pt-md-8>
-                                  <span class="textFieldstyle">Eircode</span>
+                                  <span class="textFieldstyle">Eircode <span class="red--text ml-1">*</span></span>
                                   <v-text-field
                                     v-model="ericode"
                                     :error="!!validationErrors.ericode"
@@ -225,7 +226,7 @@
                               </v-layout>
                             </v-flex>
                             <v-flex xs12 lg6 md6 pl-lg-2 pl-md-2>
-                              <span class="textFieldstyle">Address</span>
+                              <span class="textFieldstyle">Address <span class="red--text ml-1">*</span></span>
                               <v-textarea
                                 v-model="address"
                                 class="rounded-lg pt-1"
@@ -286,7 +287,7 @@
                               pt-sm-5
                               pt-md-0
                             >
-                              <span class="textFieldstyle">Marital Status</span>
+                              <span class="textFieldstyle">Marital Status <span class="red--text ml-1">*</span></span>
                               <v-select
                                 v-model="maritalstatus"
                                 class="rounded-lg pt-1"

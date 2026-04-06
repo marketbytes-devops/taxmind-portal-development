@@ -1,6 +1,8 @@
 <template>
   <div>
-    <span v-if="label" class="textFieldstyle">{{ label }}</span>
+    <span v-if="label" class="textFieldstyle">
+      {{ label }} <span v-if="required" class="red--text ml-1">*</span>
+    </span>
     <vue-phone-number-input :clearable="!disabled" v-model="phoneNumber" :default-country-code="selectedCountryCode || computedDefaultCountryCode"
       :preferred-countries="preferredCountries" :only-countries="onlyCountries" :translations="translations"
       :error="error" :valid="isValid" :disabled="disabled" @update="onUpdate" color="#1A73E9" valid-color="#4CAF50"
@@ -50,6 +52,10 @@ export default {
       default: "",
     },
     disabled: {
+      type: Boolean,
+      default: false,
+    },
+    required: {
       type: Boolean,
       default: false,
     },
