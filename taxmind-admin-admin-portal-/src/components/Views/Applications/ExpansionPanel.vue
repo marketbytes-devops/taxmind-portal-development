@@ -41,7 +41,7 @@
       <v-expansion-panel-content class="px-0">
         <component v-if="expandedPanel === i" :applicantdata="applicantdata" :userData="userData"
           :showCopyButtons="showCopyButtons" :showViewButton="showViewButton" :stepData="panel.stepData"
-          :is="panel.component" @status-updated="handleStatusUpdated"
+          :is="panel.component" @status-updated="handleStatusUpdated" @refresh="handleStatusUpdated"
           @documents-completed="$emit('documents-completed')" @review-completed="$emit('review-completed')" />
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -53,6 +53,8 @@ import DocumentUploaded from "./DocumentUploaded.vue";
 import AgentActivation from "./AgentActivation.vue";
 import DocumentReview from "./DocumentReview.vue";
 import AgentTaxFiling from "./AgentTaxFiling.vue";
+import PaymentConfirmation from "./PaymentConfirmation.vue";
+import RefundApprovedSummary from "./RefundApprovedSummary.vue";
 
 export default {
   props: {
@@ -79,6 +81,8 @@ export default {
     AgentActivation,
     DocumentReview,
     AgentTaxFiling,
+    PaymentConfirmation,
+    RefundApprovedSummary,
   },
   data() {
     return {
@@ -88,6 +92,8 @@ export default {
         { title: "Agent Activation", component: AgentActivation, showPendingStatus: false, key: "agent_activation" },
         { title: "Review by Tax Agent", component: DocumentReview, showPendingStatus: false, key: "review" },
         { title: "Revenue Processing Tax Filing", component: AgentTaxFiling, showPendingStatus: false, key: "processing" },
+        { title: "Refund Approved", component: RefundApprovedSummary, showPendingStatus: false, key: "refund_approved" },
+        { title: "Payment Completed", component: PaymentConfirmation, showPendingStatus: false, key: "payment" },
       ],
       expandedPanel: null,
     };
@@ -95,12 +101,28 @@ export default {
   computed: {
     // Map steps data to panels for status and completion
     panelsWithStatus() {
-      if (!this.applicantdata || !this.applicantdata.steps) {
+      if (!this.applicantdata) {
         return this.panels;
       }
 
       return this.panels.map(panel => {
-        // Find matching step in API data
+        // Special logic for virtual steps (6 and 7)
+        if (panel.key === 'refund_approved') {
+          return {
+            ...panel,
+            completed: this.applicantdata.status === 'approved' || this.applicantdata.status === 'refund_completed',
+          };
+        }
+        if (panel.key === 'payment') {
+          return {
+            ...panel,
+            completed: this.applicantdata.paymentStatus === 'completed',
+          };
+        }
+
+        // Standard logic for backend steps
+        if (!this.applicantdata.steps) return panel;
+        
         const step = this.applicantdata.steps.find(s => s.key === panel.key);
 
         if (step) {
@@ -113,6 +135,7 @@ export default {
             pendingDocuments: step.data ? step.data.pendingDocuments : null,
           };
         }
+
         return panel;
       });
     }

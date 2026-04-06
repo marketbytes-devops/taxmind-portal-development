@@ -30,6 +30,7 @@ import {
   listCompletedPayments,
   listPendingOfflinePaymentRequests,
   listRejectedOfflinePaymentRequests,
+  markPaymentAsCompleted,
   paymentWebhook,
   rejectOfflinePaymentRequest,
   setDocumentsVerifiedStatus,
@@ -186,6 +187,13 @@ router.post(
   authorize('ADMIN'),
   requirePermission(MODULE_CONFIGS.payments.name, 'edit'),
   rejectOfflinePaymentRequest
+);
+
+router.post(
+  '/payments/manual-complete',
+  authorize('ADMIN'),
+  requirePermission(MODULE_CONFIGS.payments.name, 'edit'),
+  markPaymentAsCompleted
 );
 
 router.post('/payments/checkout', authorize('USER'), createPaymentCheckout);

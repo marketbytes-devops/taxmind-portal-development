@@ -149,8 +149,12 @@ export default {
           if (this.applicationsList.length > 0) {
             this.applicationData = this.applicationsList[0];
           }
-        }
 
+          // Auto-trigger the new claim modal if no applications exist
+          if (this.applicationsList.length === 0 && this.$refs.welcomeHeader) {
+            this.$refs.welcomeHeader.handleButtonClick();
+          }
+        }
         this.appLoading = false;
       } catch (error) {
         this.appLoading = false;

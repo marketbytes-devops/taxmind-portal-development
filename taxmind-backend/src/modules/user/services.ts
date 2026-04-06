@@ -504,7 +504,7 @@ export const signUp = serviceHandler(signUpSchema, async (req, res) => {
   }
 
   if (data.spouse) {
-    await Promise.all([
+    Promise.all([
       mail.welcomeEmail({
         recipient: data.spouse.email,
         replacements: {
@@ -519,11 +519,11 @@ export const signUp = serviceHandler(signUpSchema, async (req, res) => {
         email: data.spouse.email,
       }),
       // mail.termsAndConditions({ recipient: data.spouse.email, replacements: {} }),
-    ]);
+    ]).catch((err) => logger.error('Error sending spouse welcome email:', err));
   }
 
   //  EMAIL: send welcome email and verification code for main user only
-  await Promise.all([
+  Promise.all([
     mail.welcomeEmail({
       recipient: email,
       replacements: {
@@ -539,7 +539,7 @@ export const signUp = serviceHandler(signUpSchema, async (req, res) => {
       name: data.name,
       email: data.email,
     }),
-  ]);
+  ]).catch((err) => logger.error('Error sending welcome email:', err));
 
   // Start Twilio Verify for the phone number
   // const verify = await twilioVerifyPhone(phone);
