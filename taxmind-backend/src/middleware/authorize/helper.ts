@@ -21,7 +21,7 @@ export const decodeJwt = (token: string) => {
   try {
     return jwt.verify(token, process.env.JWT_ACCESS_TOKEN_SECRET);
   } catch (error) {
-    if ((error as Error).name === 'TokenExpiredError') throw new ApiError('Unauthorized', 498);
+    if ((error as Error).name === 'TokenExpiredError') throw new ApiError('Unauthorized', 401);
     logger.error((error as Error).message);
     throw new ApiError('Unauthorized', 401);
   }

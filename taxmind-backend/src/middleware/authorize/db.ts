@@ -17,7 +17,7 @@ export const getUser = async (decoded: TokenPayload, req: Request) => {
     .set({ lastActivityAt: new Date().toISOString() })
     .where(eq(models.users.id, decoded.id));
 
-  if (!user.status) throw new ApiError('Your account has been blocked by administrator.', 403);
+  if (!user.status) throw new ApiError('Your account has been blocked by administrator.', 498);
 
   req.user = { ...user, profilePhoto: null };
 };
@@ -52,7 +52,7 @@ export const getAdmin = async (decoded: TokenPayload, req: Request) => {
 
   if (!admin) throw new ApiError('Unauthorized', 401);
 
-  if (!admin.status) throw new ApiError('Your account has been blocked by administrator.', 403);
+  if (!admin.status) throw new ApiError('Your account has been blocked by administrator.', 498);
 
   console.log('Admin access token:', admin.accessToken);
   console.log('Request authorization header:', req.headers.authorization);
@@ -61,7 +61,7 @@ export const getAdmin = async (decoded: TokenPayload, req: Request) => {
     : req.headers.authorization;
 
   if (!admin.accessToken || admin.accessToken !== token) {
-    throw new ApiError('Invalid access token', 403);
+    throw new ApiError('Invalid access token', 498);
   }
 
   // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars

@@ -88,7 +88,6 @@ http.interceptors.request.use((config) => {
 // Single-flight refresh
 let isRefreshing = false;
 let pendingQueue = [];
-let isLoggingOutOnForbidden = false;
 let isLoggingOutOn498 = false;
 
 function enqueueRequest(cb) {
@@ -174,24 +173,8 @@ http.interceptors.response.use(
     const { config, response } = error || {};
     if (!response) return Promise.reject(error);
 
-    // Immediate logout on 403 Forbidden
+    // Do not log out on 403 Forbidden; bubble up so specific actions can handle RBAC errors without losing the session
     if (response.status === 403) {
-      if (!isLoggingOutOnForbidden) {
-        isLoggingOutOnForbidden = true;
-        try {
-          clearAuth();
-          // Also reflect logged-out state for guards relying on localStorage
-          if (typeof localStorage !== "undefined") {
-            localStorage.removeItem("isLoggedIn");
-            localStorage.removeItem("role");
-          }
-        } finally {
-          // Redirect to login without importing router to avoid circular deps
-          if (typeof window !== "undefined" && window.location) {
-            window.location.replace("/Login");
-          }
-        }
-      }
       return Promise.reject(error);
     }
 
@@ -229,7 +212,21 @@ http.interceptors.response.use(
         }
         return http(config);
       } catch (e) {
-        // Bubble up for global logout handling at caller level
+        // If refresh fails, log out globally
+        if (!isLoggingOutOn498) {
+          isLoggingOutOn498 = true;
+          try {
+            clearAuth();
+            if (typeof localStorage !== "undefined") {
+              localStorage.removeItem("isLoggedIn");
+              localStorage.removeItem("role");
+            }
+          } finally {
+            if (typeof window !== "undefined" && window.location) {
+              window.location.replace("/Login");
+            }
+          }
+        }
         return Promise.reject(e);
       }
     }
