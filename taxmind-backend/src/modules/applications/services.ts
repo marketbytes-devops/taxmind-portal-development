@@ -1413,6 +1413,11 @@ export const applicationListOfUser = serviceHandler(
       db.query.applications.findMany({
         where,
         columns: { applicationNoTrigramHashes: false, hashedApplicationNo: false },
+        with: {
+          user: {
+            columns: { name: true },
+          },
+        },
         orderBy: (t, { desc }) => [desc(t.createdAt)],
         limit,
         offset,

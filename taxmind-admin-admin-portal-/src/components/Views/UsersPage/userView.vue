@@ -459,7 +459,7 @@ export default {
       fromPage: 1,
       headers: [
         { text: "Sl.No", value: "slno", align: "start" },
-        // { text: "Application ID", value: "id", align: "start" },
+        { text: "Client Name", value: "clientName", align: "start" },
         { text: "Application No", value: "applicationNo", align: "start" },
         { text: "Year", value: "year", align: "start" },
         { text: "Status", value: "status", align: "start" },
@@ -473,6 +473,7 @@ export default {
       pages: 0,
       limit: 5,
       userApplicationData: [],
+      allUserApplicationData: [],
       pairUserDialog: false,
       unpairUserDialog: false,
       selectedSpouseId: null,
@@ -485,12 +486,12 @@ export default {
   mounted() {
     // Store the page number from which user navigated here
     this.fromPage = parseInt(this.$route.query.fromPage) || 1;
-    this.getData();
-    this.getUserApplicationData();
+    this.getData(); // We will call getUserApplicationData() after userData is resolved
   },
   watch: {
     currentPage() {
-      this.getUserApplicationData();
+      // Do client side slicing instead of network fetch
+      this.sliceApplicationData();
     },
   },
   computed: {
@@ -539,6 +540,7 @@ export default {
         createdAt: this.formatDate(app.createdAt),
         applicationNo:
           app.applicationNo || `APP-${app.id?.slice(0, 8) || "N/A"}`,
+        clientName: app.user?.name || this.userData.fullName || "-",
       }));
     },
   },
@@ -566,6 +568,8 @@ export default {
             statusHistory: apiData.statusHistory || [],
           };
           this.spouseData = this.userData.spouse || {};
+          
+          this.getUserApplicationData();
         })
         .catch((err) => {
           this.appLoading = false;
@@ -578,21 +582,48 @@ export default {
     },
     getUserApplicationData() {
       this.appLoading = true;
-      getUserApplications(this.$route.query.id, {
-        page: this.currentPage,
-        size: this.limit,
-      })
-        .then((response) => {
+      const userId = this.$route.query.id;
+      
+      const promises = [
+        getUserApplications(userId, { page: 1, size: 100 })
+      ];
+
+      // If it's a joint assessment, also fetch spouse's applications
+      if (this.userData && this.userData.isJointAssessment) {
+        const spouseId = this.userData.parentId ? this.userData.parentId : (this.userData.spouse ? this.userData.spouse.id : null);
+        if (spouseId) {
+          promises.push(getUserApplications(spouseId, { page: 1, size: 100 }));
+        }
+      }
+
+      Promise.all(promises)
+        .then((responses) => {
           this.appLoading = false;
-          if (response.data.success) {
-            this.userApplicationData = response.data.data;
-            this.pages = Math.ceil(response.data.metadata.total / this.limit);
-          }
+          let allData = [];
+          
+          responses.forEach((res) => {
+            if (res && res.data && res.data.success) {
+              allData = [...allData, ...res.data.data];
+            }
+          });
+
+          // Sort by creation date descending
+          allData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          
+          this.allUserApplicationData = allData;
+          this.pages = Math.ceil(this.allUserApplicationData.length / this.limit) || 1;
+          this.currentPage = 1;
+          this.sliceApplicationData();
         })
         .catch((err) => {
           this.appLoading = false;
           console.log(err);
         });
+    },
+    sliceApplicationData() {
+      const start = (this.currentPage - 1) * this.limit;
+      const end = start + this.limit;
+      this.userApplicationData = this.allUserApplicationData.slice(start, end);
     },
     handleApiError(err) {
       if (err.response) {

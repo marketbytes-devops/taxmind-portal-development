@@ -48,8 +48,8 @@ export function getUser(userId) {
 }
 
 export function getUserApplications(userId, params = {}) {
-  return http.get(`/users/${userId}/applications`, {
-    params,
+  return http.get(`/applications/user`, {
+    params: { userId, ...params },
     headers: {
       Accept: "application/json",
     },

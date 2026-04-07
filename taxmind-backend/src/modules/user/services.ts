@@ -2002,13 +2002,14 @@ export const listUsers = serviceHandler(listUserSchema, async (req, res) => {
   ]);
 
   // Enrich joint assessment users with their paired spouse info
-  const jointUsers = users.filter(u => u.isJointAssessment || u.parentId);
-  let pairedMap = new Map<string, { id: string; name: string }>();
+  const jointUsers = users.filter((u) => u.isJointAssessment || u.parentId);
+  const parentsMap = new Map<string, { id: string; name: string }>();
+  const childrenMap = new Map<string, { id: string; name: string }>();
 
   if (jointUsers.length > 0) {
     // Collect all parent IDs (for spouse users) and user IDs (for primary users)
-    const parentIds = jointUsers.filter(u => u.parentId).map(u => u.parentId!);
-    const primaryIds = jointUsers.filter(u => !u.parentId).map(u => u.id);
+    const parentIds = jointUsers.filter((u) => u.parentId).map((u) => u.parentId!);
+    const primaryIds = jointUsers.filter((u) => !u.parentId).map((u) => u.id);
 
     // Fetch parents (for spouse users who have parentId)
     if (parentIds.length > 0) {
@@ -2017,39 +2018,36 @@ export const listUsers = serviceHandler(listUserSchema, async (req, res) => {
         columns: { id: true, name: true },
       });
       for (const p of parents) {
-        pairedMap.set(p.id, { id: p.id, name: p.name });
+        parentsMap.set(p.id, { id: p.id, name: p.name });
       }
     }
 
     // Fetch children (spouses of primary users)
     if (primaryIds.length > 0) {
       const children = await db.query.users.findMany({
-        where: and(
-          inArray(models.users.parentId, primaryIds),
-          isNull(models.users.deletedAt)
-        ),
+        where: and(inArray(models.users.parentId, primaryIds), isNull(models.users.deletedAt)),
         columns: { id: true, name: true, parentId: true },
       });
       for (const c of children) {
         if (c.parentId) {
-          pairedMap.set(c.parentId, { id: c.id, name: c.name });
+          childrenMap.set(c.parentId, { id: c.id, name: c.name });
         }
       }
     }
   }
 
   // Attach pairedWith info to each user
-  const enrichedUsers = users.map(u => {
+  const enrichedUsers = users.map((u) => {
     const isJoint = u.isJointAssessment || !!u.parentId;
     if (!isJoint) return { ...u, pairedWith: null };
 
     if (u.parentId) {
       // This is a spouse user, paired with the parent
-      const parent = pairedMap.get(u.parentId);
+      const parent = parentsMap.get(u.parentId);
       return { ...u, pairedWith: parent || null };
     } else {
       // This is a primary user, paired with the child
-      const child = pairedMap.get(u.id);
+      const child = childrenMap.get(u.id);
       return { ...u, pairedWith: child || null };
     }
   });
