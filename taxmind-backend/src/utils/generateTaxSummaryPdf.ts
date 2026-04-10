@@ -25,13 +25,6 @@ const extractValue = (text: string, key: string, defaultValue = '€0.00'): stri
 export const generateTaxSummaryPdf = async (data: SummaryData): Promise<Buffer> => {
     return new Promise((resolve, reject) => {
         try {
-            const doc = new PDFDocument({ margin: 40, size: 'A4' });
-            const chunks: Buffer[] = [];
-
-            doc.on('data', (chunk) => chunks.push(chunk));
-            doc.on('end', () => resolve(Buffer.concat(chunks)));
-            doc.on('error', (err) => reject(err));
-
             // Theme Constants
             const colors = {
                 bg: '#0F172A',         // slate-900
@@ -44,13 +37,30 @@ export const generateTaxSummaryPdf = async (data: SummaryData): Promise<Buffer> 
                 border: '#334155'      // slate-700
             };
 
-            // 1. Draw Full Background Page
-            doc.rect(0, 0, doc.page.width, doc.page.height).fill(colors.bg);
+            const doc = new PDFDocument({
+                size: 'A4',
+                margins: { top: 40, left: 40, right: 40, bottom: 20 } // Lower bottom margin to avoid eager page breaks
+            });
+            const chunks: Buffer[] = [];
+
+            // 1. Setup Background Drawing on every page
+            const drawBackground = () => {
+                doc.save();
+                doc.rect(0, 0, doc.page.width, doc.page.height).fill(colors.bg);
+                doc.restore();
+            };
+
+            doc.on('pageAdded', drawBackground);
+            drawBackground(); // Initial page background
+
+            doc.on('data', (chunk) => chunks.push(chunk));
+            doc.on('end', () => resolve(Buffer.concat(chunks)));
+            doc.on('error', (err) => reject(err));
 
             // ---------------------------------------------
-            // Extract parsed data from string
+            // Extract parsed data from string (Trimmed and Normalized)
             // ---------------------------------------------
-            const rawText = data.summary;
+            const rawText = data.summary.trim().replace(/\n{3,}/g, '\n\n');
 
             const grossIncome = extractValue(rawText, 'Gross Income', '€0.00');
             const totalTaxPaid = extractValue(rawText, 'Total Tax Paid', '€0.00');
@@ -62,33 +72,36 @@ export const generateTaxSummaryPdf = async (data: SummaryData): Promise<Buffer> 
             // ---------------------------------------------
             // SECTION: Header
             // ---------------------------------------------
-            let currentY = 40;
+            let currentY = 50;
             const marginX = 40;
             const contentWidth = doc.page.width - (marginX * 2);
 
+            // LOGO
             doc.fontSize(22)
                 .fillColor(colors.primary)
                 .font('Helvetica-Bold')
                 .text('TAXMIND.IE', marginX, currentY);
 
+            // TAX YEAR Label
             doc.fontSize(10)
                 .fillColor(colors.textLight)
                 .font('Helvetica')
-                .text(`TAX YEAR`, marginX, currentY, { align: 'right', width: contentWidth });
+                .text(`TAX YEAR`, marginX, currentY + 4, { align: 'right', width: contentWidth });
 
-            doc.fontSize(20)
+            // YEAR Value
+            doc.fontSize(18)
                 .fillColor(colors.textMain)
                 .font('Helvetica-Bold')
-                .text(`${data.year}`, marginX, currentY + 12, { align: 'right', width: contentWidth });
+                .text(`${data.year}`, marginX, currentY + 16, { align: 'right', width: contentWidth });
 
-            currentY += 30;
+            currentY += 45;
             doc.fontSize(10)
                 .fillColor(colors.textLight)
                 .font('Helvetica')
                 .text(`Client: ${data.name} · Analysis powered by TaxMind AI`, marginX, currentY);
 
             // Break Line
-            currentY += 25;
+            currentY += 20;
             doc.moveTo(marginX, currentY)
                 .lineTo(marginX + contentWidth, currentY)
                 .strokeColor(colors.border)
@@ -100,13 +113,13 @@ export const generateTaxSummaryPdf = async (data: SummaryData): Promise<Buffer> 
             // ---------------------------------------------
             currentY += 25;
 
-            doc.fontSize(12)
-                .fillColor(colors.primary)
+            doc.fontSize(10)
+                .fillColor(colors.textLight)
                 .font('Helvetica-Bold')
                 .text(`TOTAL ${assessmentResult.toUpperCase()}`, marginX, currentY);
 
-            currentY += 15;
-            doc.fontSize(48)
+            currentY += 18;
+            doc.fontSize(40)
                 .fillColor(colors.primary)
                 .font('Helvetica-Bold')
                 .text(assessmentAmount, marginX, currentY);
@@ -114,34 +127,31 @@ export const generateTaxSummaryPdf = async (data: SummaryData): Promise<Buffer> 
             // ---------------------------------------------
             // SECTION: Metrics Row
             // ---------------------------------------------
-            currentY += 50;
+            currentY += 60; // Spacer
 
-            const cardWidth = (contentWidth - 30) / 4; // 4 columns, 10px spacing
+            const cardWidth = (contentWidth - 30) / 4;
             let currentX = marginX;
 
             const drawMetricCard = (title: string, value: string, subtext: string, color: string, x: number) => {
-                // Background Box
-                doc.roundedRect(x, currentY, cardWidth, 70, 5)
+                doc.roundedRect(x, currentY, cardWidth, 65, 5) // Slightly shorter card
                     .fillAndStroke(colors.bgLight, color);
-
-                // Content inside
-                doc.fontSize(9)
-                    .fillColor(colors.textLight)
-                    .font('Helvetica')
-                    .text(title, x + 10, currentY + 12);
-
-                doc.fontSize(16)
-                    .fillColor(color)
-                    .font('Helvetica-Bold')
-                    .text(value, x + 10, currentY + 28);
 
                 doc.fontSize(8)
                     .fillColor(colors.textLight)
                     .font('Helvetica')
-                    .text(subtext, x + 10, currentY + 50);
+                    .text(title, x + 10, currentY + 10);
+
+                doc.fontSize(10)
+                    .fillColor(color)
+                    .font('Helvetica-Bold')
+                    .text(value, x + 10, currentY + 24);
+
+                doc.fontSize(8)
+                    .fillColor(colors.textLight)
+                    .font('Helvetica')
+                    .text(subtext, x + 10, currentY + 44);
             };
 
-            // Calculate Effective Rate roughly for display if exact not provided
             let effectiveRate = '0.0%';
             if (grossIncome !== '€0.00' && totalTaxPaid !== '€0.00') {
                 const gInc = parseFloat(grossIncome.replace(/[^0-9.]/g, ''));
@@ -160,18 +170,18 @@ export const generateTaxSummaryPdf = async (data: SummaryData): Promise<Buffer> 
             drawMetricCard('Effective Rate', effectiveRate, 'Tax + USC on gross', colors.primary, currentX);
 
             // ---------------------------------------------
-            // SECTION: Plain English Detailed Text (The raw AI Summary)
+            // SECTION: Raw Summary Analysis
             // ---------------------------------------------
             currentY += 85;
 
-            doc.fontSize(12)
+            doc.fontSize(10)
                 .fillColor(colors.textLight)
                 .font('Helvetica-Bold')
                 .text('RAW AI SUMMARY ANALYSIS', marginX, currentY);
 
             currentY += 20;
 
-            doc.fontSize(9) // Reduce font size to fit on one page
+            doc.fontSize(8)
                 .fillColor(colors.textMain)
                 .font('Helvetica')
                 .text(rawText, marginX, currentY, {
@@ -179,15 +189,11 @@ export const generateTaxSummaryPdf = async (data: SummaryData): Promise<Buffer> 
                     lineGap: 3
                 });
 
-            // Footer
+            // Footer (Absolute positioned at the bottom)
+            const footerY = doc.page.height - 35;
             doc.fontSize(8)
                 .fillColor(colors.textLight)
                 .font('Helvetica')
-                .text(`Automated TaxMind Document Generator • ${new Date().toLocaleDateString()}`, 40, doc.page.height - 40, {
-                    align: 'center',
-                    width: doc.page.width - 80,
-                });
-
             doc.end();
         } catch (err) {
             reject(err);

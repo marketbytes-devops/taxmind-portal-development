@@ -3,7 +3,7 @@ import { db, models } from '@/database';
 import { serviceHandler } from '@/utils/serviceHandler';
 import ApiError from '@/utils/apiError';
 import * as maya from '@/integrations/maya';
-import * as gemini from '@/integrations/gemini';
+import * as claude from '@/integrations/claude';
 import * as s3 from '@/integrations/awsS3';
 import { hashWithHMAC } from '@/utils/crypto';
 import logger from '@/logger';
@@ -79,8 +79,8 @@ export const processTaxReturn = serviceHandler(
             // 6. AI Summary (Robust handling - if this fails, we still return the masked file)
             let summary = '';
             try {
-                const extractedText = await gemini.extractTextFromPDF(maskedBuffer);
-                summary = await gemini.generateTaxDocumentSummary(extractedText);
+                const extractedText = await claude.extractTextFromPDF(maskedBuffer);
+                summary = await claude.generateTaxDocumentSummary(extractedText);
             } catch (aiError: any) {
                 logger.warn('AI Summarization failed but process will continue', aiError);
                 summary = 'Automated summary failed. Please enter the details manually from the masked document.';
@@ -196,12 +196,11 @@ export const confirmTaxReturn = serviceHandler(
         }
 
         // 3. Send Email Notification
-        /* 
         try {
             const pdfBuffer = await generateTaxSummaryPdf({
                 name: app.user.name,
                 summary: summary,
-                year: app.year
+                year: app.year || new Date().getFullYear().toString()
             });
 
             await mail.taxReturnProcessed({
@@ -220,10 +219,10 @@ export const confirmTaxReturn = serviceHandler(
                     }
                 ]
             });
+            logger.info(`Tax return processed email sent to ${app.user.email}`);
         } catch (err) {
             logger.error('Failed to send confirmation email', err);
         }
-        */
 
         return res.success('Tax return confirmed and finalized.');
     }

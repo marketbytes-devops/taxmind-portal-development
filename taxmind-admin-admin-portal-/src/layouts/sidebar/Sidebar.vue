@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-navigation-drawer v-model="Sidebar_drawer" :dark="SidebarColor !== '#3B887B'" :color="SidebarColor"
-      mobile-break-point="960" width="250px" clipped :right="$vuetify.rtl" mini-variant-width="70" app id="main-sidebar"
+      mobile-breakpoint="960" width="250px" clipped :right="$vuetify.rtl" mini-variant-width="70" app id="main-sidebar"
       class="elevation-4">
       <v-layout wrap py-2>
         <v-flex>
@@ -76,7 +76,6 @@ export default {
     },
   },
   data: () => ({
-    userRole: localStorage.getItem("role"),
     activeItem: 0,
     adminitems: SIDEBAR_ITEMS,
   }),

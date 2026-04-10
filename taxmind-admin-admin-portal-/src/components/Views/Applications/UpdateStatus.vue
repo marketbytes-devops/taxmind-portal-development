@@ -357,7 +357,7 @@
            <v-flex xs12 sm12 md8 lg8 xl6 pa-4>
               <v-card elevation="0" outlined style="border-radius: 4px" class="pa-4 bg-light-blue">
                 <h3 class="card-title mb-2">Automated Document Summary</h3>
-                <p class="text-caption grey--text mb-4">Generated via Maya Anonymization & OpenAI</p>
+                <p class="text-caption grey--text mb-4">Generated via Maya Anonymization & Claude</p>
                 
                 <v-textarea
                   v-model="editableSummary"

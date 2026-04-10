@@ -13,11 +13,7 @@ export default new Vuetify({
         backgroundOne: "#F1F7FF", 
         backgroundTwo: "#FFFFFF", 
         background2: "#29A61A",   
-        background3: "#5F5F5F1A",
-        docBackground: "#D53E3E0D",
         greyText: "#5F5F5F",
-        cardBorder: "rgba(0, 0, 0, 0.1)",
-        inputBorder: "rgba(95, 95, 95, 0.16)",
       },
 
     },

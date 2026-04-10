@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 import axios from 'axios';
 
-const BASE_URL = 'https://dev-api.taxmind.ie/api/v1';
+const BASE_URL = process.env.VUE_APP_API_BASE_URL || 'http://localhost:5000/api/v1';
 
 // Firebase configuration from environment variables
 const firebaseConfig = {

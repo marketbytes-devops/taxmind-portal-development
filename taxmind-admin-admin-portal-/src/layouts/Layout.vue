@@ -4,7 +4,7 @@
 
     <Sidebar :expand-on-hover.sync="expandOnHover"></Sidebar>
     <!-- <rightSidebar ></rightSidebar> -->
-    <v-content style="background-color: #f1f7ff">
+    <v-main style="background-color: #f1f7ff">
       <v-layout wrap>
         <v-flex xs12>
           <v-divider></v-divider>
@@ -12,7 +12,7 @@
       </v-layout>
 
       <router-view />
-    </v-content>
+    </v-main>
 
     <!-- <Footer></Footer> -->
   </v-app>
